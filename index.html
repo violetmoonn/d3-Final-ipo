@@ -290,31 +290,7 @@ document.getElementById("contactForm").addEventListener("submit", e => {
   location.href = `mailto:inquire@d3composure.com?subject=${subject}&body=${body}`;
 });
 
-/* store imagery: fogged until hovered */
-.fogbox img{filter:blur(10px);opacity:.7;transition:filter .45s ease, opacity .45s ease}
-.fogbox:hover img,.fogbox:focus-within img,.fogbox.clear img{filter:blur(0);opacity:1}
-.fogbox{position:relative}
-.fogbox::after{
-  content:"HOVER TO REVEAL";
-  position:absolute;left:0;right:0;bottom:14px;text-align:center;
-  font-size:9px;letter-spacing:.24em;color:#a8a8a8;
-  pointer-events:none;transition:opacity .35s ease;
-}
-.shot.fogbox::after{bottom:34px}
-.fogbox:hover::after,.fogbox:focus-within::after,.fogbox.clear::after{opacity:0}
-@media (prefers-reduced-motion:reduce){.fogbox img{transition:none}}
-
-/* ---------- fogged wordmark ---------- */
-.fog{
-  filter:blur(7px);
-  opacity:.62;
-  transition:filter .45s ease, opacity .45s ease;
-  cursor:pointer;
-}
-.fog:hover,.fog:focus-visible,.fog.clear{filter:blur(0);opacity:1}
-.gate h1.fog{filter:blur(14px)}
-.gate h1.fog:hover,.gate h1.fog.clear{filter:blur(0)}
-@media (prefers-reduced-motion:reduce){.fog{transition:none}}
+px}
 
 /* ---------- entry gate ---------- */
 .gate{
