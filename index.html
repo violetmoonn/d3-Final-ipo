@@ -70,7 +70,7 @@ function renderGallery(){
     GALLERY.length ? GALLERY.length + (GALLERY.length===1?" image":" images") : "";
   empty.classList.toggle("hide", GALLERY.length > 0);
   wrap.innerHTML = GALLERY.map((g,i) => `
-    <figure class="fogbox" data-lb="${i}">
+    <figure class="" data-lb="${i}">
       <img src="${g.src}" alt="${g.caption || "D3COMPOSURE"}" loading="lazy">
       ${g.caption ? `<figcaption>${g.caption}</figcaption>` : ""}
     </figure>`).join("");
