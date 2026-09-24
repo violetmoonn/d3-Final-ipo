@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — D3COMPOSURE</title>
+<meta name="description" content="D3COMPOSURE — limited collections in archival fabrics and mixed mediums on canvas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#d5d5d3;
+    --ink:#4a4a48;
+    --ink-strong:#2c2c2a;
+    --label:#0a0a0a;
+    --thread:#c9c9c6;
+    --measure:34rem;
+  }
+
+  *{box-sizing:border-box;}
+
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"EB Garamond",Garamond,"Times New Roman",serif;
+    font-size:1.0625rem;
+    line-height:1.85;
+    letter-spacing:.012em;
+    text-align:center;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+
+  a:focus-visible,
+  button:focus-visible{
+    outline:1px solid var(--ink-strong);
+    outline-offset:4px;
+  }
+
+  .page{
+    max-width:var(--measure);
+    margin:0 auto;
+    padding:2.5rem 1.5rem 6rem;
+  }
+
+  /* --- Navigation ---------------------------------------------------- */
+
+  .nav{
+    display:flex;
+    justify-content:center;
+    gap:1.75rem;
+    font-size:.9375rem;
+    letter-spacing:.06em;
+    margin-bottom:4.5rem;
+  }
+
+  .nav a{
+    text-decoration:none;
+    padding-bottom:.15rem;
+    border-bottom:1px solid transparent;
+  }
+
+  .nav a:hover{border-bottom-color:var(--ink);}
+
+  .nav a[aria-current="page"]{border-bottom-color:var(--ink);}
+
+  /* --- Woven label ---------------------------------------------------
+     Swap this block for your own logo file if you have one:
+     <img class="label-img" src="/logo.png" alt="D3COMPOSURE">
+  -------------------------------------------------------------------- */
+
+  .label{
+    position:relative;
+    display:inline-block;
+    background:var(--label);
+    padding:.85rem 1.5rem;
+    margin-bottom:4.5rem;
+  }
+
+  .label::before,
+  .label::after{
+    content:"";
+    position:absolute;
+    top:14%;
+    width:10px;
+    height:72%;
+    background:var(--label);
+  }
+
+  .label::before{left:-9px;}
+  .label::after{right:-9px;}
+
+  .label span{
+    position:relative;
+    display:block;
+    font-family:"Oswald",Impact,"Arial Narrow",sans-serif;
+    font-weight:600;
+    font-size:clamp(1.5rem,7vw,2.125rem);
+    letter-spacing:.02em;
+    line-height:1;
+    color:#d8d8d6;
+    border:1px solid rgba(216,216,214,.28);
+    padding:.5rem .75rem;
+  }
+
+  .label-img{max-width:min(100%,20rem);height:auto;margin-bottom:4.5rem;}
+
+  /* --- Sections ------------------------------------------------------- */
+
+  section + section{margin-top:3.75rem;}
+
+  h1{
+    font-size:1.0625rem;
+    font-weight:400;
+    font-style:italic;
+    letter-spacing:.02em;
+    margin:0 0 1.25rem;
+    color:var(--ink-strong);
+  }
+
+  h2{
+    font-size:1.0625rem;
+    font-weight:400;
+    font-style:italic;
+    letter-spacing:.02em;
+    margin:0 0 .9rem;
+    color:var(--ink-strong);
+  }
+
+  p{margin:0 0 1.15rem;}
+
+  p:last-child{margin-bottom:0;}
+
+  .lede{margin-bottom:1.15rem;}
+
+  .lede .name{font-variant:small-caps;letter-spacing:.05em;}
+
+  /* --- Closing note ---------------------------------------------------- */
+
+  .colophon{
+    margin-top:5rem;
+    padding-top:2.25rem;
+    border-top:1px solid var(--thread);
+    font-size:.9375rem;
+    line-height:1.7;
+  }
+
+  .colophon a{text-decoration:none;border-bottom:1px solid var(--thread);}
+  .colophon a:hover{border-bottom-color:var(--ink);}
+
+  .domain{
+    display:block;
+    margin-top:1.5rem;
+    font-variant:small-caps;
+    letter-spacing:.08em;
+  }
+
+  .domain a{border-bottom-color:transparent;}
+  .domain a:hover{border-bottom-color:var(--ink);}
+
+  @media (min-width:48rem){
+    body{font-size:1.125rem;}
+    .page{padding-top:4rem;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <nav class="nav" aria-label="Primary">
+    <a href="/">Shop</a>
+    <a href="/about" aria-current="page">About</a>
+    <a href="/contact">Contact</a>
+  </nav>
+
+  <div class="label"><span>D3COMPOSURE</span></div>
+
+  <main>
+
+    <section aria-labelledby="founders-note">
+      <h1 id="founders-note">Founder&rsquo;s note</h1>
+      <p class="lede"><span class="name">d3composure</span> was founded in 2000. We restock
+      inventory seasonally and invite you to explore our collection. Our collections are
+      carefully selected and limited, exploring ideas in the form of archival fabrics and
+      various mediums on canvas. We represent a movement towards a sustainable future and
+      in integrating the art in the abstract and uncensored ideology in our everyday
+      fashion.</p>
+    </section>
+
+    <section aria-labelledby="what-we-make">
+      <h2 id="what-we-make">What we make</h2>
+      <p>Outerwear and knitwear cut in small runs, alongside original work on canvas.
+      Each piece begins with the fabric &mdash; archival stock, sourced in limited
+      quantity &mdash; which means a garment exists only as long as the cloth does.</p>
+      <!-- Replace with the specifics of your current line. -->
+    </section>
+
+    <section aria-labelledby="how-we-release">
+      <h2 id="how-we-release">How we release</h2>
+      <p>Collections drop seasonally and are not reproduced. When a piece sells out it
+      stays sold out. Anything still listed on the site is still available.</p>
+    </section>
+
+    <section aria-labelledby="materials">
+      <h2 id="materials">Materials and making</h2>
+      <p>Working from archival and deadstock cloth keeps existing material in use rather
+      than commissioning new production. Garments are finished in small batches.</p>
+      <!-- Add where pieces are made, and by whom, if you want that on record. -->
+    </section>
+
+  </main>
+
+  <p class="colophon">
+    For sizing, restocks, or press &mdash;
+    <a href="mailto:hello@d3-composure.com">hello@d3-composure.com</a>
+    <span class="domain"><a href="https://d3-composure.com">d3-composure.com</a></span>
+  </p>
+
+</div>
+
+</body>
+</html>
