@@ -51,246 +51,6 @@ a{color:inherit;text-decoration:none}
 input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid #000;outline-offset:2px}
 
-/* ---------- gallery ----------
-   [GALLERY] To add a photo, add one line to this list.
-   src can be a filename in the same folder ("photos/look-01.jpg"),
-   a full https:// URL, or a base64 data URI.
-   caption is optional — delete it and the photo shows with no label.
------------------------------------------------------------------- */
-const GALLERY = [
-  {src: IMG_FRONT, caption: "D3 01 — front"},
-  {src: IMG_BACK,  caption: "D3 01 — back print"}
-  // {src: "photos/look-03.jpg", caption: "Lookbook 03"},
-];
-
-function renderGallery(){
-  const wrap = document.getElementById("gal");
-  const empty = document.getElementById("galEmpty");
-  document.getElementById("galCount").textContent =
-    GALLERY.length ? GALLERY.length + (GALLERY.length===1?" image":" images") : "";
-  empty.classList.toggle("hide", GALLERY.length > 0);
-  wrap.innerHTML = GALLERY.map((g,i) => `
-    <figure class="" data-lb="${i}">
-      <img src="${g.src}" alt="${g.caption || "D3COMPOSURE"}" loading="lazy">
-      ${g.caption ? `<figcaption>${g.caption}</figcaption>` : ""}
-    </figure>`).join("");
-}
-renderGallery();
-
-/* lightbox */
-const lb = document.getElementById("lightbox");
-const lbImg = document.getElementById("lbImg");
-const lbCap = document.getElementById("lbCap");
-let lbIndex = 0;
-
-function lbShow(i){
-  if(!GALLERY.length) return;
-  lbIndex = (i + GALLERY.length) % GALLERY.length;
-  const g = GALLERY[lbIndex];
-  lbImg.src = g.src;
-  lbImg.alt = g.caption || "";
-  lbCap.textContent = g.caption || "";
-  lb.classList.add("show");
-  document.body.classList.add("locked");
-}
-function lbHide(){
-  lb.classList.remove("show");
-  document.body.classList.remove("locked");
-}
-document.getElementById("gal").addEventListener("click", e => {
-  const fig = e.target.closest("[data-lb]");
-  if(fig) lbShow(+fig.dataset.lb);
-});
-document.getElementById("lbPrev").onclick = e => { e.stopPropagation(); lbShow(lbIndex-1); };
-document.getElementById("lbNext").onclick = e => { e.stopPropagation(); lbShow(lbIndex+1); };
-lb.addEventListener("click", e => { if(e.target === lb || e.target.closest("[data-lb-close]")) lbHide(); });
-document.addEventListener("keydown", e => {
-  if(!lb.classList.contains("show")) return;
-  if(e.key === "Escape") lbHide();
-  if(e.key === "ArrowLeft") lbShow(lbIndex-1);
-  if(e.key === "ArrowRight") lbShow(lbIndex+1);
-});
-
-/* ---------- router ---------- */
-/* [LEGAL] ---------------------------------------------------------
-   Terms, Privacy and Affiliates are transcribed from the live site.
-   Shipping, Refund, Do Not Sell and Account were written here from
-   facts stated elsewhere on the site. They are NOT legal advice —
-   read them and change anything you will not actually honour.
------------------------------------------------------------------- */
-const POLICY_UPDATED = "August 2026";
-
-const LEGAL = {
-  /* Transcribed from the live site. */
-  "terms": { title: "Terms of Service", plain: true, body: `
-    <p>By accessing or using the service, you agree to be bound by these terms. If you disagree with any part of the terms, then you may not access the service.</p>
-    <p>We reserve the right, at our sole discretion, to modify or replace these terms at any time.</p>
-    <p>All content, features, and functionality are and will remain the exclusive property of D3COMPOSURE.</p>
-    <p>Your privacy is important to us. Please review our <a href="#privacy">privacy policy</a> to understand how we collect and use your information.</p>` },
-
-  /* Transcribed from the live site. */
-  "privacy": { title: "Privacy Policy", plain: true, body: `
-    <p>As described in our privacy policy, we collect personal information from your interactions with us and our website, including through cookies and similar technologies. We may also share this personal information with third parties, including advertising partners. We do this in order to show you ads on other websites that are more relevant to your interests and for other reasons outlined in our privacy policy.</p>
-    <p>Sharing of personal information for targeted advertising based on your interaction on different websites may be considered "sales", "sharing", or "targeted advertising" under certain U.S. state privacy laws. Depending on where you live, you may have the right to opt out of these activities. If you would like to exercise this opt-out right, please follow the instructions below.</p>
-    <p>If you visit our website with the Global Privacy Control opt-out preference signal enabled, depending on where you are, we will treat this as a request to opt-out of activity that may be considered a "sale" or "sharing" of personal information or other uses that may be considered targeted advertising for the device and browser you used to visit our website.</p>
-    <p>To opt out, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with the subject line "Privacy Request".</p>` },
-
-  /* [DRAFT] not yet supplied — written from facts stated elsewhere on the site. */
-  "shipping": { title: "Shipping Policy", body: `
-    <h3>Production time</h3>
-    <p>Every garment is made to order. Please allow approximately 2 weeks from order to dispatch. You will receive tracking by email when your parcel leaves our facility.</p>
-    <h3>Where we ship</h3>
-    <p>We ship worldwide from Portugal. Shipping is calculated at checkout based on your destination and is shown before you pay. All parcels are sent tracked.</p>
-    <h3>Duties and taxes</h3>
-    <p>Orders shipped outside the European Union may be subject to import duties or taxes charged by your country on arrival. These are set by your customs authority, are not included in the price you paid, and are the responsibility of the recipient.</p>
-    <h3>Delays</h3>
-    <p>Once a parcel is with the carrier, transit times are outside our control. If tracking has not moved for more than 10 business days, contact us and we will open an enquiry with the carrier.</p>
-    <h3>Lost or damaged parcels</h3>
-    <p>If your parcel arrives damaged or does not arrive at all, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number and we will take full responsibility for putting it right.</p>` },
-
-  /* [DRAFT] not yet supplied — written from facts stated elsewhere on the site. */
-  "refund": { title: "Refund Policy", body: `
-    <h3>Returns</h3>
-    <p>You may request a return within 14 days of delivery. Garments must be unworn, unwashed, and in their original condition with any tags attached. Return postage is paid by the customer unless the item is faulty or we sent the wrong thing.</p>
-    <h3>How to start a return</h3>
-    <p>Email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number and the reason. We will reply with return instructions. Please do not send anything back before you hear from us.</p>
-    <h3>Refunds</h3>
-    <p>Once your return arrives and has been checked, we refund to the original payment method within 10 business days. Your bank may take a few days more to show it. Original shipping is refunded when the return is due to our error.</p>
-    <h3>Faulty or incorrect items</h3>
-    <p>If an item is faulty or is not what you ordered, we cover return postage and refund or remake it in full. Slight variation in colour, texture, or graphic placement is a property of the material and is not a fault.</p>
-    <h3>Cancellations</h3>
-    <p>Because each garment is made to order, production may begin quickly. Contact us as soon as possible and we will cancel and refund in full if production has not yet started.</p>
-    <h3>Consumer rights</h3>
-    <p>Nothing in this policy limits the statutory rights you have under the consumer law of your country.</p>` },
-
-  /* Rewritten to match the privacy policy above, which states that personal
-     information IS shared with advertising partners. */
-  "do-not-sell": { title: "Do Not Sell or Share My Personal Information", plain: true, body: `
-    <p>We share personal information with third parties, including advertising partners, in order to show you ads on other websites that are more relevant to your interests. Under certain U.S. state privacy laws this may be considered a "sale", "sharing", or "targeted advertising".</p>
-    <p>Depending on where you live, you have the right to opt out. To do so, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with the subject line "Do Not Sell or Share". Include the email address used on your order so we can verify your request. We will confirm within 15 business days.</p>
-    <p>If you visit our website with the Global Privacy Control opt-out preference signal enabled, we treat this as an opt-out request for the device and browser you used, and you do not need to email us.</p>
-    <p>Exercising this right will never result in worse service or a different price. See our <a href="#privacy">privacy policy</a> for the full detail.</p>` },
-
-  "account": { title: "Account", plain: true, boxed: true, body: `
-    <p>D3COMPOSURE does not use customer accounts. Checkout runs through Stripe, and your receipt and tracking are emailed to you at the address you enter at checkout.</p>
-    <p>To look up an order, change a delivery address, or request a return, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number.</p>` },
-
-  /* Transcribed from the live site — note the address here is inquires@, not inquire@. */
-  "affiliates": { title: "Affiliates", plain: true, boxed: true, body: `
-    <p>Please send an email to <a href="mailto:inquires@d3composure.com">inquires@d3composure.com</a> with the subject line <strong>"Affiliate"</strong> and we will send you a form to fill out.</p>` }
-};
-const PAGES = ["shop","about","sustainability","contact","gallery"];
-const slug = id => id.replace(/\s+/g,"-").toLowerCase();
-
-function renderPDP(p){
-  const body = document.getElementById("pdpBody");
-  body.innerHTML = `
-    <a class="back" href="#shop">← Back to shop</a>
-    <div class="pdp-grid">
-      <div>
-        <div class="pdp-main" id="pdpMain">
-          ${p.imgs.map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n?'':'on'}">`).join("")}
-        </div>
-        <div class="thumbs" id="pdpThumbs">
-          ${p.imgs.map((im,n)=>`<button class="thumb${n?'':' on'}"><img src="${im.src}" alt=""></button>`).join("")}
-        </div>
-      </div>
-      <div class="pdp-info">
-        <h2>${p.id}</h2>
-        <p class="pdp-price">${money(p.usd)}</p>
-        <p class="stock${p.stock?'':' out'}"><i></i>${p.stock?"Available — made to order":"Sold out"}</p>
-        ${p.stock?`<p class="ships">Ships in approx. 2 weeks from Portugal</p>`:``}
-        <p class="pdp-desc">${p.desc||""}</p>
-        ${p.stock ? `
-        <div class="pdp-sizes" id="pdpSizes">
-          <span class="label">Select size</span>
-          <div class="row">${p.sizes.map(sz=>`<button class="${sz==="L"?"on":""}">${sz}</button>`).join("")}</div>
-        </div>
-        <a class="buy" id="pdpBuy" href="${STRIPE_LINK}">Buy</a>
-        <button class="bagbtn" id="pdpBag">+ Add to shopping bag</button>` : ``}
-      </div>
-    </div>`;
-
-  const main = body.querySelector("#pdpMain");
-  if(!main) return;
-  const figs = main.querySelectorAll("img");
-  const thumbs = body.querySelectorAll(".thumb");
-  thumbs.forEach((t,n) => t.addEventListener("click", () => {
-    figs.forEach((f,m)=>f.classList.toggle("on", m===n));
-    thumbs.forEach((x,m)=>x.classList.toggle("on", m===n));
-  }));
-
-  const sizes = body.querySelector("#pdpSizes");
-  const chosen = () => body.querySelector(".pdp-sizes button.on")?.textContent || "OS";
-  if(sizes) sizes.addEventListener("click", e => {
-    const b = e.target.closest("button");
-    if(!b) return;
-    sizes.querySelectorAll("button").forEach(x => x.classList.toggle("on", x===b));
-  });
-
-  const buy = body.querySelector("#pdpBuy");
-  if(buy) buy.addEventListener("click", () => {
-    const u = new URL(STRIPE_LINK);
-    u.searchParams.set("client_reference_id", p.id.replace(/\s/g,"") + "-" + chosen() + "x1");
-    buy.href = u.toString();
-  });
-
-  const bag = body.querySelector("#pdpBag");
-  if(bag) bag.addEventListener("click", () => {
-    const key = p.id + "|" + chosen();
-    cart.set(key, (cart.get(key)||0)+1);
-    bag.textContent = "Added to bag";
-    setTimeout(()=>bag.textContent = "+ Add to shopping bag", 1000);
-    renderCart(); updateCount();
-  });
-}
-
-function route(){
-  let hash = (location.hash || "#shop").slice(1).toLowerCase();
-  let target = "shop";
-
-  const prod = hash.startsWith("product/")
-    ? PRODUCTS.find(p => slug(p.id) === hash.split("/")[1]) : null;
-
-  if(prod){
-    target = "product";
-    renderPDP(prod);
-  } else if(PAGES.includes(hash)){
-    target = hash;
-  } else if(LEGAL[hash]){
-    target = "legal";
-    document.getElementById("legalTitle").textContent = LEGAL[hash].title;
-    const L = LEGAL[hash];
-    const bodyEl = document.getElementById("legalBody");
-    bodyEl.innerHTML = L.boxed ? `<div class="policy-box">${L.body}</div>` : L.body;
-    bodyEl.className = L.plain ? "policy-plain" : "";
-    document.querySelector("#page-legal .textpage").classList.toggle("centered", !!L.plain);
-    document.getElementById("legalStamp").textContent = "Last updated " + POLICY_UPDATED;
-  }
-
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.toggle("on", p.id === "page-" + target));
-  lbHide();
-  closeAll();
-  document.querySelectorAll("[data-drop]").forEach(d => d.classList.remove("open"));
-  window.scrollTo(0,0);
-}
-addEventListener("hashchange", route);
-route();
-
-/* contact form */
-document.getElementById("contactForm").addEventListener("submit", e => {
-  e.preventDefault();
-  const f = e.target;
-  const subject = encodeURIComponent("Inquiry from " + f.querySelector("#cName").value);
-  const body = encodeURIComponent(
-    f.querySelector("#cMsg").value + "\n\n— " +
-    f.querySelector("#cName").value + " (" + f.querySelector("#cMail").value + ")");
-  document.getElementById("contactNote").textContent = "Opening your mail app…";
-  location.href = `mailto:inquire@d3composure.com?subject=${subject}&body=${body}`;
-});
-
-px}
 
 /* ---------- entry gate ---------- */
 .gate{
@@ -671,22 +431,43 @@ a.r-cta{text-decoration:none}
 .scrim.show{opacity:1;pointer-events:auto}
 
 .menu{
-  position:fixed;inset:0;z-index:60;background:#fff;
-  display:flex;flex-direction:column;padding:18px 20px 24px;
-  transform:translateY(-100%);transition:transform .34s cubic-bezier(.4,0,.2,1);
+  position:fixed;top:0;bottom:0;left:0;z-index:60;width:min(330px,88vw);background:#fff;
+  display:flex;flex-direction:column;font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;color:#111;
+  padding:18px 16px 16px;overflow-y:auto;box-shadow:0 0 40px rgba(0,0,0,.12);
+  transform:translateX(-102%);transition:transform .34s cubic-bezier(.4,0,.2,1);
 }
-.menu.show{transform:translateY(0)}
-.menu-top{display:flex;align-items:flex-start;justify-content:space-between}
-.menu-top .wordmark{font-size:26px}
-.menu-rule{border-top:1px solid var(--rule);margin-top:22px}
-.menu-links{flex:1;display:flex;flex-direction:column;justify-content:center;gap:36px;padding:40px 0}
-.menu-links a{font-size:30px;letter-spacing:.02em;color:#3a3a3a;text-transform:uppercase}
-.menu-foot{
-  border-top:1px solid var(--rule);padding-top:20px;
-  display:flex;justify-content:space-between;gap:16px;
-  font-size:15px;color:var(--gray);
-}
-.menu-foot span{display:flex;gap:18px}
+.menu.show{transform:translateX(0)}
+.dir-head{position:relative;text-align:center;padding:4px 20px 14px;border-bottom:1px dashed #cfcfcf}
+.dir-brand{font-weight:700;font-size:15px;letter-spacing:.02em}
+.dir-sub-t{margin-top:6px;font-size:10px;letter-spacing:.14em;color:#6f6f6f}
+.dir-meta{margin-top:6px;font-size:9px;letter-spacing:.12em;color:#9b9b9b;display:flex;justify-content:center;gap:8px}
+.dir-meta+.dir-meta{margin-top:3px}
+.dir-close{position:absolute;top:0;right:0;font-size:22px;line-height:1;color:#555}
+.dir-cols{display:grid;grid-template-columns:36px 1fr auto;padding:10px 8px 8px;border-bottom:1px solid #ececec;font-size:9px;letter-spacing:.14em;color:#8a8a8a}
+.dir-list{display:flex;flex-direction:column;gap:2px;padding:8px 0 12px;border-bottom:1px dashed #cfcfcf}
+.dir-row{display:grid;grid-template-columns:36px 1fr auto;align-items:center;width:100%;padding:9px 8px;text-align:left;font-size:12px;letter-spacing:.06em}
+.dir-row:hover,.dir-toggle[aria-expanded="true"]{background:#f1f1f1}
+.dir-idx{font-size:10px;color:#9b9b9b;font-variant-numeric:tabular-nums}
+.dir-dest em{font-style:normal;font-size:9px;color:#9b9b9b;margin-left:6px}
+.dir-toggle .chev{width:10px;height:10px;stroke:#666;fill:none;stroke-width:1.6;transition:transform .2s}
+.dir-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.dir-children{display:none;margin:4px 0 6px 44px;padding-left:0;border-left:1px dashed #d9d9d9}
+.dir-group.open .dir-children{display:block}
+.dir-sub{display:flex;justify-content:space-between;align-items:center;padding:7px 8px;font-size:11px;letter-spacing:.06em;color:#6f6f6f}
+.dir-sub:hover{background:#f6f6f6;color:#111}
+.dir-status{font-size:8px;letter-spacing:.1em}
+.is-active{color:#111;font-weight:700}
+.dir-sub.is-active{background:#ececec}
+.is-active .dir-status::before{content:"ACTIVE";background:#111;color:#fff;padding:2px 5px;font-weight:700}
+.dir-extras{display:flex;flex-direction:column;gap:2px;padding:10px 0}
+.dir-extra{display:flex;align-items:center;gap:8px;padding:8px;font-size:11px;letter-spacing:.06em}
+.dir-extra:hover{background:#f6f6f6}
+.dir-extra .icon{width:13px;height:13px;flex:none}
+.dir-extra span{flex:1}
+.dir-extra b{font-size:8px;letter-spacing:.1em;border:1px solid #111;padding:3px 6px}
+.dir-extra b.soft{border-color:#e2e2e2;background:#f4f4f4;color:#6f6f6f;font-weight:400}
+.dir-foot{margin-top:auto;padding-top:12px;border-top:1px dashed #cfcfcf;text-align:center;font-size:8px;letter-spacing:.14em;color:#6f6f6f}
+.dir-foot .faint{margin-top:5px;color:#b5b5b5}
 .close{font-size:26px;line-height:1;padding:0 2px}
 
 .search-panel{
@@ -764,7 +545,6 @@ a.r-cta{text-decoration:none}
   .header{padding:20px 32px}
   .cart{max-width:640px;left:50%;transform:translate(-50%,-115%);padding:12px}
   .cart.show{transform:translate(-50%,0)}
-  .menu-links a{font-size:38px}
 }
 @media (min-width:1080px){
   .grid{grid-template-columns:repeat(3,1fr)}
@@ -1021,21 +801,45 @@ a.r-cta{text-decoration:none}
 <div class="scrim" id="scrim"></div>
 
 <!-- MENU -->
-<div class="menu" id="menu" role="dialog" aria-label="Menu">
-  <div class="menu-top">
-    <span class="wordmark fog" tabindex="0">D3composure</span>
-    <button class="close" data-close aria-label="Close menu">✕</button>
+<div class="menu" id="menu" role="dialog" aria-label="Site directory">
+  <div class="dir-head">
+    <p class="dir-brand">D3COMPOSURE</p>
+    <p class="dir-sub-t">SITE DIRECTORY // INDEX</p>
+    <p class="dir-meta"><span id="dirDate">DATE: 2026.09.24</span><span class="dir-dot">&bull;</span><span>DEPT: ARCHIVE</span></p>
+    <p class="dir-meta">INDEX REF #D3-DIR // REV-01</p>
+    <button class="dir-close" data-close aria-label="Close menu">&times;</button>
   </div>
-  <div class="menu-rule"></div>
-  <nav class="menu-links">
-    <a href="#shop" data-close>Shop</a>
-    <a href="#gallery" data-close>Gallery</a>
-    <a href="#about" data-close>About</a>
-    <a href="#contact" data-close>Contact</a>
+  <div class="dir-cols"><span>IDX</span><span>DESTINATION</span><span>STATUS</span></div>
+  <nav class="dir-list" aria-label="Site directory">
+      <a class="dir-row" href="#shop" data-close data-route="shop"><span class="dir-idx">[01]</span><span class="dir-dest">HOME</span><span class="dir-status"></span></a>
+      <a class="dir-row" href="#shop" data-close data-route="shop"><span class="dir-idx">[02]</span><span class="dir-dest">SHOP</span><span class="dir-status"></span></a>
+      <a class="dir-row" href="#gallery" data-close data-route="gallery"><span class="dir-idx">[03]</span><span class="dir-dest">GALLERY</span><span class="dir-status"></span></a>
+      <div class="dir-group" data-group>
+        <button class="dir-row dir-toggle" aria-expanded="false"><span class="dir-idx">[04]</span><span class="dir-dest">CORPORATE <em>(4)</em></span><svg class="chev" viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="dir-children">
+          <a class="dir-sub" href="#about" data-close data-route="about"><span>04.1 // ABOUT</span><span class="dir-status"></span></a>
+          <a class="dir-sub" href="#sustainability" data-close data-route="sustainability"><span>04.2 // SUSTAINABILITY</span><span class="dir-status"></span></a>
+          <a class="dir-sub" href="#contact" data-close data-route="contact"><span>04.3 // CONTACT</span><span class="dir-status"></span></a>
+          <a class="dir-sub" href="#affiliates" data-close data-route="affiliates"><span>04.4 // AFFILIATES</span><span class="dir-status"></span></a>
+        </div>
+      </div>
+      <div class="dir-group" data-group>
+        <button class="dir-row dir-toggle" aria-expanded="false"><span class="dir-idx">[05]</span><span class="dir-dest">LEGAL <em>(4)</em></span><svg class="chev" viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="dir-children">
+          <a class="dir-sub" href="#terms" data-close data-route="terms"><span>05.1 // TERMS OF SERVICE</span><span class="dir-status"></span></a>
+          <a class="dir-sub" href="#privacy" data-close data-route="privacy"><span>05.2 // PRIVACY POLICY</span><span class="dir-status"></span></a>
+          <a class="dir-sub" href="#shipping" data-close data-route="shipping"><span>05.3 // SHIPPING POLICY</span><span class="dir-status"></span></a>
+          <a class="dir-sub" href="#refund" data-close data-route="refund"><span>05.4 // REFUND POLICY</span><span class="dir-status"></span></a>
+        </div>
+      </div>
   </nav>
-  <div class="menu-foot">
-    <span><a href="#terms" data-close>Terms</a><a href="#privacy" data-close>Privacy</a><a href="#shipping" data-close>Shipping</a></span>
-    <a href="#account" data-close>Login</a>
+  <div class="dir-extras">
+    <a class="dir-extra" href="#newsletter" id="dirNews" data-close><svg class="icon" viewBox="0 0 16 16"><path d="M2 2h6l6 6-6 6-6-6z"/><circle cx="5" cy="5" r="1"/></svg><span>VIP NEWSLETTER</span><b>10% OFF</b></a>
+    <a class="dir-extra" href="#account" data-close><svg class="icon" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7" rx="1"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg><span>ACCOUNT LOGIN</span><b class="soft">ACCESS</b></a>
+  </div>
+  <div class="dir-foot">
+    <p>OFFICIAL DIRECTORY // KEEP FOR ARCHIVES</p>
+    <p class="faint">VERIFIED ARTIFACT CATALOG</p>
   </div>
 </div>
 
@@ -1305,7 +1109,7 @@ const panels = {menu:document.getElementById("menu"), search:document.getElement
 function open(name){
   closeAll();
   panels[name].classList.add("show");
-  if(name!=="menu") scrim.classList.add("show");
+  scrim.classList.add("show");
   document.body.classList.add("locked");
   if(name==="cart"){ renderCart(); drawBarcode(); }
   if(name==="search") setTimeout(()=>document.getElementById("searchInput").focus(),260);
@@ -1322,6 +1126,29 @@ document.getElementById("bagLink").onclick = e => { e.preventDefault(); open("ca
 scrim.onclick = closeAll;
 document.addEventListener("click", e => { if(e.target.closest("[data-close]")) closeAll(); });
 document.addEventListener("keydown", e => { if(e.key==="Escape") closeAll(); });
+
+/* ---------- site directory menu ---------- */
+(function(){
+  const menu = document.getElementById("menu");
+  const d = new Date(), p = n => String(n).padStart(2,"0");
+  document.getElementById("dirDate").textContent = "DATE: " + d.getFullYear() + "." + p(d.getMonth()+1) + "." + p(d.getDate());
+  menu.querySelectorAll("[data-group]").forEach(g => {
+    const t = g.querySelector(".dir-toggle");
+    t.addEventListener("click", () => { const o = !g.classList.contains("open"); g.classList.toggle("open", o); t.setAttribute("aria-expanded", o); });
+  });
+  const mark = () => {
+    const h = (location.hash || "#shop").slice(1).toLowerCase().split("/")[0];
+    let hit = null;
+    menu.querySelectorAll("[data-route]").forEach(a => { const on = !hit && a.dataset.route === h; if(on) hit = a; a.classList.toggle("is-active", on); });
+    if(hit && hit.classList.contains("dir-sub")){ const g = hit.closest("[data-group]"); g.classList.add("open"); g.querySelector(".dir-toggle").setAttribute("aria-expanded","true"); }
+  };
+  addEventListener("hashchange", mark); mark();
+  document.getElementById("dirNews").addEventListener("click", e => {
+    e.preventDefault(); closeAll();
+    const f = document.getElementById("newsInput");
+    f.scrollIntoView({behavior:"smooth", block:"center"}); setTimeout(() => f.focus({preventScroll:true}), 400);
+  });
+})();
 
 /* ---------- search ---------- */
 const results = document.getElementById("searchResults");
@@ -1371,6 +1198,247 @@ document.addEventListener("touchstart", e => {
   f.classList.add("clear");
   setTimeout(() => f.classList.remove("clear"), 2600);
 }, {passive:true});
+
+/* ---------- gallery, router, pages, contact (moved out of the <style> block) ---------- */
+/* ---------- gallery ----------
+   [GALLERY] To add a photo, add one line to this list.
+   src can be a filename in the same folder ("photos/look-01.jpg"),
+   a full https:// URL, or a base64 data URI.
+   caption is optional — delete it and the photo shows with no label.
+------------------------------------------------------------------ */
+const GALLERY = [
+  {src: IMG_FRONT, caption: "D3 01 — front"},
+  {src: IMG_BACK,  caption: "D3 01 — back print"}
+  // {src: "photos/look-03.jpg", caption: "Lookbook 03"},
+];
+
+function renderGallery(){
+  const wrap = document.getElementById("gal");
+  const empty = document.getElementById("galEmpty");
+  document.getElementById("galCount").textContent =
+    GALLERY.length ? GALLERY.length + (GALLERY.length===1?" image":" images") : "";
+  empty.classList.toggle("hide", GALLERY.length > 0);
+  wrap.innerHTML = GALLERY.map((g,i) => `
+    <figure class="" data-lb="${i}">
+      <img src="${g.src}" alt="${g.caption || "D3COMPOSURE"}" loading="lazy">
+      ${g.caption ? `<figcaption>${g.caption}</figcaption>` : ""}
+    </figure>`).join("");
+}
+renderGallery();
+
+/* lightbox */
+const lb = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbCap = document.getElementById("lbCap");
+let lbIndex = 0;
+
+function lbShow(i){
+  if(!GALLERY.length) return;
+  lbIndex = (i + GALLERY.length) % GALLERY.length;
+  const g = GALLERY[lbIndex];
+  lbImg.src = g.src;
+  lbImg.alt = g.caption || "";
+  lbCap.textContent = g.caption || "";
+  lb.classList.add("show");
+  document.body.classList.add("locked");
+}
+function lbHide(){
+  lb.classList.remove("show");
+  document.body.classList.remove("locked");
+}
+document.getElementById("gal").addEventListener("click", e => {
+  const fig = e.target.closest("[data-lb]");
+  if(fig) lbShow(+fig.dataset.lb);
+});
+document.getElementById("lbPrev").onclick = e => { e.stopPropagation(); lbShow(lbIndex-1); };
+document.getElementById("lbNext").onclick = e => { e.stopPropagation(); lbShow(lbIndex+1); };
+lb.addEventListener("click", e => { if(e.target === lb || e.target.closest("[data-lb-close]")) lbHide(); });
+document.addEventListener("keydown", e => {
+  if(!lb.classList.contains("show")) return;
+  if(e.key === "Escape") lbHide();
+  if(e.key === "ArrowLeft") lbShow(lbIndex-1);
+  if(e.key === "ArrowRight") lbShow(lbIndex+1);
+});
+
+/* ---------- router ---------- */
+/* [LEGAL] ---------------------------------------------------------
+   Terms, Privacy and Affiliates are transcribed from the live site.
+   Shipping, Refund, Do Not Sell and Account were written here from
+   facts stated elsewhere on the site. They are NOT legal advice —
+   read them and change anything you will not actually honour.
+------------------------------------------------------------------ */
+const POLICY_UPDATED = "August 2026";
+
+const LEGAL = {
+  /* Transcribed from the live site. */
+  "terms": { title: "Terms of Service", plain: true, body: `
+    <p>By accessing or using the service, you agree to be bound by these terms. If you disagree with any part of the terms, then you may not access the service.</p>
+    <p>We reserve the right, at our sole discretion, to modify or replace these terms at any time.</p>
+    <p>All content, features, and functionality are and will remain the exclusive property of D3COMPOSURE.</p>
+    <p>Your privacy is important to us. Please review our <a href="#privacy">privacy policy</a> to understand how we collect and use your information.</p>` },
+
+  /* Transcribed from the live site. */
+  "privacy": { title: "Privacy Policy", plain: true, body: `
+    <p>As described in our privacy policy, we collect personal information from your interactions with us and our website, including through cookies and similar technologies. We may also share this personal information with third parties, including advertising partners. We do this in order to show you ads on other websites that are more relevant to your interests and for other reasons outlined in our privacy policy.</p>
+    <p>Sharing of personal information for targeted advertising based on your interaction on different websites may be considered "sales", "sharing", or "targeted advertising" under certain U.S. state privacy laws. Depending on where you live, you may have the right to opt out of these activities. If you would like to exercise this opt-out right, please follow the instructions below.</p>
+    <p>If you visit our website with the Global Privacy Control opt-out preference signal enabled, depending on where you are, we will treat this as a request to opt-out of activity that may be considered a "sale" or "sharing" of personal information or other uses that may be considered targeted advertising for the device and browser you used to visit our website.</p>
+    <p>To opt out, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with the subject line "Privacy Request".</p>` },
+
+  /* [DRAFT] not yet supplied — written from facts stated elsewhere on the site. */
+  "shipping": { title: "Shipping Policy", body: `
+    <h3>Production time</h3>
+    <p>Every garment is made to order. Please allow approximately 2 weeks from order to dispatch. You will receive tracking by email when your parcel leaves our facility.</p>
+    <h3>Where we ship</h3>
+    <p>We ship worldwide from Portugal. Shipping is calculated at checkout based on your destination and is shown before you pay. All parcels are sent tracked.</p>
+    <h3>Duties and taxes</h3>
+    <p>Orders shipped outside the European Union may be subject to import duties or taxes charged by your country on arrival. These are set by your customs authority, are not included in the price you paid, and are the responsibility of the recipient.</p>
+    <h3>Delays</h3>
+    <p>Once a parcel is with the carrier, transit times are outside our control. If tracking has not moved for more than 10 business days, contact us and we will open an enquiry with the carrier.</p>
+    <h3>Lost or damaged parcels</h3>
+    <p>If your parcel arrives damaged or does not arrive at all, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number and we will take full responsibility for putting it right.</p>` },
+
+  /* [DRAFT] not yet supplied — written from facts stated elsewhere on the site. */
+  "refund": { title: "Refund Policy", body: `
+    <h3>Returns</h3>
+    <p>You may request a return within 14 days of delivery. Garments must be unworn, unwashed, and in their original condition with any tags attached. Return postage is paid by the customer unless the item is faulty or we sent the wrong thing.</p>
+    <h3>How to start a return</h3>
+    <p>Email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number and the reason. We will reply with return instructions. Please do not send anything back before you hear from us.</p>
+    <h3>Refunds</h3>
+    <p>Once your return arrives and has been checked, we refund to the original payment method within 10 business days. Your bank may take a few days more to show it. Original shipping is refunded when the return is due to our error.</p>
+    <h3>Faulty or incorrect items</h3>
+    <p>If an item is faulty or is not what you ordered, we cover return postage and refund or remake it in full. Slight variation in colour, texture, or graphic placement is a property of the material and is not a fault.</p>
+    <h3>Cancellations</h3>
+    <p>Because each garment is made to order, production may begin quickly. Contact us as soon as possible and we will cancel and refund in full if production has not yet started.</p>
+    <h3>Consumer rights</h3>
+    <p>Nothing in this policy limits the statutory rights you have under the consumer law of your country.</p>` },
+
+  /* Rewritten to match the privacy policy above, which states that personal
+     information IS shared with advertising partners. */
+  "do-not-sell": { title: "Do Not Sell or Share My Personal Information", plain: true, body: `
+    <p>We share personal information with third parties, including advertising partners, in order to show you ads on other websites that are more relevant to your interests. Under certain U.S. state privacy laws this may be considered a "sale", "sharing", or "targeted advertising".</p>
+    <p>Depending on where you live, you have the right to opt out. To do so, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with the subject line "Do Not Sell or Share". Include the email address used on your order so we can verify your request. We will confirm within 15 business days.</p>
+    <p>If you visit our website with the Global Privacy Control opt-out preference signal enabled, we treat this as an opt-out request for the device and browser you used, and you do not need to email us.</p>
+    <p>Exercising this right will never result in worse service or a different price. See our <a href="#privacy">privacy policy</a> for the full detail.</p>` },
+
+  "account": { title: "Account", plain: true, boxed: true, body: `
+    <p>D3COMPOSURE does not use customer accounts. Checkout runs through Stripe, and your receipt and tracking are emailed to you at the address you enter at checkout.</p>
+    <p>To look up an order, change a delivery address, or request a return, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number.</p>` },
+
+  /* Transcribed from the live site — note the address here is inquires@, not inquire@. */
+  "affiliates": { title: "Affiliates", plain: true, boxed: true, body: `
+    <p>Please send an email to <a href="mailto:inquires@d3composure.com">inquires@d3composure.com</a> with the subject line <strong>"Affiliate"</strong> and we will send you a form to fill out.</p>` }
+};
+const PAGES = ["shop","about","sustainability","contact","gallery"];
+const slug = id => id.replace(/\s+/g,"-").toLowerCase();
+
+function renderPDP(p){
+  const body = document.getElementById("pdpBody");
+  body.innerHTML = `
+    <a class="back" href="#shop">← Back to shop</a>
+    <div class="pdp-grid">
+      <div>
+        <div class="pdp-main" id="pdpMain">
+          ${p.imgs.map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n?'':'on'}">`).join("")}
+        </div>
+        <div class="thumbs" id="pdpThumbs">
+          ${p.imgs.map((im,n)=>`<button class="thumb${n?'':' on'}"><img src="${im.src}" alt=""></button>`).join("")}
+        </div>
+      </div>
+      <div class="pdp-info">
+        <h2>${p.id}</h2>
+        <p class="pdp-price">${money(p.usd)}</p>
+        <p class="stock${p.stock?'':' out'}"><i></i>${p.stock?"Available — made to order":"Sold out"}</p>
+        ${p.stock?`<p class="ships">Ships in approx. 2 weeks from Portugal</p>`:``}
+        <p class="pdp-desc">${p.desc||""}</p>
+        ${p.stock ? `
+        <div class="pdp-sizes" id="pdpSizes">
+          <span class="label">Select size</span>
+          <div class="row">${p.sizes.map(sz=>`<button class="${sz==="L"?"on":""}">${sz}</button>`).join("")}</div>
+        </div>
+        <a class="buy" id="pdpBuy" href="${STRIPE_LINK}">Buy</a>
+        <button class="bagbtn" id="pdpBag">+ Add to shopping bag</button>` : ``}
+      </div>
+    </div>`;
+
+  const main = body.querySelector("#pdpMain");
+  if(!main) return;
+  const figs = main.querySelectorAll("img");
+  const thumbs = body.querySelectorAll(".thumb");
+  thumbs.forEach((t,n) => t.addEventListener("click", () => {
+    figs.forEach((f,m)=>f.classList.toggle("on", m===n));
+    thumbs.forEach((x,m)=>x.classList.toggle("on", m===n));
+  }));
+
+  const sizes = body.querySelector("#pdpSizes");
+  const chosen = () => body.querySelector(".pdp-sizes button.on")?.textContent || "OS";
+  if(sizes) sizes.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if(!b) return;
+    sizes.querySelectorAll("button").forEach(x => x.classList.toggle("on", x===b));
+  });
+
+  const buy = body.querySelector("#pdpBuy");
+  if(buy) buy.addEventListener("click", () => {
+    const u = new URL(STRIPE_LINK);
+    u.searchParams.set("client_reference_id", p.id.replace(/\s/g,"") + "-" + chosen() + "x1");
+    buy.href = u.toString();
+  });
+
+  const bag = body.querySelector("#pdpBag");
+  if(bag) bag.addEventListener("click", () => {
+    const key = p.id + "|" + chosen();
+    cart.set(key, (cart.get(key)||0)+1);
+    bag.textContent = "Added to bag";
+    setTimeout(()=>bag.textContent = "+ Add to shopping bag", 1000);
+    renderCart(); updateCount();
+  });
+}
+
+function route(){
+  let hash = (location.hash || "#shop").slice(1).toLowerCase();
+  let target = "shop";
+
+  const prod = hash.startsWith("product/")
+    ? PRODUCTS.find(p => slug(p.id) === hash.split("/")[1]) : null;
+
+  if(prod){
+    target = "product";
+    renderPDP(prod);
+  } else if(PAGES.includes(hash)){
+    target = hash;
+  } else if(LEGAL[hash]){
+    target = "legal";
+    document.getElementById("legalTitle").textContent = LEGAL[hash].title;
+    const L = LEGAL[hash];
+    const bodyEl = document.getElementById("legalBody");
+    bodyEl.innerHTML = L.boxed ? `<div class="policy-box">${L.body}</div>` : L.body;
+    bodyEl.className = L.plain ? "policy-plain" : "";
+    document.querySelector("#page-legal .textpage").classList.toggle("centered", !!L.plain);
+    document.getElementById("legalStamp").textContent = "Last updated " + POLICY_UPDATED;
+  }
+
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.toggle("on", p.id === "page-" + target));
+  lbHide();
+  closeAll();
+  document.querySelectorAll("[data-drop]").forEach(d => d.classList.remove("open"));
+  window.scrollTo(0,0);
+}
+addEventListener("hashchange", route);
+route();
+
+/* contact form */
+document.getElementById("contactForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target;
+  const subject = encodeURIComponent("Inquiry from " + f.querySelector("#cName").value);
+  const body = encodeURIComponent(
+    f.querySelector("#cMsg").value + "\n\n— " +
+    f.querySelector("#cName").value + " (" + f.querySelector("#cMail").value + ")");
+  document.getElementById("contactNote").textContent = "Opening your mail app…";
+  location.href = `mailto:inquire@d3composure.com?subject=${subject}&body=${body}`;
+});
+
 
 /* ---------- entry gate ---------- */
 const gate = document.getElementById("gate");
