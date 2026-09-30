@@ -581,7 +581,7 @@ a.r-cta{text-decoration:none}
   <div class="nav-right">
     <button id="cartBtn" aria-label="Open cart">
       <svg class="icon" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg>
-      <span class="cart-count" id="cartCount">(0)</span>
+      <span class="cart-count" id="cartCount"></span>
     </button>
   </div>
 </header>
@@ -1091,7 +1091,7 @@ document.getElementById("shopTabs").addEventListener("click", e => {
 
 function updateCount(){
   const n = [...cart.values()].reduce((a,b)=>a+b,0);
-  document.getElementById("cartCount").textContent = "("+n+")";
+  document.getElementById("cartCount").textContent = n ? "("+n+")" : "";
 }
 
 /* ---------- receipt ---------- */
