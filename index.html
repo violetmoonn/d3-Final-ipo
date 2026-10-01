@@ -13,7 +13,7 @@
   ============================================================
   THINGS YOU'LL WANT TO EDIT — search for these markers:
     [STRIPE]   payment link
-    [EMAIL]    inquire@d3composure.com  (4 places)
+    [EMAIL]    inquire@d3-composure.com  (4 places)
     [SOCIAL]   instagram.com/d3composure
     [CATALOG]  the PRODUCTS array: id, price, sizes, description, photos
     [GALLERY]  the GALLERY array: add one line per photo
@@ -716,7 +716,7 @@ a.r-cta{text-decoration:none}
 <section class="page" id="page-contact">
   <div class="contact">
     <h2>Contact</h2>
-    <a class="mail" href="mailto:inquire@d3composure.com" data-email="1">inquire@d3composure.com</a>
+    <a class="mail" href="mailto:inquire@d3-composure.com" data-email="1">inquire@d3-composure.com</a>
     <p class="blurb">If there is a problem with your order, contact us and we will take full responsibility.</p>
     <form class="cform" id="contactForm">
       <div class="field"><label for="cName">Name</label><input id="cName" required></div>
@@ -1153,6 +1153,7 @@ function renderCart(){
     <div class="r-totals">
       <div><span>SUBTOTAL (${units} ITEM${units>1?"S":""})</span><span>${money(sub)}</span></div>
       <div class="note"><span>SHIPPING &amp; TAX</span><span>CALCULATED AT CHECKOUT</span></div>
+      ${CUR!=="USD" ? `<div class="note"><span>CURRENCY</span><span>CHARGED IN USD AT CHECKOUT</span></div>` : ``}
       <div class="grand"><span>TOTAL DUE</span><span>${money(sub)}</span></div>
     </div>
     <div style="height:20px"></div>
@@ -1260,7 +1261,10 @@ document.getElementById("searchForm").addEventListener("submit", e => e.preventD
 document.getElementById("newsForm").addEventListener("submit", e => {
   e.preventDefault();
   const input = document.getElementById("newsInput");
+  const addr = input.value.trim();
   document.getElementById("newsNote").textContent = "THANK YOU FOR SIGNING UP.";
+  location.href = "mailto:inquire@d3-composure.com?subject=" + encodeURIComponent("Newsletter signup") +
+    "&body=" + encodeURIComponent("Please add me to the D3COMPOSURE newsletter: " + addr);
   input.value = "";
 });
 
@@ -1376,7 +1380,7 @@ const LEGAL = {
     <p>As described in our privacy policy, we collect personal information from your interactions with us and our website, including through cookies and similar technologies. We may also share this personal information with third parties, including advertising partners. We do this in order to show you ads on other websites that are more relevant to your interests and for other reasons outlined in our privacy policy.</p>
     <p>Sharing of personal information for targeted advertising based on your interaction on different websites may be considered "sales", "sharing", or "targeted advertising" under certain U.S. state privacy laws. Depending on where you live, you may have the right to opt out of these activities. If you would like to exercise this opt-out right, please follow the instructions below.</p>
     <p>If you visit our website with the Global Privacy Control opt-out preference signal enabled, depending on where you are, we will treat this as a request to opt-out of activity that may be considered a "sale" or "sharing" of personal information or other uses that may be considered targeted advertising for the device and browser you used to visit our website.</p>
-    <p>To opt out, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with the subject line "Privacy Request".</p>` },
+    <p>To opt out, email <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with the subject line "Privacy Request".</p>` },
 
   /* [DRAFT] not yet supplied — written from facts stated elsewhere on the site. */
   "shipping": { title: "Shipping Policy", body: `
@@ -1389,14 +1393,14 @@ const LEGAL = {
     <h3>Delays</h3>
     <p>Once a parcel is with the carrier, transit times are outside our control. If tracking has not moved for more than 10 business days, contact us and we will open an enquiry with the carrier.</p>
     <h3>Lost or damaged parcels</h3>
-    <p>If your parcel arrives damaged or does not arrive at all, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number and we will take full responsibility for putting it right.</p>` },
+    <p>If your parcel arrives damaged or does not arrive at all, email <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with your order number and we will take full responsibility for putting it right.</p>` },
 
   /* [DRAFT] not yet supplied — written from facts stated elsewhere on the site. */
   "refund": { title: "Refund Policy", body: `
     <h3>Returns</h3>
     <p>You may request a return within 14 days of delivery. Garments must be unworn, unwashed, and in their original condition with any tags attached. Return postage is paid by the customer unless the item is faulty or we sent the wrong thing.</p>
     <h3>How to start a return</h3>
-    <p>Email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number and the reason. We will reply with return instructions. Please do not send anything back before you hear from us.</p>
+    <p>Email <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with your order number and the reason. We will reply with return instructions. Please do not send anything back before you hear from us.</p>
     <h3>Refunds</h3>
     <p>Once your return arrives and has been checked, we refund to the original payment method within 10 business days. Your bank may take a few days more to show it. Original shipping is refunded when the return is due to our error.</p>
     <h3>Faulty or incorrect items</h3>
@@ -1410,17 +1414,17 @@ const LEGAL = {
      information IS shared with advertising partners. */
   "do-not-sell": { title: "Do Not Sell or Share My Personal Information", plain: true, body: `
     <p>We share personal information with third parties, including advertising partners, in order to show you ads on other websites that are more relevant to your interests. Under certain U.S. state privacy laws this may be considered a "sale", "sharing", or "targeted advertising".</p>
-    <p>Depending on where you live, you have the right to opt out. To do so, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with the subject line "Do Not Sell or Share". Include the email address used on your order so we can verify your request. We will confirm within 15 business days.</p>
+    <p>Depending on where you live, you have the right to opt out. To do so, email <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with the subject line "Do Not Sell or Share". Include the email address used on your order so we can verify your request. We will confirm within 15 business days.</p>
     <p>If you visit our website with the Global Privacy Control opt-out preference signal enabled, we treat this as an opt-out request for the device and browser you used, and you do not need to email us.</p>
     <p>Exercising this right will never result in worse service or a different price. See our <a href="#privacy">privacy policy</a> for the full detail.</p>` },
 
   "account": { title: "Account", plain: true, boxed: true, body: `
     <p>D3COMPOSURE does not use customer accounts. Checkout runs through Stripe, and your receipt and tracking are emailed to you at the address you enter at checkout.</p>
-    <p>To look up an order, change a delivery address, or request a return, email <a href="mailto:inquire@d3composure.com">inquire@d3composure.com</a> with your order number.</p>` },
+    <p>To look up an order, change a delivery address, or request a return, email <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with your order number.</p>` },
 
   /* Transcribed from the live site — note the address here is inquires@, not inquire@. */
   "affiliates": { title: "Affiliates", plain: true, boxed: true, body: `
-    <p>Please send an email to <a href="mailto:inquires@d3composure.com">inquires@d3composure.com</a> with the subject line <strong>"Affiliate"</strong> and we will send you a form to fill out.</p>` }
+    <p>Please send an email to <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with the subject line <strong>"Affiliate"</strong> and we will send you a form to fill out.</p>` }
 };
 const PAGES = ["home","shop","about","sustainability","contact","gallery","settings"];
 const slug = id => id.replace(/\s+/g,"-").toLowerCase();
@@ -1550,7 +1554,7 @@ document.getElementById("contactForm").addEventListener("submit", e => {
     f.querySelector("#cMsg").value + "\n\n— " +
     f.querySelector("#cName").value + " (" + f.querySelector("#cMail").value + ")");
   document.getElementById("contactNote").textContent = "Opening your mail app…";
-  location.href = `mailto:inquire@d3composure.com?subject=${subject}&body=${body}`;
+  location.href = `mailto:inquire@d3-composure.com?subject=${subject}&body=${body}`;
 });
 
 
