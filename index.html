@@ -98,6 +98,12 @@ body.gated{overflow:hidden}
 }
 .thumb img{width:100%;height:100%;object-fit:contain}
 .thumb.on{border-color:#000}
+.dots{display:flex;justify-content:center;gap:10px;padding-top:14px}
+.dot{width:7px;height:7px;border-radius:50%;border:0;padding:0;background:#cfcfcf;cursor:pointer}
+.dot.on{background:#000}
+.pdp-main{touch-action:pan-y}
+@media (max-width:899px){ .thumbs{display:none} }
+@media (min-width:900px){ .dots{display:none} }
 .pdp-info h2{font-size:22px;letter-spacing:.1em;font-weight:700;text-transform:uppercase;padding-bottom:10px}
 .pdp-price{font-size:17px;letter-spacing:.02em}
 .stock{
@@ -1434,12 +1440,12 @@ function renderPDP(p, color){
   let curColor = color || p.color || "";
   if(p.colors) p = {...p, imgs: blankImgs(p, curColor)};
   body.innerHTML = `
-    <a class="back" href="#shop">← Back to shop</a>
     <div class="pdp-grid">
       <div>
         <div class="pdp-main" id="pdpMain">
           ${p.imgs.map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n?'':'on'}">`).join("")}
         </div>
+        ${p.imgs.length>1?`<div class="dots" id="pdpDots">${p.imgs.map((im,n)=>`<button class="dot${n?'':' on'}" aria-label="Photo ${n+1} of ${p.imgs.length}"></button>`).join("")}</div>`:``}
         <div class="thumbs" id="pdpThumbs">
           ${p.imgs.map((im,n)=>`<button class="thumb${n?'':' on'}"><img src="${im.src}" alt=""></button>`).join("")}
         </div>
@@ -1466,10 +1472,25 @@ function renderPDP(p, color){
   if(!main) return;
   const figs = main.querySelectorAll("img");
   const thumbs = body.querySelectorAll(".thumb");
-  thumbs.forEach((t,n) => t.addEventListener("click", () => {
-    figs.forEach((f,m)=>f.classList.toggle("on", m===n));
-    thumbs.forEach((x,m)=>x.classList.toggle("on", m===n));
-  }));
+  const dots = body.querySelectorAll(".dot");
+  let cur = 0;
+  const go = n => {
+    cur = (n + figs.length) % figs.length;
+    figs.forEach((f,m)=>f.classList.toggle("on", m===cur));
+    thumbs.forEach((x,m)=>x.classList.toggle("on", m===cur));
+    dots.forEach((x,m)=>x.classList.toggle("on", m===cur));
+  };
+  thumbs.forEach((t,n) => t.addEventListener("click", () => go(n)));
+  dots.forEach((t,n) => t.addEventListener("click", () => go(n)));
+  /* swipe left/right on the photo, like a slideshow */
+  let sx = null, sy = 0;
+  main.addEventListener("touchstart", e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+  main.addEventListener("touchend", e => {
+    if(sx === null) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    sx = null;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+  }, {passive:true});
 
   const sw = body.querySelector(".pdp-colors .swatches");
   if(sw) sw.addEventListener("click", e => {
