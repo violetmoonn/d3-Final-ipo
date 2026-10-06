@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>D3COMPOSURE — Store Admin</title>
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#000;--gray:#6f6f6f;--light:#9b9b9b;--rule:#e2e2e2;--tile:#f5f4f2;--bad:#a1271f;--ok:#1d1d1d;
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --display:"Archivo Black","Arial Black","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:#fff;color:var(--ink);line-height:1.4;min-height:100dvh}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+.caps{font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.logo{font-family:var(--display);font-size:20px;letter-spacing:-.03em;text-transform:uppercase}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid var(--rule);position:sticky;top:0;background:#fff;z-index:5}
+header .sub{color:var(--gray)}
+nav{display:flex;gap:4px;padding:10px 16px;border-bottom:1px solid var(--rule);overflow-x:auto;position:sticky;top:57px;background:#fff;z-index:4}
+nav button{padding:10px 14px;color:var(--gray);white-space:nowrap}
+nav button.on{color:#000;border-bottom:1.5px solid #000}
+nav .badge{display:inline-block;min-width:18px;padding:1px 5px;margin-left:6px;background:#000;color:#fff;border-radius:9px;font-size:10px;letter-spacing:0;text-align:center}
+main{max-width:1100px;margin:0 auto;padding:18px 16px 120px}
+.view{display:none}.view.on{display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#000;color:#fff;padding:14px 18px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.btn.ghost{background:#fff;color:#000;border:1px solid #000}
+.btn.small{padding:8px 12px;font-size:10.5px}
+.btn:disabled{opacity:.35;cursor:default}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.field input,.field select{border:1px solid #cfcfcf;padding:12px;background:#fff;border-radius:0;width:100%}
+.muted{color:var(--gray)}
+.err{color:var(--bad)}
+/* login */
+#login{max-width:340px;margin:12vh auto 0;padding:0 16px;text-align:center}
+#login .logo{font-size:28px;margin-bottom:6px}
+#login form{margin-top:28px;text-align:left}
+#login .btn{width:100%}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--tile);padding:14px}
+.stat b{display:block;font-family:var(--display);font-size:22px;font-weight:400;margin-top:6px;font-variant-numeric:tabular-nums}
+@media(min-width:700px){.stats{grid-template-columns:repeat(4,1fr)}}
+/* orders */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid #cfcfcf;padding:7px 11px}
+.chip.on{background:#000;color:#fff;border-color:#000}
+.order{border:1px solid var(--rule);padding:14px;margin-bottom:10px}
+.order .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.order .who{font-size:14px}
+.order .meta{margin-top:4px}
+.order ul{list-style:none;margin:10px 0;font-size:13px;display:flex;flex-direction:column;gap:4px}
+.order li{display:flex;justify-content:space-between;gap:10px}
+.order .acts{display:flex;gap:8px;flex-wrap:wrap}
+.tag{display:inline-block;padding:3px 7px;border:1px solid #000;font-size:10px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.tag.pending{background:#000;color:#fff}
+.tag.cancelled{border-color:var(--light);color:var(--light)}
+/* stock */
+.prod{border-top:1px solid var(--rule);padding:16px 0;display:grid;grid-template-columns:64px 1fr;gap:14px}
+.prod img{width:64px;height:80px;object-fit:cover;background:var(--tile)}
+.prod h3{font-size:14px;font-weight:600;letter-spacing:.04em}
+.colorrow{margin-top:10px}
+.colorrow .caps{display:block;margin-bottom:6px;color:var(--gray)}
+.sizes{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.sz{display:flex;flex-direction:column;align-items:center;gap:4px}
+.sz span{font-size:10.5px;letter-spacing:.12em;color:var(--gray)}
+.sz input{width:56px;padding:9px 4px;border:1px solid #cfcfcf;text-align:center;font-variant-numeric:tabular-nums;border-radius:0}
+.sz input.low{border-color:#000;font-weight:700}
+.sz input.zero{border-color:var(--bad);color:var(--bad)}
+.sz input.changed{background:#fff7d6}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--rule);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;justify-content:space-between;align-items:center;gap:10px;z-index:6}
+.savebar.on{display:flex}
+.help{background:var(--tile);padding:12px 14px;font-size:12.5px;line-height:1.55;margin-bottom:14px;color:#333}
+/* register */
+.reg{display:grid;gap:18px}
+@media(min-width:900px){.reg{grid-template-columns:1fr 360px;align-items:start}}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:600px){.tiles{grid-template-columns:repeat(3,1fr)}}
+.tile{border:1px solid var(--rule);text-align:left;padding:0;display:flex;flex-direction:column}
+.tile img{width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--tile)}
+.tile div{padding:8px 10px;font-size:12.5px;display:flex;justify-content:space-between;gap:6px}
+.picker{border:1px solid #000;padding:14px;margin-bottom:12px;display:none}
+.picker.on{display:block}
+.picker .opts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.picker .opts button{border:1px solid #cfcfcf;padding:9px 12px;min-width:44px}
+.picker .opts button.on{background:#000;color:#fff;border-color:#000}
+.picker .opts button.out{color:var(--light);text-decoration:line-through}
+.ticket{border:1px solid #000;padding:16px;position:sticky;top:120px}
+.ticket .line{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:6px 0;border-bottom:1px dashed #d0d0d0}
+.ticket .line button{color:var(--gray);font-size:11px;letter-spacing:.12em;margin-left:8px}
+.ticket .tot{display:flex;justify-content:space-between;font-family:var(--display);font-size:20px;margin:14px 0}
+.pays{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.pays button{border:1px solid #cfcfcf;padding:10px 0;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.pays button.on{background:#000;color:#fff;border-color:#000}
+.ticket .btn{width:100%}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,40px);opacity:0;background:#000;color:#fff;padding:12px 18px;font-size:12px;letter-spacing:.12em;transition:.25s;z-index:20;max-width:calc(100% - 32px);text-align:center}
+.toast.on{transform:translate(-50%,0);opacity:1}
+.empty{padding:40px 0;text-align:center;color:var(--gray)}
+</style>
+</head>
+<body>
+
+<section id="login">
+  <p class="logo">D3COMPOSURE</p>
+  <p class="caps muted">Store admin</p>
+  <form id="loginForm">
+    <label class="field"><span class="caps">Password</span>
+      <input type="password" id="pw" autocomplete="current-password" required></label>
+    <p class="err caps" id="loginErr" style="min-height:16px;margin-bottom:10px"></p>
+    <button class="btn" type="submit">Sign in</button>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header>
+    <div><span class="logo">D3COMPOSURE</span> <span class="caps sub">Admin</span></div>
+    <div style="display:flex;gap:14px;align-items:center">
+      <a class="caps" href="/" style="color:#000">View shop</a>
+      <button class="caps muted" id="logout">Sign out</button>
+    </div>
+  </header>
+  <nav>
+    <button class="caps on" data-tab="orders">Orders<span class="badge" id="pendingBadge" hidden></span></button>
+    <button class="caps" data-tab="register">Register</button>
+    <button class="caps" data-tab="stock">Inventory</button>
+  </nav>
+  <main>
+    <!-- ORDERS -->
+    <section class="view on" id="v-orders">
+      <div class="stats" id="stats"></div>
+      <div class="filters" id="filters">
+        <button class="chip caps on" data-f="open">Open</button>
+        <button class="chip caps" data-f="online">Online</button>
+        <button class="chip caps" data-f="register">In person</button>
+        <button class="chip caps" data-f="all">All</button>
+      </div>
+      <div id="orderList"></div>
+    </section>
+
+    <!-- REGISTER -->
+    <section class="view" id="v-register">
+      <div class="reg">
+        <div>
+          <div class="picker" id="picker"></div>
+          <div class="tiles" id="tiles"></div>
+        </div>
+        <aside class="ticket" id="ticket"></aside>
+      </div>
+    </section>
+
+    <!-- INVENTORY -->
+    <section class="view" id="v-stock">
+      <p class="help">Type how many you have of each size. Leave a box <b>empty</b> to not track it (it always shows as available, good for print-on-demand). <b>0</b> shows as sold out on the site. Stock goes down automatically with every reservation and register sale.</p>
+      <div id="stockList"></div>
+    </section>
+  </main>
+  <div class="savebar" id="savebar">
+    <span class="caps" id="saveCount"></span>
+    <div style="display:flex;gap:8px"><button class="btn ghost small" id="discard">Discard</button><button class="btn small" id="save">Save inventory</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const usd = n => "$" + Number(n).toLocaleString("en-US", {minimumFractionDigits: 0});
+const COLOR_NAMES = {black:"Black",charcoal:"Charcoal","heather-grey":"Heather Grey",navy:"Navy",olive:"Olive",oat:"Oat"};
+const cname = k => COLOR_NAMES[k] || k;
+const keyOf = (id, size, color) => [id, size, color].filter(Boolean).join("|");
+
+let KEY = "";
+try { KEY = sessionStorage.getItem("d3k") || ""; } catch (e) {}
+let S = { catalog: [], stock: {}, orders: [] };
+let filter = "open", edits = {};
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2600); }
+
+async function api(body){
+  const r = await fetch("/api/admin", {method:"POST", headers:{"Content-Type":"application/json","x-admin-key":KEY}, body:JSON.stringify(body)});
+  let j = {}; try { j = await r.json(); } catch(e){}
+  if (r.status === 401) { signOut(); throw new Error(j.error || "Signed out"); }
+  if (!r.ok) throw new Error(j.error || "Something went wrong");
+  return j;
+}
+
+/* ---------- auth ---------- */
+$("#loginForm").onsubmit = async e => {
+  e.preventDefault();
+  KEY = $("#pw").value; $("#loginErr").textContent = "";
+  try { await load(); try{ sessionStorage.setItem("d3k", KEY); }catch(e){} $("#pw").value=""; }
+  catch(err){ $("#loginErr").textContent = err.message; }
+};
+function signOut(){ KEY=""; try{ sessionStorage.removeItem("d3k"); }catch(e){} $("#app").hidden=true; $("#login").hidden=false; }
+$("#logout").onclick = signOut;
+
+async function load(){
+  const j = await api({action:"load"});
+  S = j; $("#login").hidden = true; $("#app").hidden = false;
+  renderAll();
+}
+function renderAll(){ renderOrders(); renderStock(); renderRegister(); }
+
+/* ---------- tabs ---------- */
+document.querySelector("nav").onclick = e => {
+  const b = e.target.closest("[data-tab]"); if(!b) return;
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on", x===b));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on", v.id==="v-"+b.dataset.tab));
+  $("#savebar").classList.toggle("on", b.dataset.tab==="stock" && Object.keys(edits).length>0);
+};
+
+/* ---------- orders ---------- */
+$("#filters").onclick = e => {
+  const b = e.target.closest("[data-f]"); if(!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll("#filters .chip").forEach(x=>x.classList.toggle("on", x===b));
+  renderOrders();
+};
+function renderOrders(){
+  const os = S.orders;
+  const today = new Date().toDateString();
+  const live = os.filter(o=>o.status!=="cancelled");
+  const sum = a => a.reduce((t,o)=>t+o.total,0);
+  const pending = os.filter(o=>o.status==="pending");
+  const todays = live.filter(o=>new Date(o.createdAt).toDateString()===today);
+  const tracked = Object.entries(S.stock);
+  const low = tracked.filter(([,n])=>n<=2).length;
+  $("#stats").innerHTML = `
+    <div class="stat"><span class="caps muted">To confirm</span><b>${pending.length}</b></div>
+    <div class="stat"><span class="caps muted">Sales today</span><b>${usd(sum(todays.filter(o=>o.status!=="pending")))}</b></div>
+    <div class="stat"><span class="caps muted">Reserved, unpaid</span><b>${usd(sum(pending))}</b></div>
+    <div class="stat"><span class="caps muted">Low / sold out</span><b>${low}</b></div>`;
+  const badge = $("#pendingBadge"); badge.hidden = !pending.length; badge.textContent = pending.length;
+
+  const list = os.filter(o =>
+    filter==="all" ? true :
+    filter==="open" ? o.status==="pending" || (o.status==="paid" && o.kind==="online") :
+    o.kind===filter);
+  if(!list.length){ $("#orderList").innerHTML = `<p class="empty caps">${filter==="open"?"Nothing to do right now":"No orders yet"}</p>`; return; }
+  $("#orderList").innerHTML = list.map(o => {
+    const when = new Date(o.createdAt).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+    const how = o.kind==="register" ? "In person · "+o.method : (o.method==="zelle" ? "Online · Zelle" : "Online · Pay at pickup");
+    const acts = o.status==="pending"
+      ? `<button class="btn small" data-act="paid" data-id="${o.id}">Mark paid</button><button class="btn ghost small" data-act="cancelled" data-id="${o.id}">Cancel &amp; restock</button>`
+      : o.status==="paid" && o.kind==="online"
+      ? `<button class="btn small" data-act="done" data-id="${o.id}">Picked up / shipped</button><button class="btn ghost small" data-act="cancelled" data-id="${o.id}">Refund &amp; restock</button>`
+      : o.status==="paid" ? `<button class="btn ghost small" data-act="cancelled" data-id="${o.id}">Void &amp; restock</button>` : ``;
+    return `<article class="order">
+      <div class="top">
+        <div><p class="who">${esc(o.name||"Walk-in")} <span class="muted caps">#${esc(o.id)}</span></p>
+          <p class="caps muted meta">${when} · ${esc(how)}</p>
+          ${o.email?`<p class="meta" style="font-size:13px"><a href="mailto:${esc(o.email)}?subject=${encodeURIComponent("Your D3COMPOSURE order #"+o.id)}">${esc(o.email)}</a>${o.phone?` · <a href="tel:${esc(o.phone)}">${esc(o.phone)}</a>`:""}</p>`:""}
+          ${o.note?`<p class="meta muted" style="font-size:13px">“${esc(o.note)}”</p>`:""}
+        </div>
+        <span class="tag ${o.status}">${o.status==="pending"?"Unpaid":o.status==="done"?"Complete":o.status}</span>
+      </div>
+      <ul>${o.lines.map(l=>`<li><span>${esc(l.name)} · ${esc(l.size)}${l.color?" · "+esc(cname(l.color)):""} × ${l.qty}</span><span>${usd(l.usd*l.qty)}</span></li>`).join("")}
+        <li style="border-top:1px solid var(--rule);padding-top:6px"><b>Total</b><b>${usd(o.total)}</b></li></ul>
+      <div class="acts">${acts}</div>
+    </article>`;
+  }).join("");
+}
+$("#orderList").onclick = async e => {
+  const b = e.target.closest("[data-act]"); if(!b) return;
+  if(b.dataset.act==="cancelled" && !confirm("Cancel this order and put the items back in stock?")) return;
+  b.disabled = true;
+  try{
+    const {order} = await api({action:"setStatus", id:b.dataset.id, status:b.dataset.act});
+    const j = await api({action:"load"}); S = j; renderAll();
+    toast(order.status==="cancelled" ? "Cancelled, stock returned" : "Order updated");
+  }catch(err){ toast(err.message); b.disabled=false; }
+};
+
+/* ---------- inventory ---------- */
+function stockVal(k){ return k in edits ? edits[k] : (k in S.stock ? S.stock[k] : ""); }
+function sizeInputs(p, color){
+  return `<div class="sizes">${p.sizes.map(sz=>{
+    const k = keyOf(p.id, sz, color), v = stockVal(k);
+    const cls = [k in edits?"changed":"", v===""?"":(+v===0?"zero":(+v<=2?"low":""))].join(" ");
+    return `<label class="sz"><span>${esc(sz)}</span><input inputmode="numeric" pattern="[0-9]*" data-k="${esc(k)}" value="${v}" placeholder="—" class="${cls}" aria-label="${esc(p.name)} ${esc(sz)}${color?" "+cname(color):""} stock"></label>`;
+  }).join("")}</div>`;
+}
+function renderStock(){
+  $("#stockList").innerHTML = S.catalog.map(p => `
+    <div class="prod">
+      <img src="/${esc(p.img)}" alt="" loading="lazy">
+      <div><h3>${esc(p.name)} <span class="muted caps" style="font-weight:400">${esc(p.id)} · ${usd(p.usd)}</span></h3>
+        ${p.colors ? p.colors.map(c=>`<div class="colorrow"><span class="caps">${esc(cname(c))}</span>${sizeInputs(p,c)}</div>`).join("") : sizeInputs(p,null)}
+      </div>
+    </div>`).join("");
+  const n = Object.keys(edits).length;
+  $("#saveCount").textContent = n ? n + " change" + (n>1?"s":"") : "";
+  $("#savebar").classList.toggle("on", n>0 && $("#v-stock").classList.contains("on"));
+}
+$("#stockList").addEventListener("input", e => {
+  const i = e.target.closest("input[data-k]"); if(!i) return;
+  i.value = i.value.replace(/[^0-9]/g,"").slice(0,5);
+  const k = i.dataset.k, orig = k in S.stock ? String(S.stock[k]) : "";
+  if (i.value === orig) delete edits[k]; else edits[k] = i.value;
+  i.classList.toggle("changed", k in edits);
+  const n = Object.keys(edits).length;
+  $("#saveCount").textContent = n ? n + " change" + (n>1?"s":"") : "";
+  $("#savebar").classList.toggle("on", n>0);
+});
+$("#discard").onclick = () => { edits = {}; renderStock(); };
+$("#save").onclick = async () => {
+  const changes = {}; for (const [k,v] of Object.entries(edits)) changes[k] = v==="" ? null : +v;
+  $("#save").disabled = true;
+  try{ const j = await api({action:"setStock", changes}); S.stock = j.stock; edits = {}; renderAll(); toast("Inventory saved"); }
+  catch(err){ toast(err.message); }
+  $("#save").disabled = false;
+};
+
+/* ---------- register (POS) ---------- */
+let sale = [], pay = "cash", pick = null;
+function left(k){ return k in S.stock ? S.stock[k] - sale.filter(l=>l.key===k).reduce((a,l)=>a+l.qty,0) : Infinity; }
+function renderRegister(){
+  $("#tiles").innerHTML = S.catalog.map((p,i)=>`
+    <button class="tile" data-i="${i}"><img src="/${esc(p.img)}" alt="" loading="lazy"><div><span>${esc(p.name)}</span><span>${usd(p.usd)}</span></div></button>`).join("");
+  renderPicker(); renderTicket();
+}
+function renderPicker(){
+  const el = $("#picker");
+  if(!pick){ el.classList.remove("on"); el.innerHTML=""; return; }
+  const p = pick.p;
+  el.classList.add("on");
+  el.innerHTML = `
+    <div style="display:flex;justify-content:space-between"><b>${esc(p.name)}</b><button class="caps muted" data-x>Close</button></div>
+    ${p.colors?`<p class="caps muted" style="margin-top:10px">Color</p><div class="opts" data-g="color">${p.colors.map(c=>`<button class="${c===pick.color?"on":""}" data-v="${c}">${esc(cname(c))}</button>`).join("")}</div>`:""}
+    <p class="caps muted" style="margin-top:10px">Size</p>
+    <div class="opts" data-g="size">${p.sizes.map(s=>{const n=left(keyOf(p.id,s,pick.color));return `<button class="${s===pick.size?"on":""} ${n<=0?"out":""}" data-v="${esc(s)}" ${n<=0?"disabled":""}>${esc(s)}${n!==Infinity&&n>0?` <span class="muted">(${n})</span>`:""}</button>`;}).join("")}</div>
+    <button class="btn" data-add ${pick.size?"":"disabled"}>Add to sale</button>`;
+}
+$("#tiles").onclick = e => {
+  const t = e.target.closest("[data-i]"); if(!t) return;
+  const p = S.catalog[+t.dataset.i];
+  pick = { p, color: p.colors ? p.color : null, size: null };
+  renderPicker(); $("#picker").scrollIntoView({behavior:"smooth", block:"nearest"});
+};
+$("#picker").onclick = e => {
+  if(e.target.closest("[data-x]")){ pick=null; return renderPicker(); }
+  const o = e.target.closest(".opts button");
+  if(o){ const g=o.parentElement.dataset.g; pick[g]=o.dataset.v; if(g==="color") pick.size=null; return renderPicker(); }
+  if(e.target.closest("[data-add]") && pick.size){
+    const p = pick.p, k = keyOf(p.id, pick.size, pick.color);
+    const ex = sale.find(l=>l.key===k);
+    ex ? ex.qty++ : sale.push({key:k, id:p.id, name:p.name, size:pick.size, color:pick.color, usd:p.usd, qty:1});
+    pick = null; renderPicker(); renderTicket();
+  }
+};
+function renderTicket(){
+  const tot = sale.reduce((a,l)=>a+l.usd*l.qty,0);
+  $("#ticket").innerHTML = `
+    <p class="caps muted">Current sale</p>
+    ${sale.length ? sale.map((l,i)=>`<div class="line"><span>${esc(l.name)} · ${esc(l.size)}${l.color?" · "+esc(cname(l.color)):""} × ${l.qty}</span><span>${usd(l.usd*l.qty)}<button data-rm="${i}" aria-label="Remove">✕</button></span></div>`).join("")
+      : `<p class="muted" style="padding:18px 0;font-size:13px">Tap an item to add it.</p>`}
+    <div class="tot"><span>Total</span><span>${usd(tot)}</span></div>
+    <p class="caps muted" style="margin-bottom:6px">Paid with</p>
+    <div class="pays">${["cash","card","zelle","other"].map(m=>`<button class="${m===pay?"on":""}" data-pay="${m}">${m}</button>`).join("")}</div>
+    <label class="field"><span class="caps muted">Customer name (optional)</span><input id="custName" maxlength="80"></label>
+    <button class="btn" id="complete" ${sale.length?"":"disabled"}>Complete sale · ${usd(tot)}</button>
+    <p class="muted" style="font-size:11.5px;margin-top:10px;line-height:1.5">Card means you charged it on your own reader or tap-to-pay; this records the sale and updates stock.</p>`;
+}
+$("#ticket").onclick = async e => {
+  const rm = e.target.closest("[data-rm]"); if(rm){ sale.splice(+rm.dataset.rm,1); renderTicket(); renderPicker(); return; }
+  const pb = e.target.closest("[data-pay]"); if(pb){ pay = pb.dataset.pay; renderTicket(); return; }
+  if(e.target.closest("#complete")){
+    const btn = $("#complete"); btn.disabled = true;
+    try{
+      await api({action:"sale", pay, name:$("#custName").value, items:sale.map(l=>({id:l.id,size:l.size,color:l.color,qty:l.qty}))});
+      sale = []; const j = await api({action:"load"}); S = j; renderAll(); toast("Sale recorded");
+    }catch(err){ toast(err.message); btn.disabled=false; }
+  }
+};
+
+if (KEY) load().catch(()=>{});
+</script>
+</body>
+</html>

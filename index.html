@@ -139,6 +139,19 @@ body.gated{overflow:hidden}
 }
 .pdp-sizes button:hover{border-color:#9b9b9b}
 .pdp-sizes button.on{background:#000;border-color:#000;color:#fff}
+.pdp-sizes button.out{color:#b5b5b5;text-decoration:line-through;cursor:default}
+.pdp-sizes button.out:hover{border-color:#e2e2e2}
+.left-note{font-size:10.5px;letter-spacing:.2em;color:#6f6f6f;text-transform:uppercase;padding-top:12px;min-height:14px}
+/* reserve (pay at pickup / Zelle) */
+.r-alt{display:block;margin:14px auto 0;font-size:12px;letter-spacing:.14em;color:#000;border-bottom:1px solid #000;text-align:center}
+.r-form{display:flex;flex-direction:column;gap:10px;max-width:330px;margin:0 auto}
+.r-form input,.r-form textarea{width:100%;border:1px solid #cfcfcf;padding:12px;font:inherit;font-size:14px;letter-spacing:.02em;border-radius:0;background:#fff;color:#000}
+.r-form .r-methods{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.r-form .r-methods button{border:1px solid #cfcfcf;padding:11px 6px;font-size:11px;letter-spacing:.14em}
+.r-form .r-methods button.on{background:#000;color:#fff;border-color:#000}
+.r-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.r-msg{font-size:11px;letter-spacing:.12em;text-align:center;line-height:1.7;color:#6f6f6f}
+.r-msg.err{color:#a1271f}
 .buy{
   display:block;width:100%;margin-top:30px;background:transparent;color:#000;border:1px solid #000;
   padding:13px 20px;text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;transition:background .2s,color .2s;
@@ -982,6 +995,20 @@ const BLANKS = [
 const lineNote = (p, color) => p.colors ? p.name + " / " + colorName(color || p.color) : p.note;
 const PRODUCTS = [...PIECES.map(p => ({...p, link: STRIPE_LINK})), ...BLANKS];
 
+/* ---------- live inventory (managed at /admin) ----------
+   STOCK["D3 01|M"] = how many are left. A size with no entry isn't tracked
+   and is always available. */
+let STOCK = {};
+const stockKey = (id, size, color) => [id, size, color].filter(Boolean).join("|");
+const left = (id, size, color) => { const k = stockKey(id, size, color); return k in STOCK ? STOCK[k] : Infinity; };
+const inBag = (id, size, color) => cart.get(id + "|" + size + (color ? "|" + color : "")) || 0;
+const soldOut = (p, color) => p.sizes.every(sz => left(p.id, sz, p.colors ? (color || p.color) : null) <= 0);
+function loadStock(){
+  return fetch("/api/stock", {cache:"no-store"}).then(r => r.ok ? r.json() : {stock:{}})
+    .then(j => { STOCK = j.stock || {}; if (location.hash.startsWith("#product/")) route(); })
+    .catch(() => {});
+}
+
 // Builds the checkout URL. client_reference_id carries the bag contents
 // through to the Stripe dashboard so you can see size + qty on the order.
 function payURL(p, size, color){
@@ -1166,9 +1193,63 @@ function renderCart(){
     ${units_total === 1
       ? `<a class="r-cta" id="checkoutBtn" href="${payURL(PRODUCTS.find(x=>x.id===firstKey.split("|")[0]), firstKey.split("|")[1], firstKey.split("|")[2])}">CHECKOUT <span>→</span></a>`
       : `<p class="r-each">EACH ITEM CHECKS OUT SEPARATELY. TAP PAY ON EACH LINE.</p>`}
+    <button class="r-alt" id="reserveOpen">OR RESERVE · PAY AT PICKUP OR ZELLE →</button>
     <div style="height:22px"></div>`;
   document.getElementById("barnum").textContent = `*D3-${units}-${Math.round(sub)}*`;
 }
+
+/* ---------- reserve: pay at pickup or by Zelle (no card needed) ---------- */
+let rMethod = "pickup";
+function renderReserve(){
+  const items = [...cart.entries()];
+  const sub = items.reduce((a,[key,q]) => a + PRODUCTS.find(x=>x.id===key.split("|")[0]).usd*q, 0);
+  document.getElementById("rBody").innerHTML = `
+    <form class="r-form" id="reserveForm" novalidate>
+      <p class="r-msg">RESERVE ${items.reduce((a,[,q])=>a+q,0)} ITEM(S) · ${money(sub)}<br>WE HOLD YOUR PIECES AND EMAIL YOU WITHIN 24 HOURS TO ARRANGE PAYMENT.</p>
+      <div class="r-methods">
+        <button type="button" data-m="pickup" class="${rMethod==="pickup"?"on":""}">PAY AT PICKUP</button>
+        <button type="button" data-m="zelle" class="${rMethod==="zelle"?"on":""}">ZELLE</button>
+      </div>
+      <input name="name" placeholder="Full name" autocomplete="name" maxlength="80" required>
+      <input name="email" type="email" placeholder="Email" autocomplete="email" maxlength="120" required>
+      <input name="phone" type="tel" placeholder="Phone (optional)" autocomplete="tel" maxlength="30">
+      <textarea name="note" rows="2" placeholder="Note (optional)" maxlength="300"></textarea>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="r-msg" id="rMsg"></p>
+      <button class="r-cta" type="submit" id="rSubmit">RESERVE <span>→</span></button>
+      <button class="r-alt" type="button" id="reserveBack">← BACK TO RECEIPT</button>
+    </form>
+    <div style="height:22px"></div>`;
+}
+document.getElementById("rBody").addEventListener("click", e => {
+  if(e.target.closest("#reserveOpen")){ renderReserve(); return; }
+  if(e.target.closest("#reserveBack")){ renderCart(); return; }
+  const m = e.target.closest("[data-m]");
+  if(m){ rMethod = m.dataset.m; document.querySelectorAll("#reserveForm [data-m]").forEach(x=>x.classList.toggle("on", x===m)); }
+});
+document.getElementById("rBody").addEventListener("submit", async e => {
+  if(e.target.id !== "reserveForm") return;
+  e.preventDefault();
+  const f = e.target, msg = document.getElementById("rMsg"), btn = document.getElementById("rSubmit");
+  const items = [...cart.entries()].map(([key,qty]) => { const [id,size,color] = key.split("|"); return {id,size,color,qty}; });
+  msg.className = "r-msg"; msg.textContent = ""; btn.disabled = true; btn.style.opacity = .5;
+  try{
+    const r = await fetch("/api/order", {method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({items, method:rMethod, name:f.name.value, email:f.email.value, phone:f.phone.value, note:f.note.value, website:f.website.value})});
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(j.error || "Something went wrong. Please try again.");
+    cart.clear(); updateCount(); loadStock();
+    document.getElementById("rBody").innerHTML = `
+      <p class="r-empty">RESERVED</p>
+      <p class="r-empty-sub">ORDER #${j.id} · ${money(j.total)}<br>${rMethod==="zelle"?"WE'LL EMAIL YOU OUR ZELLE DETAILS":"WE'LL EMAIL YOU TO SET UP PICKUP"} WITHIN 24 HOURS.</p>
+      <button class="r-cta" data-close>CONTINUE <span>→</span></button>
+      <div style="height:22px"></div>`;
+    document.getElementById("barnum").textContent = "*" + j.id + "*";
+  }catch(err){
+    msg.className = "r-msg err"; msg.textContent = err.message.toUpperCase();
+    btn.disabled = false; btn.style.opacity = "";
+  }
+});
 
 document.getElementById("rBody").addEventListener("click", e => {
   const dec = e.target.closest("[data-dec]"), del = e.target.closest("[data-del]");
@@ -1293,7 +1374,7 @@ addEventListener("scroll", () => {
 });
 toTop.onclick = () => scrollTo({top:0,behavior:"smooth"});
 
-renderCart(); drawBarcode(); updateCount();
+renderCart(); drawBarcode(); updateCount(); loadStock();
 
 /* ---------- fogged wordmark: touch support ---------- */
 document.addEventListener("touchstart", e => {
@@ -1435,6 +1516,15 @@ const LEGAL = {
 const PAGES = ["home","shop","about","sustainability","contact","gallery","settings"];
 const slug = id => id.replace(/\s+/g,"-").toLowerCase();
 
+function sizeButtons(p, color){
+  const c = p.colors ? color : null;
+  const open = p.sizes.filter(sz => left(p.id, sz, c) > 0);
+  const pickSz = open.includes("L") ? "L" : open[0];
+  return p.sizes.map(sz => {
+    const out = left(p.id, sz, c) <= 0;
+    return `<button class="${sz===pickSz?"on":""}${out?" out":""}" ${out?'aria-disabled="true" title="Sold out"':""}>${sz}</button>`;
+  }).join("");
+}
 function renderPDP(p, color){
   const body = document.getElementById("pdpBody");
   let curColor = color || p.color || "";
@@ -1454,14 +1544,15 @@ function renderPDP(p, color){
         <p class="pdp-brand">D3COMPOSURE</p>
         <h2>${p.name||p.id}</h2>
         <p class="pdp-price">${money(p.usd)}</p>
-        ${!p.stock ? `<p class="stock out"><i></i>Sold out</p>` : ``}
+        ${!p.stock || soldOut(p, curColor) ? `<p class="stock out"><i></i>Sold out</p>` : ``}
         ${p.colors ? `<div class="pdp-colors"><span class="label">Color: <b id="pdpColorName">${colorName(curColor)}</b></span>
           <div class="swatches">${p.colors.map(k=>`<button class="sw${k===curColor?' on':''}" data-color="${k}" title="${colorName(k)}" aria-label="${colorName(k)}" style="--c:${COLORS.find(c=>c[0]===k)[2]}"></button>`).join("")}</div></div>` : ``}
         <div class="pdp-desc">${(p.details||[]).map(([h,items])=>`<h4>${h}</h4><ul>${items.map(t=>`<li>${t}</li>`).join("")}</ul>`).join("")}</div>
         ${p.stock && p.link ? `
         <div class="pdp-sizes" id="pdpSizes">
           <span class="label">Select size</span>
-          <div class="row">${p.sizes.map(sz=>`<button class="${sz==="L"?"on":""}">${sz}</button>`).join("")}</div>
+          <div class="row">${sizeButtons(p, curColor)}</div>
+          <p class="left-note" id="leftNote"></p>
         </div>
         ${p.link ? `<a class="buy" id="pdpBuy" href="${p.link}">Buy</a>
         <button class="bagbtn" id="pdpBag">+ Add to shopping bag</button>` : ``}` : ``}
@@ -1502,15 +1593,25 @@ function renderPDP(p, color){
     figs.forEach((f,n) => { f.src = ims[n].src; f.alt = ims[n].alt; });
     body.querySelectorAll(".thumb img").forEach((t,n) => t.src = ims[n].src);
     history.replaceState(null, "", "#product/" + slug(p.id) + "?c=" + curColor);
+    if(sizes){ sizes.querySelector(".row").innerHTML = sizeButtons(p, curColor); note(); }
   });
 
   const sizes = body.querySelector("#pdpSizes");
-  const chosen = () => body.querySelector(".pdp-sizes button.on")?.textContent || "OS";
+  const chosen = () => body.querySelector(".pdp-sizes button.on")?.textContent || "";
+  const note = () => {
+    const el = body.querySelector("#leftNote"); if(!el) return;
+    const sz = chosen(), n = sz ? left(p.id, sz, p.colors ? curColor : null) : 0;
+    el.textContent = !sz ? "Sold out in every size" : (n <= 3 ? "Only " + n + " left" : "");
+    const off = !sz;
+    [body.querySelector("#pdpBuy"), body.querySelector("#pdpBag")].forEach(x => { if(x){ x.style.opacity = off ? .35 : ""; x.style.pointerEvents = off ? "none" : ""; } });
+  };
   if(sizes) sizes.addEventListener("click", e => {
     const b = e.target.closest("button");
-    if(!b) return;
+    if(!b || b.classList.contains("out")) return;
     sizes.querySelectorAll("button").forEach(x => x.classList.toggle("on", x===b));
+    note();
   });
+  setTimeout(note);
 
   const buy = body.querySelector("#pdpBuy");
   if(buy) buy.addEventListener("click", () => {
@@ -1519,7 +1620,11 @@ function renderPDP(p, color){
 
   const bag = body.querySelector("#pdpBag");
   if(bag) bag.addEventListener("click", () => {
+    if(!chosen()) return;
     const key = p.id + "|" + chosen() + (curColor ? "|" + curColor : "");
+    if(inBag(p.id, chosen(), curColor) + 1 > left(p.id, chosen(), p.colors ? curColor : null)){
+      bag.textContent = "No more in stock"; setTimeout(()=>bag.textContent = "+ Add to shopping bag", 1400); return;
+    }
     cart.set(key, (cart.get(key)||0)+1);
     bag.textContent = "Added to bag";
     setTimeout(()=>bag.textContent = "+ Add to shopping bag", 1000);
