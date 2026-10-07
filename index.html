@@ -463,31 +463,12 @@ a.r-cta{text-decoration:none}
 .menu.show{transform:translateX(0)}
 .mn-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--rule)}
 .mn-head .wordmark{font-size:24px}
-.mn-main{display:flex;flex-direction:column;padding:10px 0 14px;border-bottom:1px solid var(--rule)}
-.mn-main a{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;font-size:17px;letter-spacing:.14em;text-transform:uppercase}
-.mn-main a span{border-bottom:1px solid transparent;padding-bottom:1px}
-.mn-main a:hover span,.mn-main a.is-active span{border-bottom-color:#111}
-.mn-main small{font-size:12px;letter-spacing:.06em;color:var(--gray);font-variant-numeric:tabular-nums}
-.mn-group{border-bottom:1px solid var(--rule)}
-.mn-toggle{display:flex;justify-content:space-between;align-items:center;width:100%;padding:18px 0;text-align:left}
-.mn-toggle .ft-h{margin:0}
-.mn-toggle:hover .ft-h,.mn-toggle[aria-expanded="true"] .ft-h{color:#111}
-.mn-toggle .pm{position:relative;width:11px;height:11px}
-.mn-toggle .pm::before,.mn-toggle .pm::after{content:"";position:absolute;left:0;right:0;top:5px;height:1px;background:#8a8a8a;transition:transform .2s}
-.mn-toggle .pm::after{transform:rotate(90deg)}
-.mn-toggle[aria-expanded="true"] .pm::after{transform:rotate(0)}
-.mn-links{display:none;padding:0 0 16px}
-.mn-group.open .mn-links{display:block}
-.mn-links a{display:block;width:fit-content;font-size:14px;padding:5px 0;color:#111;border-bottom:1px solid transparent}
-.mn-links a:hover,.mn-links a.is-active{border-bottom-color:#111}
-.mn-follow{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--rule)}
-.mn-follow .ft-h{margin:0}
-.mn-follow div{display:flex;gap:18px;font-size:14px}
-.mn-follow a{border-bottom:1px solid transparent}
-.mn-follow a:hover{border-bottom-color:#111}
+.mn-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 20px;padding:28px 0 30px;border-bottom:1px solid var(--rule)}
+.mn-cols .ft-col a.is-active{border-bottom-color:#111}
+.mn-cols small{margin-left:6px;font-size:12px;letter-spacing:.06em;color:var(--gray);font-variant-numeric:tabular-nums}
 .mn-news{margin-top:auto;padding-top:28px}
 .mn-news .ft-small{margin:-6px 0 12px}
-.mn-news .ft-join{display:block;width:100%;padding:14px 0;text-align:center}
+.mn-news .ft-join{display:block;width:100%;padding:13px 0;text-align:center}
 .mn-base{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);font-size:12px;letter-spacing:.06em;color:var(--gray)}
 .close{font-size:26px;line-height:1;padding:0 2px}
 
@@ -929,40 +910,44 @@ a.r-cta{text-decoration:none}
 
 <div class="scrim" id="scrim"></div>
 
-<!-- MENU  (Shop / Company / Follow; legal links live under Settings) -->
+<!-- MENU  (same column format as the footer: Shop / Company / Help / Follow; legal links live under Settings) -->
 <div class="menu" id="menu" role="dialog" aria-label="Menu">
   <div class="mn-head">
     <a href="#home" class="wordmark" data-close>D3composure</a>
     <button class="close" data-close aria-label="Close menu">&#10005;</button>
   </div>
 
-  <nav class="mn-main" aria-label="Shop">
-    <a href="#home" data-close data-route="home"><span>Home</span></a>
-    <a href="#shop" data-close data-route="shop"><span>Shop</span></a>
-    <a href="#gallery" data-close data-route="gallery"><span>Gallery</span></a>
-    <a href="#custom" data-close data-route="custom"><span>Custom</span></a>
-    <a href="#shop" id="mnBag"><span>Bag</span><small id="mnBagCount"></small></a>
-    <a href="#settings" data-close data-route="settings"><span>Settings</span></a>
-  </nav>
-
-  <div class="mn-group" data-group>
-    <button class="mn-toggle" aria-expanded="false"><span class="ft-h">Company</span><i class="pm" aria-hidden="true"></i></button>
-    <div class="mn-links">
+  <nav class="mn-cols" aria-label="Menu">
+    <div class="ft-col">
+      <p class="ft-h">Shop</p>
+      <a href="#home" data-close data-route="home">Home</a>
+      <a href="#shop" data-close data-route="shop">All</a>
+      <a href="#women" data-close data-route="women">Women</a>
+      <a href="#men" data-close data-route="men">Men</a>
+      <a href="#gallery" data-close data-route="gallery">Gallery</a>
+      <a href="#custom" data-close data-route="custom">Custom</a>
+      <a href="#shop" id="mnBag">Bag<small id="mnBagCount"></small></a>
+    </div>
+    <div class="ft-col">
+      <p class="ft-h">Company</p>
       <a href="#about" data-close data-route="about">About</a>
       <a href="#sustainability" data-close data-route="sustainability">Sustainability</a>
       <a href="#affiliates" data-close data-route="affiliates">Affiliates</a>
       <a href="#contact" data-close data-route="contact">Contact</a>
     </div>
-  </div>
-
-
-  <div class="mn-follow">
-    <span class="ft-h">Follow</span>
-    <div>
+    <div class="ft-col">
+      <p class="ft-h">Help</p>
+      <a href="#account" data-close data-route="account">Order help</a>
+      <a href="#shipping" data-close data-route="shipping">Shipping</a>
+      <a href="#refund" data-close data-route="refund">Returns &amp; refunds</a>
+      <a href="#settings" data-close data-route="settings">Settings</a>
+    </div>
+    <div class="ft-col">
+      <p class="ft-h">Follow</p>
       <a href="https://instagram.com/d3composure" target="_blank" rel="noopener">Instagram</a>
       <a href="https://www.linkedin.com/company/d3composure" target="_blank" rel="noopener">LinkedIn</a>
     </div>
-  </div>
+  </nav>
 
   <div class="mn-news">
     <span class="ft-h">Newsletter</span>
@@ -1408,17 +1393,11 @@ document.addEventListener("keydown", e => { if(e.key==="Escape") closeAll(); });
 /* ---------- menu ---------- */
 (function(){
   const menu = document.getElementById("menu");
-  menu.querySelectorAll("[data-group]").forEach(g => {
-    const t = g.querySelector(".mn-toggle");
-    t.addEventListener("click", () => { const o = !g.classList.contains("open"); g.classList.toggle("open", o); t.setAttribute("aria-expanded", o); });
-  });
   const mark = () => {
     const h = (location.hash || "#home").slice(1).toLowerCase().split("/")[0];
     menu.querySelectorAll("[data-route]").forEach(a => {
       const on = a.dataset.route === h;
       a.classList.toggle("is-active", on);
-      const g = on && a.closest("[data-group]");
-      if(g){ g.classList.add("open"); g.querySelector(".mn-toggle").setAttribute("aria-expanded","true"); }
     });
   };
   addEventListener("hashchange", mark); mark();
