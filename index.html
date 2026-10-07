@@ -577,6 +577,28 @@ a.r-cta{text-decoration:none}
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
 }
+
+/* ---------- custom (experimental): build a garment ---------- */
+.cz-stage{background:#fff;border:1px solid var(--rule);aspect-ratio:5/6;display:flex;align-items:center;justify-content:center;position:relative}
+.cz-stage svg{width:86%;height:auto;display:block}
+.cz-stage .cz-tag{position:absolute;left:14px;top:12px;font-size:10px;letter-spacing:.18em;color:#9b9b9b;text-transform:uppercase}
+.cz-readout{padding-top:12px;font-size:10.5px;letter-spacing:.2em;color:#6f6f6f;text-transform:uppercase;text-align:center}
+.cz-group{padding-top:30px}
+.cz-group .label{display:block;font-size:10.5px;letter-spacing:.2em;color:#6f6f6f;text-transform:uppercase;padding-bottom:12px}
+.cz-group .label b{color:#111;font-weight:400}
+.cz-seg{display:flex;gap:8px;flex-wrap:wrap}
+.cz-seg button{min-width:84px;height:40px;padding:0 16px;border:1px solid #e2e2e2;background:#fff;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#111;cursor:pointer}
+.cz-seg button:hover{border-color:#9b9b9b}
+.cz-seg button.on{background:#000;border-color:#000;color:#fff}
+.cz-seg .fixed{display:inline-flex;align-items:center;height:40px;padding:0 16px;border:1px solid #000;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.cz-hex{display:flex;align-items:center;gap:10px;padding-bottom:14px}
+.cz-hex input[type=color]{width:40px;height:40px;border:1px solid #e2e2e2;background:#fff;padding:3px;cursor:pointer}
+.cz-hex .hexbox{display:flex;align-items:center;height:40px;border:1px solid #e2e2e2;padding:0 12px;flex:1;max-width:200px}
+.cz-hex .hexbox span{color:#9b9b9b;font-size:14px;padding-right:2px}
+.cz-hex .hexbox input{border:0;outline:0;font:inherit;font-size:14px;letter-spacing:.12em;text-transform:uppercase;width:100%;background:transparent}
+.cz-hex .hexbox.bad{border-color:#000}
+.cz-warn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#111;min-height:16px;padding-top:2px}
+#page-custom .buy[aria-disabled=true],#page-custom .bagbtn[disabled]{opacity:.35;pointer-events:none}
 </style>
 </head>
 <body>
@@ -768,6 +790,73 @@ a.r-cta{text-decoration:none}
   </div>
 </section>
 
+
+<section class="page" id="page-custom">
+  <div class="pdp">
+    <div class="sec-head"><span>Experimental · Custom</span><span class="r">Made to order</span></div>
+    <div class="pdp-grid" style="padding-top:28px">
+      <div>
+        <div class="cz-stage">
+          <span class="cz-tag">Preview</span>
+          <svg id="czSvg" viewBox="0 0 400 480" role="img" aria-label="Garment preview"></svg>
+        </div>
+        <p class="cz-readout" id="czReadout"></p>
+      </div>
+      <div class="pdp-info">
+        <p class="pdp-brand">D3COMPOSURE</p>
+        <h2 id="czTitle">Custom Top</h2>
+        <p class="pdp-price" data-price="50">$50.00 USD</p>
+
+        <div class="cz-group">
+          <span class="label">Garment</span>
+          <div class="cz-seg" data-cz="kind"><button class="on" data-v="top">Top</button><button data-v="pants">Pants</button></div>
+        </div>
+
+        <div class="cz-group">
+          <span class="label">Color: <b id="czHexName">#575A40</b></span>
+          <div class="cz-hex">
+            <input type="color" id="czPick" value="#575a40" aria-label="Pick a color">
+            <label class="hexbox" id="czHexBox"><span>#</span><input id="czHex" value="575A40" maxlength="7" spellcheck="false" autocomplete="off" aria-label="Hex color code"></label>
+          </div>
+          <div class="swatches" id="czSw"></div>
+          <p class="cz-warn" id="czWarn" role="status"></p>
+        </div>
+
+        <div class="cz-group">
+          <span class="label">Fit</span>
+          <div class="cz-seg" data-cz="fit"><button class="on" data-v="form">Form</button><button data-v="loose">Loose</button></div>
+        </div>
+
+        <div class="cz-group" id="czSleeveGroup">
+          <span class="label">Sleeve</span>
+          <div class="cz-seg" data-cz="sleeve"><button data-v="short">Short</button><button class="on" data-v="long">Long</button></div>
+        </div>
+
+        <div class="cz-group" id="czLengthGroup" hidden>
+          <span class="label">Length</span>
+          <div class="cz-seg"><span class="fixed">Long</span></div>
+        </div>
+
+        <div class="pdp-sizes" id="czSizes">
+          <span class="label">Select size</span>
+          <div class="row"></div>
+          <p class="left-note" id="czNote"></p>
+        </div>
+
+        <a class="buy" id="czBuy" href="#custom">Buy</a>
+        <button class="bagbtn" id="czBag">+ Add to shopping bag</button>
+
+        <div class="pdp-desc" style="margin-top:34px">
+          <h4>Description</h4>
+          <ul><li>Dyed to your hex color, cut to your fit</li><li>Woven D3COMPOSURE label</li><li>Made to order. The preview is digital; the finished piece may vary slightly in color, texture and drape.</li></ul>
+          <h4>Shipping</h4>
+          <ul><li>Shipping and duties are calculated at checkout</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="lightbox" id="lightbox" role="dialog" aria-label="Photo viewer">
   <button class="lb-close" data-lb-close aria-label="Close">✕</button>
   <button class="lb-nav prev" id="lbPrev" aria-label="Previous">‹</button>
@@ -801,6 +890,7 @@ a.r-cta{text-decoration:none}
       <a href="#women">Women</a>
       <a href="#men">Men</a>
       <a href="#gallery">Gallery</a>
+      <a href="#custom">Custom</a>
     </div>
     <div class="ft-col">
       <p class="ft-h">Company</p>
@@ -850,6 +940,7 @@ a.r-cta{text-decoration:none}
     <a href="#home" data-close data-route="home"><span>Home</span></a>
     <a href="#shop" data-close data-route="shop"><span>Shop</span></a>
     <a href="#gallery" data-close data-route="gallery"><span>Gallery</span></a>
+    <a href="#custom" data-close data-route="custom"><span>Custom</span></a>
     <a href="#shop" id="mnBag"><span>Bag</span><small id="mnBagCount"></small></a>
     <a href="#settings" data-close data-route="settings"><span>Settings</span></a>
   </nav>
@@ -991,9 +1082,19 @@ const BLANKS = [
   blank("M03", "Crewneck",           "men",   "heather-grey", "crewneck",     ["S","M","L","XL","XXL"]),
   blank("M04", "Sweatpant",          "men",   "black",        "sweatpant",    ["S","M","L","XL","XXL"]),
 ];
+/* [CUSTOM] Experimental custom garments (#custom). The color slot of a bag
+   line holds the spec: "<hex>-<form|loose>-<short|long>", e.g. 575a40-form-long.
+   Pants are long only. Priced like the blanks and paid through BLANKS_LINK. */
+const CZ_RE = /^[0-9a-f]{6}-(form|loose)-(short|long)$/;
+const custom = (id, name, note) => ({
+  id, name, note, gender: "custom", custom: true, usd: 50, stock: true, link: BLANKS_LINK,
+  sizes: ["XS","S","M","L","XL","XXL"], imgs: []
+});
+const CUSTOM = [ custom("C01", "Custom Top", "Custom top"), custom("C02", "Custom Pants", "Custom pants") ];
+const czLabel = spec => { const [h,f,s] = String(spec||"").split("-"); return "#" + (h||"").toUpperCase() + " / " + (f==="loose"?"Loose":"Form") + " fit" + (s ? " / " + (s==="short"?"Short":"Long") : ""); };
 /* cart keys are "id|size" or "id|size|color" */
-const lineNote = (p, color) => p.colors ? p.name + " / " + colorName(color || p.color) : p.note;
-const PRODUCTS = [...PIECES.map(p => ({...p, link: STRIPE_LINK})), ...BLANKS];
+const lineNote = (p, color) => p.custom ? czLabel(color) : p.colors ? p.name + " / " + colorName(color || p.color) : p.note;
+const PRODUCTS = [...PIECES.map(p => ({...p, link: STRIPE_LINK})), ...BLANKS, ...CUSTOM];
 
 /* ---------- live inventory (managed at /admin) ----------
    STOCK["D3 01|M"] = how many are left. A size with no entry isn't tracked
@@ -1053,6 +1154,7 @@ function syncHome(on){
 const grid = document.getElementById("shop");
 const slugOf = p => p.id.replace(/\s+/g,"-").toLowerCase();
 PRODUCTS.forEach((p,i) => {
+  if(p.custom) return;
   const card = document.createElement("article");
   card.className = "card";
   card.dataset.g = p.gender;
@@ -1337,7 +1439,7 @@ const results = document.getElementById("searchResults");
 document.getElementById("searchInput").addEventListener("input", e => {
   const q = e.target.value.trim().toLowerCase();
   if(!q){ results.innerHTML=""; return; }
-  const hits = PRODUCTS.filter(p => (p.id+" "+(p.name||"")+" "+p.note+" "+(p.gender||"")).toLowerCase().includes(q));
+  const hits = PRODUCTS.filter(p => !p.custom && (p.id+" "+(p.name||"")+" "+p.note+" "+(p.gender||"")).toLowerCase().includes(q));
   results.innerHTML = hits.length
     ? hits.map(p => `<a class="result" href="#product/${p.id.replace(/\s+/g,"-").toLowerCase()}"><span>${p.name||p.id} — ${p.note}</span><span>${money(p.usd)}</span></a>`).join("")
     : `<div class="result"><span>NO MATCHES</span><span>TRY “D3”</span></div>`;
@@ -1513,7 +1615,7 @@ const LEGAL = {
   "affiliates": { title: "Affiliates", plain: true, boxed: true, body: `
     <p>Please send an email to <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with the subject line <strong>"Affiliate"</strong> and we will send you a form to fill out.</p>` }
 };
-const PAGES = ["home","shop","about","sustainability","contact","gallery","settings"];
+const PAGES = ["home","shop","about","sustainability","contact","gallery","settings","custom"];
 const slug = id => id.replace(/\s+/g,"-").toLowerCase();
 
 function sizeButtons(p, color){
@@ -1632,13 +1734,144 @@ function renderPDP(p, color){
   });
 }
 
+/* ---------- custom (experimental): hex color, fit, sleeve ---------- */
+(() => {
+  const $ = id => document.getElementById(id);
+  const svg = $("czSvg"), pick = $("czPick"), hexIn = $("czHex"), hexBox = $("czHexBox");
+  const st = { kind: "top", fit: "form", sleeve: "long", hex: "575a40", size: "" };
+
+  const norm = v => {
+    v = String(v || "").trim().replace(/^#/, "").toLowerCase();
+    if (/^[0-9a-f]{3}$/.test(v)) v = v.split("").map(c => c + c).join("");
+    return /^[0-9a-f]{6}$/.test(v) ? v : null;
+  };
+  const rgb = h => [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16));
+  const lum = h => { const [r, g, b] = rgb(h).map(c => { c /= 255; return c <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b; };
+  const shade = (h, k) => "#" + rgb(h).map(c => Math.max(0, Math.min(255, Math.round(k < 0 ? c * (1 + k) : c + (255 - c) * k))).toString(16).padStart(2, "0")).join("");
+  const tooLight = h => lum(h) > .8;           // no white / near-white
+  const product = () => PRODUCTS.find(p => p.id === (st.kind === "top" ? "C01" : "C02"));
+  const spec = () => st.hex + "-" + st.fit + "-" + (st.kind === "top" ? st.sleeve : "long");
+  const valid = () => !tooLight(st.hex);
+
+  /* swatch shortcuts: the shop's blank colors */
+  $("czSw").innerHTML = COLORS.map(([k, n, h]) => `<button class="sw" data-hex="${h.slice(1)}" title="${n}" aria-label="${n}" style="--c:${h}"></button>`).join("");
+
+  function drawTop(c, d, l) {
+    const loose = st.fit === "loose", long = st.sleeve === "long";
+    const sw = loose ? 100 : 82, bw = loose ? 96 : 72, ww = loose ? 98 : 60, hw = loose ? 102 : 68, hy = loose ? 450 : 440, ay = loose ? 182 : 168;
+    const L = x => 200 - x, R = x => 200 + x;
+    let sl;
+    if (long) sl = loose ? [[sw, 108], [sw + 54, 404], [sw + 6, 414], [bw, ay]] : [[sw, 108], [sw + 40, 402], [sw + 6, 408], [bw, ay]];
+    else      sl = loose ? [[sw, 108], [sw + 60, 178], [sw + 26, 214], [bw, ay]] : [[sw, 108], [sw + 44, 166], [sw + 16, 196], [bw, ay]];
+    const sleeve = side => "M" + sl.map(([x, y]) => (side < 0 ? L(x) : R(x)) + " " + y).join(" L") + " Z";
+    const body = `M166 92 Q200 122 234 92 L${R(sw)} 108 L${R(bw)} ${ay} Q${R(ww + 4)} 300 ${R(ww)} 300 L${R(hw)} ${hy} Q200 ${hy + 6} ${L(hw)} ${hy} L${L(ww)} 300 Q${L(ww + 4)} 300 ${L(bw)} ${ay} L${L(sw)} 108 Z`;
+    const cuffY = long ? (loose ? 398 : 396) : null;
+    return `
+      <path d="${sleeve(-1)}" fill="${c}" stroke="${d}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="${sleeve(1)}" fill="${c}" stroke="${d}" stroke-width="1.2" stroke-linejoin="round"/>
+      ${long ? `<path d="M${L(sl[1][0] - 3)} ${cuffY} L${L(sl[2][0] + 1)} ${cuffY + 7} M${R(sl[1][0] - 3)} ${cuffY} L${R(sl[2][0] + 1)} ${cuffY + 7}" stroke="${d}" stroke-width="1" fill="none"/>` : ``}
+      <path d="${body}" fill="${c}" stroke="${d}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="${body}" fill="url(#czShade)"/>
+      <path d="M166 92 Q200 122 234 92 Q200 112 166 92 Z" fill="${d}" opacity=".55"/>
+      <path d="M170 95 Q200 126 230 95" stroke="${d}" stroke-width="1.4" fill="none"/>
+      <path d="M${L(hw - 2)} ${hy - 12} Q200 ${hy - 6} ${R(hw - 2)} ${hy - 12}" stroke="${d}" stroke-width=".9" fill="none" opacity=".7"/>
+      <path d="M${L(bw - 14)} ${ay + 40} Q${L(bw - 22)} 300 ${L(ww - 10)} ${hy - 40}" stroke="${d}" stroke-width=".8" fill="none" opacity=".35"/>
+      <path d="M${R(bw - 18)} ${ay + 60} Q${R(bw - 26)} 320 ${R(ww - 14)} ${hy - 30}" stroke="${d}" stroke-width=".8" fill="none" opacity=".3"/>
+      <rect x="183" y="113" width="34" height="10" fill="${l}"/>
+      <text x="200" y="120.2" text-anchor="middle" font-family="Archivo Black,Arial Black,sans-serif" font-size="4.6" letter-spacing=".2" fill="#fff">D3COMPOSURE</text>`;
+  }
+
+  function drawPants(c, d, l) {
+    const loose = st.fit === "loose";
+    const wb = loose ? 66 : 60, hip = loose ? 78 : 68, oh = loose ? 84 : 50, ih = loose ? 8 : 20, cy = loose ? 226 : 214, ky = loose ? 330 : 320, ko = loose ? 82 : 58;
+    const L = x => 200 - x, R = x => 200 + x;
+    const p = `M${L(wb)} 70 L${R(wb)} 70 L${R(hip)} 180 Q${R(ko + 4)} ${ky - 60} ${R(ko)} ${ky} L${R(oh)} 462 L${R(ih)} 462 L200 ${cy} L${L(ih)} 462 L${L(oh)} 462 L${L(ko)} ${ky} Q${L(ko + 4)} ${ky - 60} ${L(hip)} 180 Z`;
+    return `
+      <path d="${p}" fill="${c}" stroke="${d}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="${p}" fill="url(#czShade)"/>
+      <rect x="${L(wb)}" y="70" width="${wb * 2}" height="22" fill="${c}" stroke="${d}" stroke-width="1.2"/>
+      <rect x="${L(wb)}" y="70" width="${wb * 2}" height="22" fill="#000" opacity=".12"/>
+      <path d="M200 92 L200 ${cy}" stroke="${d}" stroke-width="1" opacity=".7"/>
+      <path d="M${L(wb - 6)} 100 Q${L(wb - 30)} 130 ${L(wb - 10)} 150 M${R(wb - 6)} 100 Q${R(wb - 30)} 130 ${R(wb - 10)} 150" stroke="${d}" stroke-width=".9" fill="none" opacity=".6"/>
+      <path d="M${L((oh + ih) / 2 + 6)} 250 L${L((oh + ih) / 2)} 448 M${R((oh + ih) / 2 + 6)} 250 L${R((oh + ih) / 2)} 448" stroke="${d}" stroke-width=".8" fill="none" opacity=".3"/>
+      <path d="M${L(oh - 2)} 450 L${L(ih + 2)} 450 M${R(ih + 2)} 450 L${R(oh - 2)} 450" stroke="${d}" stroke-width=".9" opacity=".6"/>
+      <rect x="${R(wb - 42)}" y="76" width="34" height="10" fill="${l}"/>
+      <text x="${R(wb - 25)}" y="83.2" text-anchor="middle" font-family="Archivo Black,Arial Black,sans-serif" font-size="4.6" letter-spacing=".2" fill="#fff">D3COMPOSURE</text>`;
+  }
+
+  function draw() {
+    const c = "#" + st.hex, d = shade(st.hex, lum(st.hex) < .05 ? .28 : -.35), l = lum(st.hex) < .03 ? "#3a3a3a" : "#111";
+    svg.innerHTML = `
+      <defs><linearGradient id="czShade" x1="0" x2="1">
+        <stop offset="0" stop-color="#000" stop-opacity=".18"/><stop offset=".22" stop-color="#000" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity=".07"/><stop offset=".78" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>
+      <ellipse cx="200" cy="468" rx="130" ry="6" fill="#000" opacity=".06"/>
+      ${st.kind === "top" ? drawTop(c, d, l) : drawPants(c, d, l)}`;
+  }
+
+  function sync() {
+    const p = product();
+    $("czTitle").textContent = p.name;
+    $("czSleeveGroup").hidden = st.kind !== "top";
+    $("czLengthGroup").hidden = st.kind === "top";
+    $("czHexName").textContent = "#" + st.hex.toUpperCase();
+    if (document.activeElement !== hexIn) hexIn.value = st.hex.toUpperCase();
+    pick.value = "#" + st.hex;
+    hexBox.classList.remove("bad");
+    document.querySelectorAll("#czSw .sw").forEach(b => b.classList.toggle("on", b.dataset.hex === st.hex));
+    document.querySelectorAll("[data-cz] button").forEach(b => b.classList.toggle("on", st[b.parentNode.dataset.cz] === b.dataset.v));
+    const ok = valid();
+    $("czWarn").textContent = ok ? "" : "White and near-white aren't offered. Pick a deeper shade.";
+    $("czReadout").textContent = (st.kind === "top" ? "Top" : "Pants") + " · " + czLabel(spec());
+    $("czSizes").querySelector(".row").innerHTML = p.sizes.map(sz => `<button class="${sz === st.size ? "on" : ""}">${sz}</button>`).join("");
+    const ready = ok && st.size;
+    const buy = $("czBuy");
+    buy.href = ready ? payURL(p, st.size, spec()) : "#custom";
+    buy.setAttribute("aria-disabled", ok ? "false" : "true");
+    $("czBag").disabled = !ok;
+    draw();
+  }
+
+  document.querySelectorAll("[data-cz]").forEach(g => g.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    st[g.dataset.cz] = b.dataset.v;
+    if (g.dataset.cz === "kind" && !product().sizes.includes(st.size)) st.size = "";
+    sync();
+  }));
+  $("czSw").addEventListener("click", e => { const b = e.target.closest("[data-hex]"); if (b) { st.hex = b.dataset.hex; sync(); } });
+  pick.addEventListener("input", () => { st.hex = norm(pick.value) || st.hex; sync(); });
+  hexIn.addEventListener("input", () => {
+    const v = norm(hexIn.value);
+    if (v) { st.hex = v; sync(); } else hexBox.classList.add("bad");
+  });
+  hexIn.addEventListener("blur", () => { hexIn.value = st.hex.toUpperCase(); hexBox.classList.remove("bad"); });
+  $("czSizes").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    st.size = b.textContent; $("czNote").textContent = ""; sync();
+  });
+  $("czBuy").addEventListener("click", e => {
+    if (!st.size) { e.preventDefault(); $("czNote").textContent = "Please select a size."; }
+  });
+  $("czBag").addEventListener("click", () => {
+    if (!valid()) return;
+    if (!st.size) { $("czNote").textContent = "Please select a size."; return; }
+    const key = product().id + "|" + st.size + "|" + spec();
+    cart.set(key, (cart.get(key) || 0) + 1);
+    renderCart(); updateCount();
+    const b = $("czBag"); b.textContent = "Added ✓";
+    setTimeout(() => b.textContent = "+ Add to shopping bag", 1000);
+  });
+  sync();
+})();
+
 function route(){
   let hash = (location.hash || "#home").slice(1).toLowerCase();
   let target = "home";
 
   const [pSlug, pQuery] = (hash.split("/")[1] || "").split("?");
   const prod = hash.startsWith("product/")
-    ? PRODUCTS.find(p => slug(p.id) === pSlug) : null;
+    ? PRODUCTS.find(p => !p.custom && slug(p.id) === pSlug) : null;
   const pColor = (pQuery || "").replace(/^c=/,"");
 
   if(prod){
