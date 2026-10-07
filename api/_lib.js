@@ -24,6 +24,7 @@ export function catalog() {
   CATALOG = list.map(p => ({
     id: p.id, name: p.name || p.id, usd: p.usd, sizes: p.sizes || ["OS"],
     colors: p.colors || null, color: p.color || null,
+    custom: !!p.custom,
     img: (p.imgs && p.imgs[0] && p.imgs[0].src) || ""
   }));
   return CATALOG;
@@ -78,7 +79,12 @@ export function cleanLines(items) {
     if (!p.sizes.includes(size)) throw httpErr(400, "Please pick a size for " + p.name + ".");
     let color = it.color ? String(it.color) : null;
     if (p.colors && !p.colors.includes(color)) color = p.color;
-    if (!p.colors) color = null;
+    if (p.custom) {
+      // custom garment spec: "<hex>-<form|loose>-<short|long>"; pants are long only
+      color = String(color || "").toLowerCase();
+      if (!/^[0-9a-f]{6}-(form|loose)-(short|long)$/.test(color) || (p.id === "C02" && !color.endsWith("-long")))
+        throw httpErr(400, "Please finish customizing " + p.name + ".");
+    } else if (!p.colors) color = null;
     return { id: p.id, name: p.name, size, color, qty, usd: p.usd, key: keyOf(p.id, size, color) };
   });
 }
