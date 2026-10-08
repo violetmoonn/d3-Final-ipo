@@ -629,7 +629,7 @@ a.r-cta{text-decoration:none}
   <div class="textpage centered">
     <h2>About</h2>
     <p class="stamp">Founder's note</p>
-    <p>D3COMPOSURE was founded in 2000.</p>
+    <p>D3COMPOSURE is an independent label started in San Francisco by artist Judy Lee.</p>
     <p>We make small, limited collections and restock each season.</p>
     <p>Each piece brings abstract art into everyday clothing, using archival fabrics, hand-drawn prints and work on canvas.</p>
     <p>Everything is made to order in Portugal, which keeps waste low and moves us toward a more sustainable future.</p>
@@ -651,50 +651,6 @@ a.r-cta{text-decoration:none}
       <p>Material: 100% cotton sourced from local manufacturer based in Portugal.</p>
     </div>
 
-    <div class="sec-head">
-      <span>◷ Affiliated certifications</span><span class="r">5 international audited standards</span>
-    </div>
-    <div class="cards two" style="margin-top:26px">
-      <article class="cardx">
-        <span class="num">01</span>
-        <span class="tag">Occupational health &amp; safety</span>
-        <h3>ISO 45001</h3>
-        <p>ISO 45001 is the international standard for occupational health and safety. It helps protect employees and visitors from work-related injuries and illnesses. The standard builds on earlier systems like OHSAS 18001 and follows ILO labor and safety guidelines.</p>
-        <div class="foot"><span>Verified compliance</span><span>ISO 45001</span></div>
-      </article>
-      <article class="cardx">
-        <span class="num">02</span>
-        <span class="tag">Organic textile standard</span>
-        <h3>Global Organic Textile Standard (GOTS) 6.0</h3>
-        <div class="pill-row">
-          <div><span class="k"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M5 8.2 7.2 10.4 11 6.2"/></svg>Finished knitted fabric</span><span class="v">100% organic cotton</span></div>
-          <div><span class="k"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M5 8.2 7.2 10.4 11 6.2"/></svg>Raw knitted fabric</span><span class="v">70% organic cotton + 30% modal</span></div>
-          <div><span class="k"><svg class="tick" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M5 8.2 7.2 10.4 11 6.2"/></svg>Raw knitted fabric</span><span class="v">90% organic cotton + 10% recycled polyester</span></div>
-        </div>
-        <div class="foot"><span>Verified compliance</span><span>GOTS 6.0</span></div>
-      </article>
-      <article class="cardx">
-        <span class="num">03</span>
-        <span class="tag">Textile safety certification</span>
-        <h3>OEKO-TEX Standard 100</h3>
-        <p>One of the world's best-known textile safety certifications. It ensures fabrics are tested for harmful substances, guaranteeing consumer safety and product confidence.</p>
-        <div class="foot"><span>Verified compliance</span><span>OEKO-TEX 100</span></div>
-      </article>
-      <article class="cardx">
-        <span class="num">04</span>
-        <span class="tag">United Nations initiative</span>
-        <h3>The Global Compact</h3>
-        <p>A United Nations initiative promoting sustainable and socially responsible business practices. It outlines ten principles covering human rights, labor, the environment, and anti-corruption.</p>
-        <div class="foot"><span>Verified compliance</span><span>UN Global Compact</span></div>
-      </article>
-      <article class="cardx">
-        <span class="num">05</span>
-        <span class="tag">Supply chain &amp; recycled traceability</span>
-        <h3>Global Recycled Standard (GRS)</h3>
-        <p>For companies producing or selling recycled products. It covers the entire supply chain, ensuring traceability, environmental protection, social responsibility, and accurate labeling.</p>
-        <div class="foot"><span>Verified compliance</span><span>GRS</span></div>
-      </article>
-    </div>
   </div>
 </section>
 
@@ -740,12 +696,12 @@ a.r-cta{text-decoration:none}
   <div class="contact">
     <h2>Contact</h2>
     <a class="mail" href="mailto:inquire@d3-composure.com" data-email="1">inquire@d3-composure.com</a>
-    <p class="blurb">If there is a problem with your order, contact us and we will take full responsibility.</p>
+    <p class="blurb">Questions about an order, sizing or a custom piece? Email us and we'll reply within 1–2 business days.</p>
     <form class="cform" id="contactForm">
       <div class="field"><label for="cName">Name</label><input id="cName" required></div>
       <div class="field"><label for="cMail">Email address</label><input id="cMail" type="email" required></div>
       <div class="field"><label for="cMsg">Message</label><textarea id="cMsg" rows="4" required></textarea></div>
-      <p class="legal-note">By using it, you agree to our terms &amp; privacy policy. Data may be used to improve our products.</p>
+      <p class="legal-note">By submitting, you agree to our Terms of Service and Privacy Policy.</p>
       <button class="submit" type="submit">Submit request</button>
       <p class="form-note" id="contactNote"></p>
     </form>
@@ -1899,15 +1855,15 @@ document.getElementById("contactForm").addEventListener("submit", e => {
 
 /* ---------- entry gate ---------- */
 const gate = document.getElementById("gate");
-document.body.classList.add("gated");
+/* splash removed: visitors land straight on the home film */
+gate.remove();
 function enter(){
   if(gate.classList.contains("gone")) return;
   gate.classList.add("gone");
   document.body.classList.remove("gated");
   setTimeout(() => gate.remove(), 700);
 }
-gate.addEventListener("click", enter);
-gate.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" ") { e.preventDefault(); enter(); } });
+
 </script>
 </body>
 </html>
