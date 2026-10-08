@@ -117,6 +117,8 @@ body.gated{overflow:hidden}
   font-size:12px;letter-spacing:.055em;line-height:1.95;color:#4a4a4a;
   text-transform:uppercase;padding:30px 0 0;border-top:1px solid var(--rule);margin-top:26px;
 }
+.pdp-trust{list-style:none;padding:22px 0 0;margin-top:22px;border-top:1px solid var(--rule);display:grid;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6f6f6f}
+.pdp-trust a{color:#111;border-bottom:1px solid #c9c9c9}
 .pdp-desc h4{font-size:10.5px;letter-spacing:.2em;font-weight:400;color:#1a1a1a;padding:0 0 6px}
 .pdp-desc ul{list-style:none;padding:0 0 18px;margin:0}
 .pdp-desc li{position:relative;padding-left:14px}
@@ -970,21 +972,25 @@ const TEMPLATE = {
     ["Shipping",    ["Ships in about 2 weeks", "Shipping and duties are calculated at checkout", "Delivery times vary by country"]]
   ]
 };
-const piece = (id, photos) => ({
-  ...TEMPLATE, id,
-  imgs: photos.map((src, n) => ({ src, alt: id + " " + TEMPLATE.note.toLowerCase() + (n ? ", view " + (n + 1) : ", front") }))
+/* Each art piece keeps the same price, sizes and Stripe link; only its
+   garment type and color change so the product details stay accurate. */
+const artDetails = (color) => [
+  ["Description", [color, "100% organic cotton", "Original hand-drawn artwork by Judy Lee, printed on the garment", "Each piece may vary slightly"]],
+  ["Size & fit",  ["Unisex sizing", "Between sizes? Size up for a relaxed fit", "Questions about fit: inquire@d3-composure.com"]],
+  ["Care",        ["Machine wash cold, inside out", "Hang dry. Do not iron the print"]],
+  ["Shipping & returns", ["Made to order. Ships in about 2 weeks", "Shipping and duties are calculated at checkout", "See our Shipping and Refund policies for details"]]
+];
+const piece = (id, type, color, photos) => ({
+  ...TEMPLATE, id, note: type, name: id + " " + type, details: artDetails(color),
+  imgs: photos.map((src, n) => ({ src, alt: id + " " + type.toLowerCase() + ", " + color.toLowerCase() + (n ? ", view " + (n + 1) : ", front") }))
 });
 const SLOTS = [
-  {...TEMPLATE, id:"D3 01",
-   imgs:[{src:IMG_FRONT, alt:"D3 01 heavyweight hoodie, front"},
-         {src:IMG_BACK,  alt:"D3 01 heavyweight hoodie, back print"}]},
-  piece("D3 02", [IMG_D302_FRONT, IMG_D302_BACK, IMG_D302_MODEL, IMG_D302_MODEL2]),
-  piece("D3 03", [IMG_D303_FRONT, IMG_D303_BACK, IMG_D303_MODEL, IMG_D303_MODEL2]),
-  piece("D3 04", [ /* "photos/d3-04-front.jpg", "photos/d3-04-back.jpg" */ ]),
-  piece("D3 05", [ /* "photos/d3-05-front.jpg", "photos/d3-05-back.jpg" */ ]),
-  piece("D3 06", [ /* "photos/d3-06-front.jpg", "photos/d3-06-back.jpg" */ ]),
+  piece("D3 01", "Hooded Sweatshirt", "Black", [IMG_FRONT, IMG_BACK]),
+  piece("D3 02", "T-Shirt", "White", [IMG_D302_FRONT, IMG_D302_BACK, IMG_D302_MODEL, IMG_D302_MODEL2]),
+  piece("D3 03", "Long Sleeve T-Shirt", "Black", [IMG_D303_FRONT, IMG_D303_BACK, IMG_D303_MODEL, IMG_D303_MODEL2]),
+  /* To add a piece: piece("D3 04", "T-Shirt", "Black", ["photos/d3-04-front.jpg", "photos/d3-04-back.jpg"]), */
 ];
-const PIECES = SLOTS.filter(p => p.imgs.length).map(p => ({...p, name:p.id, gender:"unisex"}));
+const PIECES = SLOTS.filter(p => p.imgs.length).map(p => ({...p, gender:"unisex"}));
 /* ---------- payments ---------- */
 /* [STRIPE] */ const STRIPE_LINK = "https://buy.stripe.com/00w4gB4II5Av2qQgsmfjG0a";
 
@@ -1594,6 +1600,11 @@ function renderPDP(p, color){
         </div>
         ${p.link ? `<a class="buy" id="pdpBuy" href="${p.link}">Buy</a>
         <button class="bagbtn" id="pdpBag">Bag</button>` : ``}` : ``}
+        <ul class="pdp-trust">
+          <li>Secure checkout powered by Stripe</li>
+          <li><a href="#shipping">Shipping policy</a> · <a href="#refund">Refund policy</a></li>
+          <li>Questions? <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a></li>
+        </ul>
       </div>
     </div>`;
 
