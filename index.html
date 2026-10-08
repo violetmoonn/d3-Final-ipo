@@ -786,7 +786,7 @@ a.r-cta{text-decoration:none}
       <div class="pdp-info">
         <p class="pdp-brand">D3COMPOSURE</p>
         <h2 id="czTitle">Custom Top</h2>
-        <p class="pdp-price" data-price="50">$50.00 USD</p>
+        <p class="pdp-price" data-price="150">$150.00 USD</p>
 
         <div class="cz-group">
           <span class="label">Garment</span>
@@ -825,7 +825,7 @@ a.r-cta{text-decoration:none}
         </div>
 
         <a class="buy" id="czBuy" href="#custom">Buy</a>
-        <button class="bagbtn" id="czBag">+ Add to shopping bag</button>
+        <button class="bagbtn" id="czBag">Bag</button>
 
         <div class="pdp-desc" style="margin-top:34px">
           <h4>Description</h4>
@@ -1031,8 +1031,8 @@ const PIECES = SLOTS.filter(p => p.imgs.length).map(p => ({...p, name:p.id, gend
 /* ---------- payments ---------- */
 /* [STRIPE] */ const STRIPE_LINK = "https://buy.stripe.com/00w4gB4II5Av2qQgsmfjG0a";
 
-/* [BLANKS] Everyday blanks at $50. Paste the Stripe payment link for the
-   $50 price into BLANKS_LINK. */
+/* [BLANKS] Everyday blanks at $150. Paste the Stripe payment link for the
+   $150 price into BLANKS_LINK. */
 const BLANKS_LINK = "https://buy.stripe.com/5kQ28t4IIgf96H63FAfjG0c";
 /* [COLORS] Blank colors (no white). Photos live in photos/basics/ as
    <id>-<name>-<color>-front.jpg / -back.jpg */
@@ -1046,7 +1046,7 @@ const blankImgs = (p, k) => ["front","back"].map(v => ({
   alt: p.name.toLowerCase() + ", " + colorName(k).toLowerCase() + ", " + v }));
 const blank = (id, name, gender, color, slugName, sizes) => {
   const p = {
-    id, name, gender, usd: 50, stock: true, link: BLANKS_LINK, slugName,
+    id, name, gender, usd: 150, stock: true, link: BLANKS_LINK, slugName,
     colors: COLORS.map(c=>c[0]), color,
     note: name, sizes: sizes || ["XS","S","M","L","XL"],
     details: [
@@ -1072,7 +1072,7 @@ const BLANKS = [
    Pants are long only. Priced like the blanks and paid through BLANKS_LINK. */
 const CZ_RE = /^[0-9a-f]{6}-(form|loose)-(short|long)$/;
 const custom = (id, name, note) => ({
-  id, name, note, gender: "custom", custom: true, usd: 50, stock: true, link: BLANKS_LINK,
+  id, name, note, gender: "custom", custom: true, usd: 150, stock: true, link: BLANKS_LINK,
   sizes: ["XS","S","M","L","XL","XXL"], imgs: []
 });
 const CUSTOM = [ custom("C01", "Custom Top", "Custom top"), custom("C02", "Custom Pants", "Custom pants") ];
@@ -1636,7 +1636,7 @@ function renderPDP(p, color){
           <p class="left-note" id="leftNote"></p>
         </div>
         ${p.link ? `<a class="buy" id="pdpBuy" href="${p.link}">Buy</a>
-        <button class="bagbtn" id="pdpBag">+ Add to shopping bag</button>` : ``}` : ``}
+        <button class="bagbtn" id="pdpBag">Bag</button>` : ``}` : ``}
       </div>
     </div>`;
 
@@ -1704,11 +1704,11 @@ function renderPDP(p, color){
     if(!chosen()) return;
     const key = p.id + "|" + chosen() + (curColor ? "|" + curColor : "");
     if(inBag(p.id, chosen(), curColor) + 1 > left(p.id, chosen(), p.colors ? curColor : null)){
-      bag.textContent = "No more in stock"; setTimeout(()=>bag.textContent = "+ Add to shopping bag", 1400); return;
+      bag.textContent = "No more in stock"; setTimeout(()=>bag.textContent = "Bag", 1400); return;
     }
     cart.set(key, (cart.get(key)||0)+1);
     bag.textContent = "Added to bag";
-    setTimeout(()=>bag.textContent = "+ Add to shopping bag", 1000);
+    setTimeout(()=>bag.textContent = "Bag", 1000);
     renderCart(); updateCount();
   });
 }
@@ -1839,7 +1839,7 @@ function renderPDP(p, color){
     cart.set(key, (cart.get(key) || 0) + 1);
     renderCart(); updateCount();
     const b = $("czBag"); b.textContent = "Added ✓";
-    setTimeout(() => b.textContent = "+ Add to shopping bag", 1000);
+    setTimeout(() => b.textContent = "Bag", 1000);
   });
   sync();
 })();
