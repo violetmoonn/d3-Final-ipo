@@ -176,8 +176,8 @@ body.gated{overflow:hidden}
   display:grid;grid-template-columns:1fr;gap:12px;padding-top:26px;
 }
 .gal figure{margin:0;cursor:zoom-in;background:#fff;border:1px solid var(--rule);overflow:hidden}
-.gal img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;transition:opacity .3s}
-.gal figure:hover img{opacity:.85}
+.gal img,.gal video{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/5;transition:opacity .3s;background:#fff}
+.gal figure:hover img,.gal figure:hover video{opacity:.85}
 .gal figcaption{
   font-size:10px;letter-spacing:.16em;color:#9a9a9a;text-transform:uppercase;
   padding:10px 12px 12px;
@@ -192,7 +192,7 @@ body.gated{overflow:hidden}
   display:none;align-items:center;justify-content:center;padding:56px 16px 70px;
 }
 .lightbox.show{display:flex}
-.lightbox img{max-width:100%;max-height:100%;object-fit:contain}
+.lightbox img,.lightbox video{max-width:100%;max-height:100%;object-fit:contain}
 .lb-close{position:absolute;top:18px;right:20px;font-size:24px;line-height:1;color:#4a4a4a}
 .lb-nav{
   position:absolute;top:50%;transform:translateY(-50%);
@@ -1444,9 +1444,23 @@ const GALLERY = [
   {src: "photos/d3-03-front-hd.jpg",  caption: "D3 03 — front"},
   {src: "photos/d3-03-back-hd.jpg",   caption: "D3 03 — back print"},
   {src: "photos/d3-03-model-hd.jpg",  caption: "D3 03 — worn"},
-  {src: "photos/d3-03-model2-hd.jpg", caption: "D3 03 — worn"}
+  {src: "photos/d3-03-model2-hd.jpg", caption: "D3 03 — worn"},
+  {src: "videos/d3-film-01.mp4", caption: "D3 film 01"},
+  {src: "videos/d3-film-02.mp4", caption: "D3 film 02"},
+  {src: "videos/d3-film-03.mp4", caption: "D3 film 03"},
+  {src: "videos/d3-film-04.mp4", caption: "D3 film 04"},
+  {src: "videos/d3-film-05.mp4", caption: "D3 film 05"},
+  {src: "videos/d3-film-06.mp4", caption: "D3 film 06"},
+  {src: "videos/d3-film-07.mp4", caption: "D3 film 07"},
+  {src: "videos/d3-film-08.mp4", caption: "D3 film 08"},
+  {src: "videos/d3-film-09.mp4", caption: "D3 film 09"},
+  {src: "videos/d3-film-10.mp4", caption: "D3 film 10"},
+  {src: "videos/d3-film-11.mp4", caption: "D3 film 11"},
+  {src: "videos/d3-film-12.mp4", caption: "D3 film 12"}
   // {src: "photos/look-03.jpg", caption: "Lookbook 03"},
 ];
+
+const isVid = src => /\.(mp4|webm|mov)$/i.test(src);
 
 function renderGallery(){
   const wrap = document.getElementById("gal");
@@ -1456,7 +1470,9 @@ function renderGallery(){
   empty.classList.toggle("hide", GALLERY.length > 0);
   wrap.innerHTML = GALLERY.map((g,i) => `
     <figure class="" data-lb="${i}">
-      <img src="${g.src}" alt="${g.caption || "D3COMPOSURE"}" loading="lazy">
+      ${isVid(g.src)
+        ? `<video src="${g.src}" autoplay muted loop playsinline preload="metadata" aria-label="${g.caption || "D3COMPOSURE film"}"></video>`
+        : `<img src="${g.src}" alt="${g.caption || "D3COMPOSURE"}" loading="lazy">`}
       ${g.caption ? `<figcaption>${g.caption}</figcaption>` : ""}
     </figure>`).join("");
 }
@@ -1472,7 +1488,18 @@ function lbShow(i){
   if(!GALLERY.length) return;
   lbIndex = (i + GALLERY.length) % GALLERY.length;
   const g = GALLERY[lbIndex];
-  lbImg.src = g.src;
+  const vid = isVid(g.src);
+  let lbVid = document.getElementById("lbVid");
+  if(!lbVid){
+    lbVid = document.createElement("video");
+    lbVid.id = "lbVid";
+    lbVid.muted = true; lbVid.loop = true; lbVid.autoplay = true; lbVid.playsInline = true;
+    lbImg.after(lbVid);
+  }
+  lbImg.style.display = vid ? "none" : "";
+  lbVid.style.display = vid ? "" : "none";
+  if(vid){ lbVid.src = g.src; lbVid.play().catch(()=>{}); } else { lbVid.pause(); lbVid.removeAttribute("src"); }
+  lbImg.src = vid ? "" : g.src;
   lbImg.alt = g.caption || "";
   lbCap.textContent = g.caption || "";
   lb.classList.add("show");
