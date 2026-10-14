@@ -1478,6 +1478,19 @@ function renderGallery(){
 }
 renderGallery();
 
+/* keep gallery films looping: play when on screen, also on phones that block autoplay */
+(function(){
+  const vids = () => document.querySelectorAll("#gal video");
+  const playAll = () => vids().forEach(v => { v.muted = true; v.play().catch(()=>{}); });
+  if ("IntersectionObserver" in window){
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.muted = true; e.target.play().catch(()=>{}); }
+    }), {threshold: 0.2});
+    vids().forEach(v => io.observe(v));
+  }
+  ["touchstart","click","scroll"].forEach(ev => window.addEventListener(ev, playAll, {once:true, passive:true}));
+})();
+
 /* lightbox */
 const lb = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
