@@ -586,6 +586,8 @@ a.r-cta{text-decoration:none}
 
 /* ---------- next drop (locked) ---------- */
 .drop{border-top:1px solid var(--rule);padding:72px 20px 88px;text-align:center}
+body.drop-locked:has(#page-shop.on) .footer{display:none}
+body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 .drop-h{font:400 11px/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gray);margin:0 0 10px}
 .drop-title{font:400 clamp(30px,6vw,56px)/1 var(--display);letter-spacing:-.02em;margin:0 0 28px}
 .drop-vault{position:relative;max-width:520px;margin:0 auto 28px;aspect-ratio:3/4;overflow:hidden;background:var(--tile)}
@@ -1434,13 +1436,14 @@ document.getElementById("searchForm").addEventListener("submit", e => e.preventD
   const post = body => fetch("/api/drop",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
     .then(r => r.json().then(j => ({ok:r.ok, j})));
   try{ if(localStorage.getItem("d3DropOpen")==="1") box.classList.add("open"); }catch(e){}
+  if(!box.classList.contains("open")) document.body.classList.add("drop-locked");
   document.getElementById("dropPassForm").addEventListener("submit", async e => {
     e.preventDefault();
     const note = document.getElementById("dropPassNote"), inp = document.getElementById("dropPass");
     note.textContent = "Checking…";
     try{
       const {ok, j} = await post({action:"unlock", password: inp.value});
-      if(ok){ box.classList.add("open"); note.textContent = ""; try{ localStorage.setItem("d3DropOpen","1"); }catch(e){} }
+      if(ok){ box.classList.add("open"); document.body.classList.remove("drop-locked"); note.textContent = ""; try{ localStorage.setItem("d3DropOpen","1"); }catch(e){} }
       else { note.textContent = j.error || "Wrong password."; inp.value = ""; }
     }catch(err){ note.textContent = "Try again in a moment."; }
   });
