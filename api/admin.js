@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     switch (b.action) {
       case "load": {
         const { db } = await readDB();
-        return send(res, 200, { catalog: catalog(), stock: db.stock, orders: db.orders });
+        return send(res, 200, { catalog: catalog(), stock: db.stock, orders: db.orders, waitlist: db.waitlist || [] });
       }
       case "setStock": {
         // b.changes: { key: number | null }  (null = stop tracking)
