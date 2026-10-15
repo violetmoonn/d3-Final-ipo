@@ -187,6 +187,11 @@ body.gated{overflow:hidden}
   padding-top:40px;text-align:center;
 }
 .gal-empty.hide{display:none}
+.gal figure.vid{position:relative}
+.gal-lock{display:none}
+body.drop-locked .gal figure.vid{cursor:pointer}
+body.drop-locked .gal figure.vid video{filter:blur(22px) grayscale(1);transform:scale(1.12)}
+body.drop-locked .gal-lock{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;padding:9px 12px 9px 15px;background:var(--ink);color:var(--white);font:400 10px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;pointer-events:none}
 .lightbox{
   position:fixed;inset:0;z-index:90;background:rgba(255,255,255,.97);
   display:none;align-items:center;justify-content:center;padding:56px 16px 70px;
@@ -600,7 +605,7 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 .drop form{display:flex;max-width:380px;margin:0 auto;border:1px solid var(--ink)}
 .drop input{flex:1;min-width:0;border:0;padding:13px 14px;font:400 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;background:var(--white);color:var(--ink);outline:none}
 .drop button{border:0;border-left:1px solid var(--ink);background:var(--ink);color:var(--white);padding:0 18px;font:400 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
-.drop-note{min-height:16px;margin:12px 0 0;font:400 11px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.drop-note{min-height:16px;margin:12px 0 22px;font:400 11px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
 .drop-or{margin:34px 0 12px;font:400 11px/1.5 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gray)}
 .drop-in{display:none;font:400 12px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;margin:0 0 22px}
 .drop.open .drop-in{display:block}
@@ -660,9 +665,8 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
       <button type="submit">Enter</button>
     </form>
     <p class="drop-note" id="dropPassNote" role="status"></p>
-    <p class="drop-or">No password? Join the list.<br>Passwords go to the list first.</p>
     <form id="dropJoinForm">
-      <input id="dropEmail" type="email" placeholder="Email address" autocomplete="email" aria-label="Email address" required>
+      <input id="dropEmail" type="email" placeholder="Email for the password" autocomplete="email" aria-label="Email address" required>
       <button type="submit">Join</button>
     </form>
     <p class="drop-note" id="dropJoinNote" role="status"></p>
@@ -1541,7 +1545,8 @@ function renderGallery(){
     GALLERY.length ? GALLERY.length + (GALLERY.length===1?" image":" images") : "";
   empty.classList.toggle("hide", GALLERY.length > 0);
   wrap.innerHTML = GALLERY.map((g,i) => `
-    <figure class="" data-lb="${i}">
+    <figure class="${isVid(g.src) ? "vid" : ""}" data-lb="${i}">
+      ${isVid(g.src) ? `<span class="gal-lock" aria-hidden="true">Locked</span>` : ""}
       ${isVid(g.src)
         ? `<video src="${g.src}" autoplay muted loop playsinline preload="metadata" aria-label="${g.caption || "D3COMPOSURE film"}"></video>`
         : `<img src="${g.src}" alt="${g.caption || "D3COMPOSURE"}" loading="lazy">`}
@@ -1571,7 +1576,13 @@ let lbIndex = 0;
 
 function lbShow(i){
   if(!GALLERY.length) return;
+  const dir = i < lbIndex ? -1 : 1;
   lbIndex = (i + GALLERY.length) % GALLERY.length;
+  if(document.body.classList.contains("drop-locked")){
+    for(let n = 0; n < GALLERY.length && isVid(GALLERY[lbIndex].src); n++)
+      lbIndex = (lbIndex + dir + GALLERY.length) % GALLERY.length;
+    if(isVid(GALLERY[lbIndex].src)) return;
+  }
   const g = GALLERY[lbIndex];
   const vid = isVid(g.src);
   let lbVid = document.getElementById("lbVid");
@@ -1596,6 +1607,11 @@ function lbHide(){
 }
 document.getElementById("gal").addEventListener("click", e => {
   const fig = e.target.closest("[data-lb]");
+  if(fig && document.body.classList.contains("drop-locked") && fig.classList.contains("vid")){
+    location.hash = "#shop";
+    setTimeout(() => { const d = document.getElementById("nextDrop"); if(d) d.scrollIntoView({behavior:"smooth", block:"start"}); }, 350);
+    return;
+  }
   if(fig) lbShow(+fig.dataset.lb);
 });
 document.getElementById("lbPrev").onclick = e => { e.stopPropagation(); lbShow(lbIndex-1); };
