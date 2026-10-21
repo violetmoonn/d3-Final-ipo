@@ -402,27 +402,47 @@ a.result{display:flex;justify-content:space-between;gap:12px;color:inherit}
 }
 a.r-cta{text-decoration:none}
 
-/* ---------- footer: centred, SpaceX-tidy grid ---------- */
-.footer{background:var(--white);border-top:1px solid var(--rule);padding:64px 20px 36px;color:#111;text-align:center}
-.ft-logo{display:inline-block;font-family:var(--script);font-size:46px;line-height:1;color:#111;letter-spacing:0}
+/* ---------- footer: reference layout, centred + tidy ---------- */
+.footer{background:var(--white);border-top:1px solid var(--rule);padding:56px 20px 32px;color:#111;text-align:center}
+.ft-logo{display:inline-block;font-family:var(--script);font-size:44px;line-height:1;color:#111}
 .ft-logo b{font-family:var(--display);font-weight:400;font-size:.92em;letter-spacing:-.04em;margin:0 -.04em 0 -.08em}
-.ft-dot{display:block;width:5px;height:5px;border-radius:50%;background:#d6d6d6;margin:34px auto}
-.ft-h{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#8a8a8a;margin-bottom:12px}
-.news{max-width:380px;margin:0 auto}
-.news form{display:flex;align-items:stretch;border-bottom:1px solid #111}
-.news input{flex:1;min-width:0;border:0;background:none;font-size:12px;letter-spacing:.08em;padding:10px 2px;outline:none;text-align:left}
-.news input::placeholder{color:var(--gray-light);text-transform:uppercase}
-.news form:focus-within{outline:2px solid #000;outline-offset:4px}
-.ft-join{padding:0 4px 0 14px;font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}
-.ft-join:hover{text-decoration:underline;text-underline-offset:4px}
+.ft-dot{display:block;width:5px;height:5px;border-radius:50%;background:#d6d6d6;margin:28px auto}
+.ft-h{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#8a8a8a}
+.ft-nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 18px;max-width:900px;margin:0 auto;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.ft-nav>a,.ft-dd>summary{color:#333;padding:2px 0;cursor:pointer}
+.ft-nav>a:hover,.ft-dd>summary:hover{color:#000;text-decoration:underline;text-underline-offset:4px}
+.ft-nav .bar,.ft-base .mid{color:#cfcfcf}
+@media (max-width:699px){.ft-nav .bar,.ft-base .mid{display:none}.ft-base{flex-direction:column}}
+.ft-dd{position:relative}
+.ft-dd>summary{list-style:none;display:inline-flex;align-items:center;gap:6px}
+.ft-dd>summary::-webkit-details-marker{display:none}
+.ft-dd>summary::after{content:"";width:6px;height:6px;border-right:1.2px solid currentColor;border-bottom:1.2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.ft-dd[open]>summary::after{transform:rotate(-135deg) translateY(-1px)}
+.ft-menu{position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%);z-index:30;min-width:230px;background:#fff;border:1px solid var(--rule);box-shadow:0 10px 30px rgba(0,0,0,.08);padding:6px 0;text-align:left;text-transform:none;letter-spacing:.02em}
+.ft-menu .ft-h{padding:12px 20px 10px;border-bottom:1px solid var(--rule);margin-bottom:4px}
+.ft-menu a{display:block;padding:10px 20px;font-size:13px;color:#333}
+.ft-menu a:hover{background:#f6f6f6;color:#000}
+.ft-prefs{display:grid;gap:14px;max-width:900px;margin:0 auto;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.ft-pref{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:6px 14px}
+.ft-pref .ft-h{margin:0 2px 0 0}
+.ft-pref .opt{font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.news{max-width:460px;margin:0 auto}
+.news form{display:flex;align-items:center;gap:14px}
+.news label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#111;white-space:nowrap}
+.news .field{flex:1;display:flex;align-items:center;border-bottom:1px solid #111;min-width:0}
+.news input{flex:1;min-width:0;border:0;background:none;font-size:12px;letter-spacing:.06em;padding:10px 2px;outline:none;text-align:left}
+.news input::placeholder{color:var(--gray-light)}
+.news .field:focus-within{outline:2px solid #000;outline-offset:4px}
+.ft-join{display:flex;padding:6px 2px 6px 10px;color:#111}
+.ft-join svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6}
 .news-note{margin-top:10px;font-size:11px;letter-spacing:.08em;color:var(--gray);min-height:16px}
-.ft-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px;max-width:880px;margin:0 auto}
-.ft-grid a{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#555;padding:2px 0;justify-self:center}
-.ft-grid a:hover{color:#000;text-decoration:underline;text-underline-offset:4px}
-@media (min-width:700px){.ft-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 24px}}
-.ft-legal{max-width:620px;margin:0 auto;font-size:10.5px;letter-spacing:.18em;line-height:1.9;text-transform:uppercase;color:#9a9a9a}
+.ft-rule{max-width:900px;margin:26px auto;border:0;border-top:1px solid var(--rule)}
+.ft-base{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px 18px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#8a8a8a}
+.ft-acct{display:inline-flex;align-items:center;gap:10px;color:#111}
+.ft-acct span.ic{display:grid;place-items:center;width:30px;height:30px;border:1px solid #cfcfcf;border-radius:50%}
+.ft-acct svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6}
+.ft-legal{max-width:620px;margin:16px auto 0;font-size:10px;letter-spacing:.18em;line-height:1.9;text-transform:uppercase;color:#a3a3a3}
 .ft-legal a{color:#555;text-decoration:underline;text-underline-offset:3px}
-.ft-legal p+p{margin-top:12px}
 .ft-col{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left}
 .ft-col .ft-h{margin-bottom:10px}
 .ft-col a{font-size:13px;padding:5px 0;color:#111;border-bottom:1px solid transparent}
@@ -593,7 +613,6 @@ a.r-cta{text-decoration:none}
 
 /* ---------- next drop (locked) ---------- */
 .drop{border-top:1px solid var(--rule);padding:72px 20px 88px;text-align:center}
-body.drop-locked:has(#page-shop.on) .footer{display:none}
 body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 .drop-h{font:400 11px/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gray);margin:0 0 10px}
 .drop-title{font:400 clamp(30px,6vw,56px)/1 var(--display);letter-spacing:-.02em;margin:0 0 28px}
@@ -627,12 +646,12 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
     <button id="menuBtn" aria-label="Open menu">
       <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
-    <button id="searchBtn" aria-label="Open search">
-      <svg class="icon" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5.5 5.5"/></svg>
-    </button>
   </div>
   <a href="#home" class="wordmark">D3COMPOSURE</a>
   <div class="nav-right">
+    <button id="searchBtn" aria-label="Open search">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="7"/><path d="M16 16l5.5 5.5"/></svg>
+    </button>
     <button id="cartBtn" aria-label="Open cart">
       <svg class="icon" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12.5H6.2z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg>
       <span class="cart-count" id="cartCount"></span>
@@ -859,40 +878,75 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
   <a href="#home" class="ft-logo" aria-label="D3COMPOSURE home">D<b>3</b>Composure</a>
   <span class="ft-dot"></span>
 
-  <div class="news">
-    <label class="ft-h" for="newsInput">Newsletter &mdash; 10% off your first order</label>
-    <form id="newsForm">
-      <input type="email" id="newsInput" placeholder="Email address" autocomplete="email" required>
-      <button type="submit" class="ft-join">Join</button>
-    </form>
-    <p class="news-note" id="newsNote" role="status"></p>
-  </div>
-  <span class="ft-dot"></span>
-
-  <nav class="ft-grid" aria-label="Footer">
-    <a href="#about">About</a>
-    <a href="#affiliates">Affiliates</a>
-    <a href="#contact">Contact</a>
-    <a href="#custom">Custom</a>
+  <nav class="ft-nav" aria-label="Footer">
     <a href="#gallery">Gallery</a>
+    <a href="#home">Home</a>
     <a href="#shop">Shop</a>
-    <a href="#women">Women</a>
-    <a href="#men">Men</a>
-    <a href="#account">Order Help</a>
-    <a href="#settings">Preferences</a>
-    <a href="#sustainability">Sustainability</a>
-    <a href="#shipping">Shipping Policy</a>
-    <a href="#refund">Refund Policy</a>
-    <a href="#privacy">Privacy Policy</a>
+    <a href="#bag" id="ftBag">Shopping Bag</a>
+    <span class="bar">|</span>
+    <details class="ft-dd">
+      <summary>Corporate</summary>
+      <div class="ft-menu">
+        <span class="ft-h">Corporate</span>
+        <a href="#about">About</a>
+        <a href="#sustainability">Sustainability</a>
+        <a href="#contact">Contact</a>
+        <a href="#affiliates">Affiliates</a>
+      </div>
+    </details>
+    <span class="bar">|</span>
+    <details class="ft-dd">
+      <summary>Legal</summary>
+      <div class="ft-menu">
+        <span class="ft-h">Legal Policies</span>
+        <a href="#terms">Terms of Service</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#shipping">Shipping Policy</a>
+        <a href="#refund">Refund Policy</a>
+        <a href="#do-not-sell">Do Not Sell or Share My Personal Information</a>
+      </div>
+    </details>
+    <span class="bar">|</span>
+    <a href="#contact">Contact</a>
     <a href="https://instagram.com/d3composure" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.linkedin.com/company/d3composure" target="_blank" rel="noopener">LinkedIn</a>
   </nav>
   <span class="ft-dot"></span>
 
-  <div class="ft-legal">
-    <p>By using this site, you agree to our <a href="#terms">Terms</a> &amp; <a href="#privacy">Privacy Policy</a>. <a href="#do-not-sell">Do Not Sell or Share My Info</a>.</p>
-    <p>&copy; 2026 D3COMPOSURE. All rights reserved.<br>Protected by intellectual property laws.</p>
+  <div class="ft-prefs">
+    <div class="ft-pref switch-row" id="ftLoc">
+      <span class="ft-h">Loc:</span>
+      <button class="opt on">New York</button><button class="opt">Tokyo</button><button class="opt">London</button><button class="opt">Paris</button><button class="opt">Seoul</button><button class="opt">Los Angeles</button><button class="opt">Online</button>
+    </div>
+    <div class="ft-pref switch-row" id="ftReg">
+      <span class="ft-h">Reg:</span>
+      <button class="opt">GL</button><button class="opt on">US</button><button class="opt">EU</button><button class="opt">UK</button><button class="opt">JP</button><button class="opt">KR</button>
+    </div>
+    <div class="ft-pref switch-row" id="ftCur">
+      <span class="ft-h">Cur:</span>
+      <button class="opt on" data-cur="USD">USD</button><button class="opt" data-cur="EUR">EUR</button><button class="opt" data-cur="GBP">GBP</button><button class="opt" data-cur="JPY">JPY</button><button class="opt" data-cur="KRW">KRW</button>
+    </div>
   </div>
+  <hr class="ft-rule">
+
+  <div class="news">
+    <form id="newsForm">
+      <label for="newsInput">Newsletter:</label>
+      <span class="field">
+        <input type="email" id="newsInput" placeholder="enter email for 10% off..." autocomplete="email" required>
+        <button type="submit" class="ft-join" aria-label="Join newsletter"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></button>
+      </span>
+    </form>
+    <p class="news-note" id="newsNote" role="status"></p>
+  </div>
+  <hr class="ft-rule">
+
+  <div class="ft-base">
+    <a href="#account" class="ft-acct"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span>Account</a>
+    <span class="mid">&middot;</span>
+    <span>&copy; 2026 D3COMPOSURE. All rights reserved.</span>
+  </div>
+  <div class="ft-legal">By using this site, you agree to our <a href="#terms">Terms</a> &amp; <a href="#privacy">Privacy Policy</a>. Protected by intellectual property laws.</div>
 </footer>
 
 <button class="totop" id="toTop" aria-label="Back to top">
@@ -1345,21 +1399,30 @@ document.getElementById("rBody").addEventListener("click", e => {
 });
 
 /* ---------- currency ---------- */
-document.getElementById("curRow").addEventListener("click", e => {
-  const b = e.target.closest("[data-cur]");
-  if(!b) return;
+function pickCur(b){
   CUR = b.dataset.cur;
-  document.querySelectorAll("#curRow .opt").forEach(x => x.classList.toggle("on", x===b));
+  document.querySelectorAll("#curRow .opt, #ftCur .opt").forEach(x => x.classList.toggle("on", x.dataset.cur===CUR));
   document.querySelectorAll("[data-price]").forEach(el => el.textContent = money(+el.dataset.price));
   renderCart();
-});
-[["regRow"]].forEach(([id]) => {
+}
+["curRow","ftCur"].forEach(id => document.getElementById(id).addEventListener("click", e => {
+  const b = e.target.closest("[data-cur]"); if(b) pickCur(b);
+}));
+["regRow","ftReg","ftLoc"].forEach(id => {
   document.getElementById(id).addEventListener("click", e => {
     const b = e.target.closest(".opt");
     if(!b) return;
     document.querySelectorAll("#"+id+" .opt").forEach(x => x.classList.toggle("on", x===b));
   });
 });
+/* footer dropdowns: one open at a time, close on outside tap or link */
+document.querySelectorAll(".ft-dd").forEach(d => d.addEventListener("toggle", () => {
+  if(d.open) document.querySelectorAll(".ft-dd").forEach(o => { if(o!==d) o.open = false; });
+}));
+document.addEventListener("click", e => {
+  document.querySelectorAll(".ft-dd[open]").forEach(d => { if(!d.contains(e.target) || e.target.closest(".ft-menu a")) d.open = false; });
+});
+document.getElementById("ftBag").addEventListener("click", e => { e.preventDefault(); document.getElementById("cartBtn").click(); });
 
 /* ---------- panels ---------- */
 const scrim = document.getElementById("scrim");
