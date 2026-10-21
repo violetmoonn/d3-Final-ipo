@@ -402,37 +402,6 @@ a.result{display:flex;justify-content:space-between;gap:12px;color:inherit}
 }
 a.r-cta{text-decoration:none}
 
-/* ---------- mission header (shop): telemetry + big statement ---------- */
-.mission{max-width:1280px;margin:0 auto;padding:22px 16px 8px}
-.tele{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7a7a7a;padding-bottom:14px;border-bottom:1px solid var(--rule)}
-.tele b{color:#111;font-weight:700}
-.tele .live{display:inline-flex;align-items:center;gap:8px}
-.tele .live i,.ft-status i{width:6px;height:6px;border-radius:50%;background:#111;animation:blink 1.6s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.m-title{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(40px,11.5vw,128px);line-height:.88;letter-spacing:-.035em;margin:34px 0 30px;color:#000}
-.m-title span{display:block;overflow:hidden}
-.m-title span em{display:block;font-style:normal;transform:translateY(105%);animation:rise .9s cubic-bezier(.2,.7,.1,1) forwards}
-.m-title span:nth-child(2) em{animation-delay:.12s}
-@keyframes rise{to{transform:none}}
-.m-specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid #111}
-.m-specs div{padding:14px 12px 16px 0;border-bottom:1px solid var(--rule)}
-.m-specs b{display:block;font-family:var(--display);font-weight:400;font-size:28px;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
-.m-specs span{display:block;margin-top:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7a7a7a}
-@media (max-width:599px){.tele .coord{display:none}}
-@media (min-width:820px){.mission{padding:30px 16px 10px}.m-specs{grid-template-columns:repeat(4,minmax(0,1fr))}.m-specs div{border-bottom:0;border-right:1px solid var(--rule);padding-left:18px}.m-specs div:first-child{padding-left:0}.m-specs div:last-child{border-right:0}}
-@media (prefers-reduced-motion:reduce){.m-title span em{animation:none;transform:none}.tele .live i,.ft-status i{animation:none}}
-
-/* ---------- precision cards: index tag, corner brackets, reveal ---------- */
-.c-img .c-no{position:absolute;left:8px;top:8px;z-index:2;font-size:10px;letter-spacing:.12em;color:#111;background:rgba(255,255,255,.85);padding:3px 5px;pointer-events:none}
-.c-img::before,.c-img::after{content:"";position:absolute;width:14px;height:14px;z-index:2;opacity:0;transition:opacity .25s, transform .25s;pointer-events:none}
-.c-img::before{right:8px;top:8px;border-top:1px solid #111;border-right:1px solid #111;transform:translate(-4px,4px)}
-.c-img::after{left:8px;bottom:8px;border-bottom:1px solid #111;border-left:1px solid #111;transform:translate(4px,-4px)}
-@media (hover:hover){.c-img:hover::before,.c-img:hover::after{opacity:1;transform:none}}
-.js-reveal .card{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.1,1)}
-.js-reveal .card.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.js-reveal .card{opacity:1;transform:none;transition:none}}
-.ft-status{display:inline-flex;align-items:center;gap:8px;color:#111}
-
 /* ---------- footer: reference layout, centred + tidy ---------- */
 .footer{background:var(--white);border-top:1px solid var(--rule);padding:56px 20px 32px;color:#111;text-align:center}
 .ft-logo{display:inline-block;font-family:var(--script);font-size:44px;line-height:1;color:#111}
@@ -700,19 +669,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 </section>
 
 <section class="page" id="page-shop">
-  <header class="mission" aria-label="Collection">
-    <div class="tele">
-      <span><b>D3 / SS26</b> &nbsp;Collection 01</span>
-      <span class="live"><i></i>San Francisco<span class="coord"> &nbsp;37.7749&deg;N 122.4194&deg;W</span> &nbsp;<b id="teleClock">--:--:--</b> PT</span>
-    </div>
-    <h1 class="m-title"><span><em>Structured thought,</em></span><span><em>worn.</em></span></h1>
-    <div class="m-specs">
-      <div><b id="specCount">00</b><span>Pieces in collection</span></div>
-      <div><b>1/1</b><span>Hand-drawn artwork</span></div>
-      <div><b>100%</b><span>Made to order</span></div>
-      <div><b>D3 04</b><span>Next drop &middot; locked</span></div>
-    </div>
-  </header>
   <div class="shop-tabs" id="shopTabs" role="tablist" aria-label="Filter">
     <button class="on" data-g="all">All</button><button data-g="women">Women</button><button data-g="men">Men</button>
   </div>
@@ -989,8 +945,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
     <a href="#account" class="ft-acct"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span>Account</a>
     <span class="mid">&middot;</span>
     <span>&copy; 2026 D3COMPOSURE. All rights reserved.</span>
-    <span class="mid">&middot;</span>
-    <span class="ft-status"><i></i>All systems nominal &middot; SF <span id="ftClock">--:--:--</span></span>
   </div>
   <div class="ft-legal">By using this site, you agree to our <a href="#terms">Terms</a> &amp; <a href="#privacy">Privacy Policy</a>. Protected by intellectual property laws.</div>
 </footer>
@@ -1245,7 +1199,6 @@ PRODUCTS.forEach((p,i) => {
     : `<button data-qb="${i}">Quick buy +</button><button data-bag="${i}">Bag +</button>`;
   card.innerHTML = `
     <a class="c-img" href="${url}">
-      <span class="c-no">N&deg;${String(grid.children.length+1).padStart(2,"0")}</span>
       ${p.imgs.slice(0,2).map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n?'alt':''}" loading="${i<4?'eager':'lazy'}">`).join("")}
     </a>
     <p class="c-brand">D3COMPOSURE</p>
@@ -1259,20 +1212,6 @@ PRODUCTS.forEach((p,i) => {
     </div>`;
   grid.appendChild(card);
 });
-
-/* ---------- mission header: piece count, live SF clock, card reveal ---------- */
-document.getElementById("specCount").textContent = String(grid.querySelectorAll(".card").length).padStart(2,"0");
-const teleClock = document.getElementById("teleClock");
-const sfTime = new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
-const tick = () => { const t = sfTime.format(new Date()); teleClock.textContent = t; const f = document.getElementById("ftClock"); if(f) f.textContent = t; };
-tick(); setInterval(tick, 1000);
-if("IntersectionObserver" in window){
-  document.body.classList.add("js-reveal");
-  const io = new IntersectionObserver(es => es.forEach(en => {
-    if(en.isIntersecting){ const c = en.target; c.style.transitionDelay = (([...grid.children].indexOf(c)%2)*90)+"ms"; c.classList.add("in"); io.unobserve(c); }
-  }), {rootMargin:"0px 0px -8% 0px"});
-  grid.querySelectorAll(".card").forEach(c => io.observe(c));
-}
 
 grid.addEventListener("click", e => {
   const card = e.target.closest(".card"); if(!card) return;
