@@ -105,7 +105,7 @@ body.gated{overflow:hidden}
 .pdp-main{touch-action:pan-y}
 @media (max-width:899px){ .thumbs{display:none} }
 @media (min-width:900px){ .dots{display:none} }
-.pdp-info h2{font-size:22px;letter-spacing:.1em;font-weight:400;text-transform:uppercase;padding-bottom:10px}
+.pdp-info h2{font-size:22px;letter-spacing:.02em;font-weight:400;text-transform:uppercase;padding-bottom:10px}
 .pdp-price{font-size:17px;letter-spacing:.02em}
 .stock{
   display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.18em;
@@ -274,7 +274,7 @@ body.drop-locked .gal-lock{display:block;position:absolute;left:50%;top:50%;tran
 
 /* contact page */
 .contact{max-width:640px;margin:0;text-align:left;padding:34px 16px 80px}
-.contact h2{font-size:26px;font-weight:400;letter-spacing:.14em;text-transform:uppercase}
+.contact h2{font-size:26px;font-weight:400;letter-spacing:.03em;text-transform:uppercase}
 h2,h3,h4,h5,h6{font-weight:400}
 .contact .mail{display:inline-block;margin-top:14px;font-size:14px;border-bottom:1px solid #b6b6b6;padding-bottom:2px}
 .contact .blurb{font-size:13.5px;color:#4a4a4a;padding-top:22px;line-height:1.7}
@@ -294,7 +294,7 @@ h2,h3,h4,h5,h6{font-weight:400}
 
 /* simple text page */
 .textpage{max-width:760px;margin:0;padding:40px 16px 90px;text-align:left}
-.textpage h2{font-size:22px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;padding-bottom:20px}
+.textpage h2{font-size:22px;font-weight:400;letter-spacing:.03em;text-transform:uppercase;padding-bottom:20px}
 .textpage p{font-size:14px;line-height:1.9;color:#4a4a4a;padding-bottom:16px}
 .textpage h3{
   font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#1a1a1a;
@@ -304,7 +304,7 @@ h2,h3,h4,h5,h6{font-weight:400}
 .textpage a{border-bottom:1px solid #c9c9c9}
 .textpage a:hover{border-bottom-color:#000}
 .textpage strong{color:#1a1a1a;font-weight:600}
-.textpage.centered h2{text-align:left;letter-spacing:.16em}
+.textpage.centered h2{text-align:left;letter-spacing:.03em}
 .textpage.centered .stamp{text-align:left}
 #page-about .textpage p{text-align:left}
 .policy-plain p{
@@ -381,8 +381,8 @@ body.on-home{overflow:hidden}
 .c-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .35s ease}
 .c-img img.alt{opacity:0}
 @media (hover:hover){ .c-img:hover img.alt{opacity:1} .c-img:hover img:not(.alt):not(:only-child){opacity:0} }
-.c-brand{margin-top:16px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#111}
-.c-name{margin-top:4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#4a4a4a}
+.c-brand{margin-top:16px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#111}
+.c-name{margin-top:2px;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:#4a4a4a}
 .c-name a{color:inherit}
 .c-price{margin-top:14px;font-size:12px;letter-spacing:.08em;color:#111;font-variant-numeric:tabular-nums}
 .c-acts{margin-top:14px;display:flex;justify-content:space-between;gap:8px;white-space:nowrap}
@@ -394,7 +394,7 @@ body.on-home{overflow:hidden}
 .c-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .c-row button{min-width:38px;padding:8px 4px;font-size:11px;letter-spacing:.1em;border:1px solid var(--rule);background:#fff;color:#111}
 .c-row button:hover{border-color:#111}
-.pdp-brand{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6f6f6f;padding-bottom:6px}
+.pdp-brand{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#6f6f6f;padding-bottom:6px}
 .buy.soon{color:#9a9a9a;border-color:var(--rule);cursor:default}
 a.result{display:flex;justify-content:space-between;gap:12px;color:inherit}
 .r-secure{
@@ -698,7 +698,7 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
   <div class="textpage centered">
     <h2>About</h2>
     <p class="stamp">Founder's note</p>
-    <p>D3COMPOSURE is an independent label started in San Francisco by artist Judy Lee.</p>
+    <p>D3COMPOSURE is an independent label started in San Francisco.</p>
     <p>We make small, limited collections and restock each season.</p>
     <p>Each piece brings abstract art into everyday clothing, using archival fabrics, hand-drawn prints and work on canvas.</p>
     <p>Everything is made to order in Portugal, which keeps waste low and moves us toward a more sustainable future.</p>
@@ -1061,7 +1061,7 @@ const TEMPLATE = {
 /* Each art piece keeps the same price, sizes and Stripe link; only its
    garment type and color change so the product details stay accurate. */
 const artDetails = (color) => [
-  ["Description", [color, "100% organic cotton", "Original hand-drawn artwork by Judy Lee, printed on the garment", "Each piece may vary slightly"]],
+  ["Description", [color, "100% organic cotton", "Original hand-drawn artwork, printed on the garment", "Each piece may vary slightly"]],
   ["Size & fit",  ["Unisex sizing", "Between sizes? Size up for a relaxed fit", "Questions about fit: inquire@d3-composure.com"]],
   ["Care",        ["Machine wash cold, inside out", "Hang dry. Do not iron the print"]],
   ["Shipping & returns", ["Made to order. Ships in about 2 weeks", "Shipping and duties are calculated at checkout", "See our Shipping and Refund policies for details"]]
