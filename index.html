@@ -650,6 +650,61 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 .drop-in{display:none;font:400 12px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;margin:0 0 22px}
 .drop.open .drop-in{display:block}
 .drop.open #dropPassForm{display:none}
+
+/* ---------- footer (compact grid) ---------- */
+.fx{text-align:left;padding:0 20px calc(22px + env(safe-area-inset-bottom,0px))}
+.fx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.fx-trust{list-style:none;margin:0 -20px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--rule)}
+.fx-trust li{padding:12px 20px;display:grid;gap:2px;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.fx-trust li:nth-child(odd){border-right:1px solid var(--rule)}
+.fx-trust li:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+.fx-trust b{font-weight:500;color:#000}
+.fx-trust span{color:#8a8a8a}
+.fx-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 14px;padding:24px 0 22px;border-bottom:1px solid var(--rule)}
+.fx-brand,.fx-news{grid-column:1/-1}
+.fx .ft-logo{font-size:30px}
+.fx-brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fx-brand p{display:none;margin:10px 0 8px;font-size:12px;line-height:1.6;color:#555;max-width:300px}
+.fx-mail{font-size:12px;border-bottom:1px solid #111}
+.fx-col{display:flex;flex-direction:column;align-items:flex-start}
+.fx-col .ft-h,.fx-news .ft-h{margin-bottom:8px}
+.fx-col a{font-size:11px;letter-spacing:.02em;padding:4px 0;color:#111;border-bottom:1px solid transparent}
+.fx-col a:hover{border-bottom-color:#111}
+.fx .news{max-width:none;margin:0}
+.fx .news input{text-align:left}
+.fx .news-note{min-height:0;margin:6px 0 0}
+.fx .news-note:empty{display:none}
+.fx-social{display:flex;gap:18px;margin-top:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.fx-social a:hover{text-decoration:underline;text-underline-offset:4px}
+.fx-base{display:grid;grid-template-columns:1fr auto;gap:10px 12px;padding:16px 64px 0 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8a8a8a}
+.fx-prefs{display:grid;gap:6px;grid-column:1/-1;grid-row:2}
+.fx-prefs .switch-row{justify-content:flex-start;gap:4px 12px}
+.fx-prefs .ft-h{margin-right:2px;min-width:64px}
+.fx-prefs .opt{font-size:10px;letter-spacing:.14em}
+.fx-dns{color:#8a8a8a;text-decoration:underline;text-underline-offset:3px}
+@media (min-width:700px){
+  .fx{padding:0 32px 24px}
+  .fx-trust{margin:0 -32px;grid-template-columns:repeat(4,minmax(0,1fr))}
+  .fx-trust li{padding:18px 32px;border-bottom:0!important;border-right:1px solid var(--rule)}
+  .fx-trust li:last-child{border-right:0}
+  .fx-grid{padding:34px 0 28px;gap:28px 20px}
+  .fx-brand{display:block}
+  .fx-brand p{display:block}
+  .fx-col a{font-size:12px;padding:5px 0}
+}
+@media (min-width:1080px){
+  .fx-grid{grid-template-columns:1.4fr 1fr 1fr 1fr 1.6fr;gap:32px}
+  .fx-brand,.fx-news{grid-column:auto}
+  .fx-base{grid-template-columns:auto 1fr auto;align-items:center;gap:24px}
+  .fx-prefs{grid-auto-flow:column;justify-content:center;gap:28px;grid-column:auto;grid-row:auto}
+  .fx-prefs .ft-h{min-width:0}
+}
+/* about: trust facts */
+.facts{margin:34px auto 0;padding:0;max-width:520px;border-top:1px solid var(--rule);text-align:left}
+.facts div{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.facts dt{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8a8a8a;padding-top:2px}
+.facts dd{margin:0;font-size:13px;line-height:1.6}
+.facts a{border-bottom:1px solid #111}
 </style>
 </head>
 <body>
@@ -708,7 +763,7 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
         <video data-src="videos/feed/d3-hoodie-06.mp4" poster="videos/feed/d3-hoodie-06.jpg" muted loop playsinline preload="none"></video>
       </div>
       <div class="slide welcome" aria-label="Welcome to D3COMPOSURE">
-        <div class="w-top"><span>San Francisco</span><span>Est. 2000</span></div>
+        <div class="w-top"><span>San Francisco</span><span>Made in Portugal</span></div>
         <div class="w-mid">
           <p class="welcome-h">Welcome to</p>
           <h2 class="welcome-mark">D3COMPOSURE</h2>
@@ -751,18 +806,23 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 <section class="page" id="page-about">
   <div class="textpage centered">
     <h2>About</h2>
-    <p class="stamp">Founder's note</p>
-    <p>D3COMPOSURE is an independent label started in San Francisco.</p>
-    <p>We make small, limited collections and restock each season.</p>
-    <p>Each piece brings abstract art into everyday clothing, using archival fabrics, hand-drawn prints and work on canvas.</p>
-    <p>Everything is made to order in Portugal, which keeps waste low and moves us toward a more sustainable future.</p>
+    <p class="stamp">Independent label &middot; San Francisco</p>
+    <p>D3COMPOSURE is an independent clothing and art label based in San Francisco.</p>
+    <p>We release small, numbered pieces &mdash; D3 01, D3 02, D3 03 &mdash; each built around an original hand-drawn artwork, alongside work on canvas.</p>
+    <p>Every garment is made to order in Portugal from cotton. Nothing is mass-produced or left sitting in a warehouse: each piece is made for the person who ordered it.</p>
+    <dl class="facts">
+      <div><dt>Checkout</dt><dd>Secure payment through Stripe. Your receipt is emailed right away.</dd></div>
+      <div><dt>Production</dt><dd>Made to order in Portugal. Ships tracked in about 2 weeks.</dd></div>
+      <div><dt>Returns</dt><dd>Within 14 days of delivery. See the <a href="#refund">Refund Policy</a>.</dd></div>
+      <div><dt>Support</dt><dd><a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> &mdash; reply within 1&ndash;2 business days.</dd></div>
+    </dl>
   </div>
 </section>
 
 <section class="page" id="page-sustainability">
   <div class="wrap">
     <div class="sec-head">
-      <span>◫ Primary material</span><span class="r">Local sourcing</span>
+      <span>Material</span><span class="r">Made to order</span>
     </div>
     <div class="material">
       <span class="badge">
@@ -770,8 +830,9 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
         Made in Portugal
       </span>
       <p class="kicker" style="font-size:10px;letter-spacing:.14em;color:#8a8a8a;text-transform:uppercase">100% Cotton</p>
-      <h3>Locally manufactured in Portugal</h3>
-      <p>Material: 100% cotton sourced from local manufacturer based in Portugal.</p>
+      <h3>Made in Portugal</h3>
+      <p>Each piece is made by a manufacturer in Portugal from 100% cotton sourced locally.</p>
+      <p>We only produce what has been ordered, so there is no overstock to discard.</p>
     </div>
 
   </div>
@@ -819,7 +880,7 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
   <div class="contact">
     <h2>Contact</h2>
     <a class="mail" href="mailto:inquire@d3-composure.com" data-email="1">inquire@d3-composure.com</a>
-    <p class="blurb">Questions about an order, sizing or a custom piece? Email us and we'll reply within 1–2 business days.</p>
+    <p class="blurb">Questions about an order, sizing or a custom piece? Email us and a real person will reply within 1–2 business days. Include your order number if you have one.</p>
     <form class="cform" id="contactForm">
       <div class="field"><label for="cName">Name</label><input id="cName" required></div>
       <div class="field"><label for="cMail">Email address</label><input id="cMail" type="email" required></div>
@@ -928,79 +989,69 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 
 </main>
 
-<footer class="footer">
-  <a href="#home" class="ft-logo" aria-label="D3COMPOSURE home">D<b>3</b>Composure</a>
-  <span class="ft-dot"></span>
+<footer class="footer fx">
+  <ul class="fx-trust" aria-label="Why shop with us">
+    <li><b>Made to order</b><span>in Portugal</span></li>
+    <li><b>Ships tracked</b><span>in about 2 weeks</span></li>
+    <li><b>14-day returns</b><span>from delivery</span></li>
+    <li><b>Secure checkout</b><span>by Stripe</span></li>
+  </ul>
 
-  <nav class="ft-nav" aria-label="Footer">
-    <a href="#gallery">Gallery</a>
-    <a href="#home">Home</a>
-    <a href="#shop">Shop</a>
-    <a href="#bag" id="ftBag">Shopping Bag</a>
-    <span class="bar">|</span>
-    <details class="ft-dd">
-      <summary>Corporate</summary>
-      <div class="ft-menu">
-        <span class="ft-h">Corporate</span>
-        <a href="#about">About</a>
-        <a href="#sustainability">Sustainability</a>
-        <a href="#contact">Contact</a>
-        <a href="#affiliates">Affiliates</a>
+  <div class="fx-grid">
+    <div class="fx-brand">
+      <a href="#home" class="ft-logo" aria-label="D3COMPOSURE home">D<b>3</b>Composure</a>
+      <p>Independent clothing and art label, San Francisco. Limited pieces, made to order.</p>
+      <a class="fx-mail" href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a>
+    </div>
+    <nav class="fx-col" aria-label="Shop">
+      <span class="ft-h">Shop</span>
+      <a href="#shop">All pieces</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#custom">Custom</a>
+      <a href="#bag" id="ftBag">Shopping bag</a>
+    </nav>
+    <nav class="fx-col" aria-label="Company">
+      <span class="ft-h">Company</span>
+      <a href="#about">About</a>
+      <a href="#sustainability">Sustainability</a>
+      <a href="#affiliates">Affiliates</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <nav class="fx-col" aria-label="Help">
+      <span class="ft-h">Help</span>
+      <a href="#shipping">Shipping</a>
+      <a href="#refund">Returns</a>
+      <a href="#account">Order help</a>
+      <a href="#terms">Terms</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+    <div class="fx-news">
+      <span class="ft-h">Newsletter</span>
+      <div class="news">
+        <form id="newsForm">
+          <label for="newsInput" class="fx-sr">Email</label>
+          <span class="field">
+            <input type="email" id="newsInput" placeholder="Email for 10% off" autocomplete="email" required>
+            <button type="submit" class="ft-join" aria-label="Join newsletter"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></button>
+          </span>
+        </form>
+        <p class="news-note" id="newsNote" role="status"></p>
       </div>
-    </details>
-    <span class="bar">|</span>
-    <details class="ft-dd">
-      <summary>Legal</summary>
-      <div class="ft-menu">
-        <span class="ft-h">Legal Policies</span>
-        <a href="#terms">Terms of Service</a>
-        <a href="#privacy">Privacy Policy</a>
-        <a href="#shipping">Shipping Policy</a>
-        <a href="#refund">Refund Policy</a>
-        <a href="#do-not-sell">Do Not Sell or Share My Personal Information</a>
+      <div class="fx-social">
+        <a href="https://instagram.com/d3composure" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/company/d3composure" target="_blank" rel="noopener">LinkedIn</a>
       </div>
-    </details>
-    <span class="bar">|</span>
-    <a href="#contact">Contact</a>
-    <a href="https://instagram.com/d3composure" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.linkedin.com/company/d3composure" target="_blank" rel="noopener">LinkedIn</a>
-  </nav>
-  <span class="ft-dot"></span>
-
-  <div class="ft-prefs">
-    <div class="ft-pref switch-row" id="ftLoc">
-      <span class="ft-h">Loc:</span>
-      <button class="opt on">New York</button><button class="opt">Tokyo</button><button class="opt">London</button><button class="opt">Paris</button><button class="opt">Seoul</button><button class="opt">Los Angeles</button><button class="opt">Online</button>
-    </div>
-    <div class="ft-pref switch-row" id="ftReg">
-      <span class="ft-h">Reg:</span>
-      <button class="opt">GL</button><button class="opt on">US</button><button class="opt">EU</button><button class="opt">UK</button><button class="opt">JP</button><button class="opt">KR</button>
-    </div>
-    <div class="ft-pref switch-row" id="ftCur">
-      <span class="ft-h">Cur:</span>
-      <button class="opt on" data-cur="USD">USD</button><button class="opt" data-cur="EUR">EUR</button><button class="opt" data-cur="GBP">GBP</button><button class="opt" data-cur="JPY">JPY</button><button class="opt" data-cur="KRW">KRW</button>
     </div>
   </div>
-  <hr class="ft-rule">
 
-  <div class="news">
-    <form id="newsForm">
-      <label for="newsInput">Newsletter:</label>
-      <span class="field">
-        <input type="email" id="newsInput" placeholder="enter email for 10% off..." autocomplete="email" required>
-        <button type="submit" class="ft-join" aria-label="Join newsletter"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1.5"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg></button>
-      </span>
-    </form>
-    <p class="news-note" id="newsNote" role="status"></p>
+  <div class="fx-base">
+    <span>&copy; 2026 D3COMPOSURE</span>
+    <div class="fx-prefs">
+      <div class="switch-row" id="ftReg"><span class="ft-h">Region</span><button class="opt on">US</button><button class="opt">EU</button><button class="opt">UK</button><button class="opt">JP</button><button class="opt">KR</button><button class="opt">GL</button></div>
+      <div class="switch-row" id="ftCur"><span class="ft-h">Currency</span><button class="opt on" data-cur="USD">USD</button><button class="opt" data-cur="EUR">EUR</button><button class="opt" data-cur="GBP">GBP</button><button class="opt" data-cur="JPY">JPY</button><button class="opt" data-cur="KRW">KRW</button></div>
+    </div>
+    <a href="#do-not-sell" class="fx-dns">Do not sell or share my info</a>
   </div>
-  <hr class="ft-rule">
-
-  <div class="ft-base">
-    <a href="#account" class="ft-acct"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></span>Account</a>
-    <span class="mid">&middot;</span>
-    <span>&copy; 2026 D3COMPOSURE. All rights reserved.</span>
-  </div>
-  <div class="ft-legal">By using this site, you agree to our <a href="#terms">Terms</a> &amp; <a href="#privacy">Privacy Policy</a>. Protected by intellectual property laws.</div>
 </footer>
 
 <button class="totop" id="toTop" aria-label="Back to top">
@@ -1109,7 +1160,7 @@ const TEMPLATE = {
   details: [
     ["Description", ["Black", "100% organic cotton", "Hand-drawn print. Each piece may vary slightly."]],
     ["Care",        ["Machine wash"]],
-    ["Shipping",    ["Ships in about 2 weeks", "Shipping and duties are calculated at checkout", "Delivery times vary by country"]]
+    ["Shipping",    ["Made to order. Ships tracked in about 2 weeks", "Shipping and duties are calculated at checkout", "Returns within 14 days of delivery", "Secure checkout by Stripe"]]
   ]
 };
 /* Each art piece keeps the same price, sizes and Stripe link; only its
@@ -1118,7 +1169,7 @@ const artDetails = (color) => [
   ["Description", [color, "100% organic cotton", "Original hand-drawn artwork, printed on the garment", "Each piece may vary slightly"]],
   ["Size & fit",  ["Unisex sizing", "Between sizes? Size up for a relaxed fit", "Questions about fit: inquire@d3-composure.com"]],
   ["Care",        ["Machine wash cold, inside out", "Hang dry. Do not iron the print"]],
-  ["Shipping & returns", ["Made to order. Ships in about 2 weeks", "Shipping and duties are calculated at checkout", "See our Shipping and Refund policies for details"]]
+  ["Shipping & returns", ["Made to order in Portugal. Ships tracked in about 2 weeks", "Shipping and duties are calculated at checkout", "Returns within 14 days of delivery", "Secure checkout by Stripe"]]
 ];
 const piece = (id, type, color, photos) => ({
   ...TEMPLATE, id, note: type, name: id + " " + type, details: artDetails(color),
@@ -1155,7 +1206,7 @@ const blank = (id, name, gender, color, slugName, sizes) => {
     details: [
       ["Description", ["Blank, no print", "Woven D3COMPOSURE label", "Available in " + COLORS.length + " colors", "Images are digital previews. The finished piece may vary slightly in color, texture and drape."]],
       ["Care",        ["Machine wash cold"]],
-      ["Shipping",    ["Shipping and duties are calculated at checkout"]]
+      ["Shipping & returns", ["Made to order. Ships tracked", "Shipping and duties are calculated at checkout", "Returns within 14 days of delivery", "Secure checkout by Stripe"]]
     ]
   };
   p.imgs = blankImgs(p, color);
@@ -1517,7 +1568,7 @@ function pickCur(b){
 ["curRow","ftCur"].forEach(id => document.getElementById(id).addEventListener("click", e => {
   const b = e.target.closest("[data-cur]"); if(b) pickCur(b);
 }));
-["regRow","ftReg","ftLoc"].forEach(id => {
+["regRow","ftReg"].forEach(id => {
   document.getElementById(id).addEventListener("click", e => {
     const b = e.target.closest(".opt");
     if(!b) return;
@@ -1793,11 +1844,23 @@ const POLICY_UPDATED = "August 2026";
 
 const LEGAL = {
   /* Transcribed from the live site. */
-  "terms": { title: "Terms of Service", plain: true, body: `
-    <p>By accessing or using the service, you agree to be bound by these terms. If you disagree with any part of the terms, then you may not access the service.</p>
-    <p>We reserve the right, at our sole discretion, to modify or replace these terms at any time.</p>
-    <p>All content, features, and functionality are and will remain the exclusive property of D3COMPOSURE.</p>
-    <p>Your privacy is important to us. Please review our <a href="#privacy">privacy policy</a> to understand how we collect and use your information.</p>` },
+  "terms": { title: "Terms of Service", body: `
+    <h3>Using this site</h3>
+    <p>By accessing or using d3-composure.com you agree to these terms. If you do not agree, please do not use the site.</p>
+    <h3>Orders and payment</h3>
+    <p>Payment is processed securely by Stripe; we never see or store your card details. Your order is confirmed when you receive a receipt by email.</p>
+    <h3>Made to order</h3>
+    <p>Every garment is produced after you order it. Production and delivery times are described in our <a href="#shipping">Shipping Policy</a>, and returns and cancellations in our <a href="#refund">Refund Policy</a>.</p>
+    <h3>Product images</h3>
+    <p>Some images are digital previews. The finished piece may vary slightly in color, texture, drape and print placement.</p>
+    <h3>Intellectual property</h3>
+    <p>All artwork, photographs, text and design on this site are the exclusive property of D3COMPOSURE and may not be reproduced without permission.</p>
+    <h3>Privacy</h3>
+    <p>How we collect and use your information is described in our <a href="#privacy">Privacy Policy</a>.</p>
+    <h3>Changes</h3>
+    <p>We may update these terms from time to time. The version on this page is the one that applies.</p>
+    <h3>Contact</h3>
+    <p>Questions about these terms: <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a>.</p>` },
 
   /* Transcribed from the live site. */
   "privacy": { title: "Privacy Policy", plain: true, body: `
