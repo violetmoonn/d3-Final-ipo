@@ -1396,13 +1396,12 @@ PRODUCTS.forEach((p,i) => {
 grid.querySelectorAll(".c-img").forEach(track => {
   const dots = track.parentElement.querySelectorAll(".c-dots i");
   if(!dots.length) return;
-  let raf = 0;
+  let last = 0;
   track.addEventListener("scroll", () => {
-    cancelAnimationFrame(raf);
-    raf = requestAnimationFrame(() => {
-      const n = Math.round(track.scrollLeft / track.clientWidth);
-      dots.forEach((d, k) => d.classList.toggle("on", k === n));
-    });
+    const n = Math.round(track.scrollLeft / track.clientWidth);
+    if(n === last) return;
+    last = n;
+    dots.forEach((d, k) => d.classList.toggle("on", k === n));
   }, {passive: true});
 });
 
