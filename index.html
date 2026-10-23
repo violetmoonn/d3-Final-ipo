@@ -399,7 +399,17 @@ body.on-home{overflow:hidden}
 .c-img{display:block;position:relative;aspect-ratio:3/4;background:#fff;overflow:hidden}
 .c-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .35s ease}
 .c-img img.alt{opacity:0}
-@media (hover:hover){ .c-img:hover img.alt{opacity:1} .c-img:hover img:not(.alt):not(:only-child){opacity:0} }
+@media (hover:hover){ .c-img:hover img.alt:not(.more){opacity:1} .c-img:hover img:not(.alt):not(:only-child){opacity:0} .c-img img.more{display:none} .c-dots{display:none} }
+/* touch screens: swipe through every photo on the card */
+@media (hover:none){
+  .c-img{display:flex;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .c-img::-webkit-scrollbar{display:none}
+  .c-img img{position:relative;inset:auto;flex:0 0 100%;scroll-snap-align:start;opacity:1!important}
+}
+.c-dots{display:flex;justify-content:center;gap:5px;margin:8px 0 2px;height:4px}
+.c-dots i{width:4px;height:4px;border-radius:50%;background:#cfcfcf;transition:background .2s,width .2s}
+.c-dots i.on{background:#111;width:12px;border-radius:2px}
+@media (hover:hover){.c-dots{display:none}}
 .c-brand{margin-top:16px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#111}
 .c-name{margin-top:2px;font-size:11px;letter-spacing:.03em;text-transform:uppercase;color:#4a4a4a}
 .c-name a{color:inherit}
@@ -1367,8 +1377,9 @@ PRODUCTS.forEach((p,i) => {
     : `<button data-qb="${i}">Quick buy +</button><button data-bag="${i}">Bag +</button>`;
   card.innerHTML = `
     <a class="c-img" href="${url}">
-      ${p.imgs.slice(0,2).map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n?'alt':''}" loading="${i<4?'eager':'lazy'}">`).join("")}
+      ${p.imgs.map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n===1?'alt':n>1?'alt more':''}" loading="${i<4&&n<2?'eager':'lazy'}" draggable="false">`).join("")}
     </a>
+    ${p.imgs.length>1 ? `<div class="c-dots" aria-hidden="true">${p.imgs.map((_,n)=>`<i class="${n?'':'on'}"></i>`).join("")}</div>` : ``}
     <p class="c-brand">D3COMPOSURE</p>
     <p class="c-name"><a href="${url}">${p.name}</a></p>
     <p class="c-price" data-price="${p.usd}">${money(p.usd)}</p>
@@ -1381,6 +1392,20 @@ PRODUCTS.forEach((p,i) => {
   grid.appendChild(card);
 });
 
+/* card swipe: keep the dots in step with the photo in view */
+grid.querySelectorAll(".c-img").forEach(track => {
+  const dots = track.parentElement.querySelectorAll(".c-dots i");
+  if(!dots.length) return;
+  let raf = 0;
+  track.addEventListener("scroll", () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const n = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach((d, k) => d.classList.toggle("on", k === n));
+    });
+  }, {passive: true});
+});
+
 grid.addEventListener("click", e => {
   const card = e.target.closest(".card"); if(!card) return;
   const sw = e.target.closest("[data-color]");
@@ -1390,6 +1415,7 @@ grid.addEventListener("click", e => {
     card.querySelectorAll(".c-sw .sw").forEach(x => x.classList.toggle("on", x===sw));
     const ims = blankImgs(p, sw.dataset.color);
     card.querySelectorAll(".c-img img").forEach((im,n) => { if(ims[n]){ im.src = ims[n].src; im.alt = ims[n].alt; } });
+    card.querySelector(".c-img").scrollLeft = 0;
     card.querySelector(".c-img").href = "#product/" + slugOf(p) + "?c=" + sw.dataset.color;
     return;
   }
