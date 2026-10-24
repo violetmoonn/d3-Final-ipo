@@ -1476,7 +1476,27 @@ document.getElementById("shopTabs").addEventListener("click", e => {
   const g = b.dataset.g;
   document.querySelectorAll("#shopTabs button").forEach(x => x.classList.toggle("on", x===b));
   grid.querySelectorAll(".card").forEach(c => c.hidden = !(g==="all" || c.dataset.g===g || c.dataset.g==="unisex"));
+  leadModel(g);
 });
+
+/* Unisex pieces have a men's model photo (…-model-hd) and a women's one (…-model2-hd).
+   Women tab leads with the women's photo; All and Men lead with the men's photo. */
+function leadModel(g){
+  grid.querySelectorAll('.card[data-g="unisex"]').forEach(c => {
+    const track = c.querySelector(".c-img");
+    const imgs = [...track.querySelectorAll("img")];
+    const women = imgs.find(im => /model2/i.test(im.src));
+    const men = imgs.find(im => /model(?!2)/i.test(im.src));
+    const lead = g === "women" ? women : men;
+    if(!lead || imgs[0] === lead) return;
+    const other = lead === women ? men : women;
+    track.prepend(lead);
+    if(other) lead.after(other);
+    [...track.querySelectorAll("img")].forEach((im, n) => { im.className = n === 0 ? "" : n === 1 ? "alt" : "alt more"; });
+    track.scrollLeft = 0;
+    c.querySelectorAll(".c-dots i").forEach((d, k) => d.classList.toggle("on", k === 0));
+  });
+}
 
 function updateCount(){
   const n = [...cart.values()].reduce((a,b)=>a+b,0);
