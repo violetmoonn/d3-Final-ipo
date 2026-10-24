@@ -1384,6 +1384,9 @@ function syncHome(on){
 /* ---------- product grid ---------- */
 const grid = document.getElementById("shop");
 const slugOf = p => p.id.replace(/\s+/g,"-").toLowerCase();
+/* shop cards lead with the photo of a person wearing the piece, when there is one */
+const isModel = im => /model/i.test(im.src);
+const modelFirst = imgs => [...imgs.filter(isModel), ...imgs.filter(im => !isModel(im))];
 PRODUCTS.forEach((p,i) => {
   if(p.custom) return;
   const card = document.createElement("article");
@@ -1396,7 +1399,7 @@ PRODUCTS.forEach((p,i) => {
     : `<button data-qb="${i}">Quick buy +</button><button data-bag="${i}">Bag +</button>`;
   card.innerHTML = `
     <a class="c-img" href="${url}">
-      ${p.imgs.map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n===1?'alt':n>1?'alt more':''}" loading="${i<4&&n<2?'eager':'lazy'}" draggable="false">`).join("")}
+      ${modelFirst(p.imgs).map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n===1?'alt':n>1?'alt more':''}" loading="${i<4&&n<2?'eager':'lazy'}" draggable="false">`).join("")}
     </a>
     ${p.imgs.length>1 ? `<div class="c-dots" aria-hidden="true">${p.imgs.map((_,n)=>`<i class="${n?'':'on'}"></i>`).join("")}</div>` : ``}
     <p class="c-brand">D3COMPOSURE</p>
