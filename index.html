@@ -725,6 +725,16 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 .facts dt{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8a8a8a;padding-top:2px}
 .facts dd{margin:0;font-size:13px;line-height:1.6}
 .facts a{border-bottom:1px solid #111}
+
+/* sustainability */
+.sus{max-width:640px}
+.sus-block{padding:22px 0;border-top:1px solid var(--rule)}
+.sus-block:last-of-type{border-bottom:1px solid var(--rule)}
+.sus-k{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#8a8a8a;margin-bottom:8px}
+.sus-block p{margin:0;font-size:14px;line-height:1.7;color:#111}
+.sus-certs{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.sus-certs li{display:flex;justify-content:space-between;gap:16px;font-size:14px}
+.sus-certs span{color:#8a8a8a;font-size:12px}
 </style>
 </head>
 <body>
@@ -783,7 +793,7 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
         <video data-src="videos/feed/d3-hoodie-06.mp4" poster="videos/feed/d3-hoodie-06.jpg" muted loop playsinline preload="none"></video>
       </div>
       <div class="slide welcome" aria-label="Welcome to D3COMPOSURE">
-        <div class="w-top"><span>San Francisco</span><span>Made in Portugal</span></div>
+        <div class="w-top"><span>San Francisco</span><span>Made to order</span></div>
         <div class="w-mid">
           <p class="welcome-h">Welcome to</p>
           <h2 class="welcome-mark">D3COMPOSURE</h2>
@@ -829,34 +839,16 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
     <p class="stamp">Independent label &middot; San Francisco</p>
     <p>D3COMPOSURE is an independent clothing and art label based in San Francisco.</p>
     <p>We release small, numbered pieces &mdash; D3 01, D3 02, D3 03 &mdash; each built around an original hand-drawn artwork, alongside work on canvas.</p>
-    <p>Every garment is made to order in Portugal from cotton. Nothing is mass-produced or left sitting in a warehouse: each piece is made for the person who ordered it.</p>
+    <p>Every garment is made to order. Nothing is mass-produced or left sitting in a warehouse: each piece is made for the person who ordered it. See <a href="#sustainability">how it is made</a>.</p>
     <dl class="facts">
       <div><dt>Checkout</dt><dd>Secure payment through Stripe. Your receipt is emailed right away.</dd></div>
-      <div><dt>Production</dt><dd>Made to order in Portugal. Ships tracked in about 2 weeks.</dd></div>
+      <div><dt>Shipping</dt><dd>Ships tracked in about 2 weeks.</dd></div>
       <div><dt>Returns</dt><dd>Within 14 days of delivery. See the <a href="#refund">Refund Policy</a>.</dd></div>
       <div><dt>Support</dt><dd><a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> &mdash; reply within 1&ndash;2 business days.</dd></div>
     </dl>
   </div>
 </section>
 
-<section class="page" id="page-sustainability">
-  <div class="wrap">
-    <div class="sec-head">
-      <span>Material</span><span class="r">Made to order</span>
-    </div>
-    <div class="material">
-      <span class="badge">
-        <svg class="icon" style="width:13px;height:13px" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c3 3.2 3 9.8 0 13-3-3.2-3-9.8 0-13"/></svg>
-        Made in Portugal
-      </span>
-      <p class="kicker" style="font-size:10px;letter-spacing:.14em;color:#8a8a8a;text-transform:uppercase">100% Cotton</p>
-      <h3>Made in Portugal</h3>
-      <p>Each piece is made by a manufacturer in Portugal from 100% cotton sourced locally.</p>
-      <p>We only produce what has been ordered, so there is no overstock to discard.</p>
-    </div>
-
-  </div>
-</section>
 
 <section class="page" id="page-settings">
   <div class="textpage settings">
@@ -892,6 +884,35 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
       <a href="#shipping">Shipping Policy</a>
       <a href="#refund">Refund Policy</a>
       <a href="#do-not-sell">Do Not Sell or Share My Info</a>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-sustainability">
+  <div class="textpage sus">
+    <h2>Sustainability</h2>
+    <p class="stamp">How each piece is made</p>
+
+    <div class="sus-block">
+      <span class="sus-k">01 &middot; Made to order</span>
+      <p>Nothing is produced until it is ordered. There is no seasonal overstock and no warehouse of unsold garments to discard at the end of a season.</p>
+    </div>
+    <div class="sus-block">
+      <span class="sus-k">02 &middot; Material</span>
+      <p>100% cotton, sourced locally by our manufacturer.</p>
+    </div>
+    <div class="sus-block">
+      <span class="sus-k">03 &middot; Made in Portugal</span>
+      <p>Every garment is made in Portugal, where textile production is held to EU labour and environmental law. Short supply chains mean fewer transport miles between fabric and finished piece.</p>
+    </div>
+    <div class="sus-block">
+      <span class="sus-k">04 &middot; Made to last</span>
+      <p>Machine wash cold, inside out, and hang dry. Caring for a garment this way keeps the print sharp and the fabric in use for longer, which is the most sustainable thing any piece of clothing can do.</p>
+    </div>
+
+    <div class="sus-block" id="susCerts" hidden>
+      <span class="sus-k">05 &middot; Certifications</span>
+      <ul class="sus-certs" id="susCertList"></ul>
     </div>
   </div>
 </section>
@@ -1011,7 +1032,7 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 
 <footer class="footer fx">
   <ul class="fx-trust" aria-label="Why shop with us">
-    <li><b>Made to order</b><span>in Portugal</span></li>
+    <li><b>Made to order</b><span>for each customer</span></li>
     <li><b>Ships tracked</b><span>in about 2 weeks</span></li>
     <li><b>14-day returns</b><span>from delivery</span></li>
     <li><b>Secure checkout</b><span>by Stripe</span></li>
@@ -1020,8 +1041,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
   <div class="fx-grid">
     <div class="fx-brand">
       <a href="#home" class="ft-logo" aria-label="D3COMPOSURE home">D<b>3</b>Composure</a>
-      <p>Independent clothing and art label, San Francisco. Limited pieces, made to order.</p>
-      <a class="fx-mail" href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a>
     </div>
     <nav class="fx-col" aria-label="Shop">
       <span class="ft-h">Shop</span>
@@ -1187,7 +1206,7 @@ const artDetails = (color) => [
   ["Description", [color, "100% organic cotton", "Original hand-drawn artwork, printed on the garment", "Each piece may vary slightly"]],
   ["Size & fit",  ["Unisex sizing", "Between sizes? Size up for a relaxed fit", "Questions about fit: inquire@d3-composure.com"]],
   ["Care",        ["Machine wash cold, inside out", "Hang dry. Do not iron the print"]],
-  ["Shipping & returns", ["Made to order in Portugal. Ships tracked in about 2 weeks", "Shipping and duties are calculated at checkout", "Returns within 14 days of delivery", "Secure checkout by Stripe"]]
+  ["Shipping & returns", ["Made to order. Ships tracked in about 2 weeks", "Shipping and duties are calculated at checkout", "Returns within 14 days of delivery", "Secure checkout by Stripe"]]
 ];
 const piece = (id, type, color, photos) => ({
   ...TEMPLATE, id, note: type, name: id + " " + type, details: artDetails(color),
@@ -1946,6 +1965,14 @@ const LEGAL = {
   "affiliates": { title: "Affiliates", plain: true, boxed: true, body: `
     <p>Please send an email to <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a> with the subject line <strong>"Affiliate"</strong> and we will send you a form to fill out.</p>` }
 };
+/* [CERTIFICATIONS] Add only certifications you can show a certificate for,
+   e.g. ["GOTS — Global Organic Textile Standard", "certificate no. ..."].
+   The Certifications section stays hidden while this list is empty. */
+const CERTIFICATIONS = [];
+if(CERTIFICATIONS.length){
+  document.getElementById("susCertList").innerHTML = CERTIFICATIONS.map(([name, ref]) => `<li><b>${name}</b>${ref ? `<span>${ref}</span>` : ""}</li>`).join("");
+  document.getElementById("susCerts").hidden = false;
+}
 const PAGES = ["home","shop","about","sustainability","contact","gallery","settings","custom"];
 const slug = id => id.replace(/\s+/g,"-").toLowerCase();
 
