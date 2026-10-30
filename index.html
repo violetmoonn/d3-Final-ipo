@@ -122,9 +122,18 @@ body.gated{overflow:hidden}
 .pdp-trust a{color:#111;border-bottom:1px solid #c9c9c9}
 .pdp-desc h4{font-size:10.5px;letter-spacing:.2em;font-weight:400;color:#1a1a1a;padding:0 0 6px}
 .pdp-desc ul{list-style:none;padding:0 0 18px;margin:0}
-.pdp-desc li{position:relative;padding-left:14px}
-.pdp-desc li::before{content:"";position:absolute;left:0;top:.9em;width:5px;height:1px;background:#8a8a8a}
+.pdp-desc li{padding-left:0}
 .pdp-desc ul:last-child{padding-bottom:0}
+/* "you may also like": swipe/scroll row under each product */
+.also{margin-top:72px}
+.also h3{font-size:10.5px;letter-spacing:.2em;font-weight:400;text-transform:uppercase;color:#1a1a1a;padding-bottom:18px}
+.also-row{display:grid;grid-auto-flow:column;grid-auto-columns:42%;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+.also-row::-webkit-scrollbar{display:none}
+.also-row a{scroll-snap-align:start;display:block;min-width:0}
+.also-row .c-img{display:block;aspect-ratio:3/4;position:relative;overflow:hidden}
+.also-row .c-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.also-row .c-name{padding-top:10px}
+@media (min-width:700px){.also-row{grid-auto-columns:calc(25% - 11px);gap:20px}}
 .pdp-sizes{padding-top:38px}
 .swatches{display:flex;gap:8px;flex-wrap:wrap}
 .swatches .sw{width:18px;height:18px;border-radius:50%;background:var(--c);border:1px solid rgba(0,0,0,.18);box-shadow:inset 0 0 0 2px #fff;padding:0;cursor:pointer}
@@ -640,38 +649,10 @@ a.r-cta{text-decoration:none}
 .cz-warn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#111;min-height:16px;padding-top:2px}
 #page-custom .buy[aria-disabled=true],#page-custom .bagbtn[disabled]{opacity:.35;pointer-events:none}
 
-/* ---------- next drop (locked) ---------- */
-.drop{border-top:1px solid var(--rule);padding:72px 20px 88px;text-align:center}
-body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
-.drop-h{font:400 11px/1.4 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gray);margin:0 0 10px}
-.drop-title{font:400 clamp(30px,6vw,56px)/1 var(--display);letter-spacing:-.02em;margin:0 0 28px}
-.drop-vault{position:relative;max-width:520px;margin:0 auto 28px;aspect-ratio:3/4;overflow:hidden;background:var(--tile)}
-.drop-vault img{width:100%;height:100%;object-fit:cover;filter:blur(26px) grayscale(1) contrast(1.15);transform:scale(1.15);transition:filter 1.2s ease,transform 1.2s ease}
-.drop.open .drop-vault img{filter:blur(14px) grayscale(1) contrast(1.15);transform:scale(1.08)}
-.drop.reveal .drop-vault img{filter:none;transform:none}
-.drop-lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(255,255,255,.18);transition:opacity .6s}
-.drop.open .drop-lock{opacity:0;pointer-events:none}
-.drop-lock span{font:400 11px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:#fff;mix-blend-mode:difference}
-.drop form{display:flex;max-width:380px;margin:0 auto;border:1px solid var(--ink)}
-.drop input{flex:1;min-width:0;border:0;padding:13px 14px;font:400 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;background:var(--white);color:var(--ink);outline:none}
-.drop button{border:0;border-left:1px solid var(--ink);background:var(--ink);color:var(--white);padding:0 18px;font:400 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
-.drop-note{min-height:16px;margin:12px 0 22px;font:400 11px/1.4 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
-.drop-or{margin:34px 0 12px;font:400 11px/1.5 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gray)}
-.drop-in{display:none;font:400 12px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;margin:0 0 22px}
-.drop.open .drop-in{display:block}
-.drop.open #dropPassForm{display:none}
 
 /* ---------- footer (compact grid) ---------- */
 .fx{text-align:left;padding:0 20px calc(22px + env(safe-area-inset-bottom,0px))}
 .fx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.fx-trust{display:none!important}
-@media (min-width:700px){.fx-trust{display:grid!important}}
-.fx-trust{list-style:none;margin:0 -20px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:1px solid var(--rule)}
-.fx-trust li{padding:12px 20px;display:grid;gap:2px;font-size:10px;letter-spacing:.16em;text-transform:uppercase}
-.fx-trust li:nth-child(odd){border-right:1px solid var(--rule)}
-.fx-trust li:nth-child(-n+2){border-bottom:1px solid var(--rule)}
-.fx-trust b{font-weight:500;color:#000}
-.fx-trust span{color:#8a8a8a}
 .fx-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 14px;padding:24px 0 22px;border-bottom:1px solid var(--rule)}
 .fx-brand,.fx-news{grid-column:1/-1}
 .fx .ft-logo{font-size:30px}
@@ -700,9 +681,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 .fx-dns{color:#8a8a8a;text-decoration:underline;text-underline-offset:3px}
 @media (min-width:700px){
   .fx{padding:0 32px 24px}
-  .fx-trust{margin:0 -32px;grid-template-columns:repeat(4,minmax(0,1fr))}
-  .fx-trust li{padding:18px 32px;border-bottom:0!important;border-right:1px solid var(--rule)}
-  .fx-trust li:last-child{border-right:0}
   .fx-grid{padding:34px 0 28px;gap:28px 20px}
   .fx-brand{display:block;text-align:left}
   .fx-col{align-items:flex-start;text-align:left}
@@ -780,24 +758,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
       <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:#efeeeb">
         <video data-src="videos/d3-film-14.mp4" poster="videos/feed/d3-film-14.jpg" muted loop playsinline preload="none"></video>
       </div>
-      <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:linear-gradient(#9f8be0,#eeb3c4 62%,#fcdcc2)">
-        <video data-src="videos/feed/d3-hoodie-01.mp4" poster="videos/feed/d3-hoodie-01.jpg" muted loop playsinline preload="none"></video>
-      </div>
-      <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:#efeeeb">
-        <video data-src="videos/feed/d3-hoodie-02.mp4" poster="videos/feed/d3-hoodie-02.jpg" muted loop playsinline preload="none"></video>
-      </div>
-      <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:linear-gradient(#9f8be0,#eeb3c4 62%,#fcdcc2)">
-        <video data-src="videos/feed/d3-hoodie-03.mp4" poster="videos/feed/d3-hoodie-03.jpg" muted loop playsinline preload="none"></video>
-      </div>
-      <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:#efeeeb">
-        <video data-src="videos/feed/d3-hoodie-04.mp4" poster="videos/feed/d3-hoodie-04.jpg" muted loop playsinline preload="none"></video>
-      </div>
-      <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:linear-gradient(#9f8be0,#eeb3c4 62%,#fcdcc2)">
-        <video data-src="videos/feed/d3-hoodie-05.mp4" poster="videos/feed/d3-hoodie-05.jpg" muted loop playsinline preload="none"></video>
-      </div>
-      <div class="slide tall" role="link" tabindex="0" aria-label="Enter the store" style="--bg:#efeeeb">
-        <video data-src="videos/feed/d3-hoodie-06.mp4" poster="videos/feed/d3-hoodie-06.jpg" muted loop playsinline preload="none"></video>
-      </div>
       <div class="slide welcome" aria-label="Welcome to D3COMPOSURE">
         <div class="w-top"><span>San Francisco</span><span>Made to order</span></div>
         <div class="w-mid">
@@ -818,25 +778,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
     <button class="on" data-g="all">All</button><button data-g="women">Women</button><button data-g="men">Men</button>
   </div>
   <div class="grid" id="shop"></div>
-  <section class="drop" id="nextDrop" aria-labelledby="dropTitle">
-    <p class="drop-h">Next drop</p>
-    <h2 class="drop-title" id="dropTitle">D3 04</h2>
-    <div class="drop-vault">
-      <img src="photos/d3-01-front-hd.jpg" alt="" aria-hidden="true" loading="lazy">
-      <div class="drop-lock" aria-hidden="true"><span>Locked</span></div>
-    </div>
-    <p class="drop-in">You're in. D3 04 reveals here first.<br>Join the list below for the drop link.</p>
-    <form id="dropPassForm" autocomplete="off">
-      <input id="dropPass" type="password" placeholder="Password" aria-label="Drop password" required>
-      <button type="submit">Enter</button>
-    </form>
-    <p class="drop-note" id="dropPassNote" role="status"></p>
-    <form id="dropJoinForm">
-      <input id="dropEmail" type="email" placeholder="Email for the password" autocomplete="email" aria-label="Email address" required>
-      <button type="submit">Join</button>
-    </form>
-    <p class="drop-note" id="dropJoinNote" role="status"></p>
-  </section>
 </section>
 
 <section class="page" id="page-about">
@@ -1037,13 +978,6 @@ body.drop-locked:has(#page-shop.on) .drop{padding-bottom:120px}
 </main>
 
 <footer class="footer fx">
-  <ul class="fx-trust" aria-label="Why shop with us">
-    <li><b>Made to order</b><span>for each customer</span></li>
-    <li><b>Ships tracked</b><span>in about 2 weeks</span></li>
-    <li><b>14-day returns</b><span>from delivery</span></li>
-    <li><b>Secure checkout</b><span>by Stripe</span></li>
-  </ul>
-
   <div class="fx-grid">
     <div class="fx-brand">
       <a href="#home" class="ft-logo" aria-label="D3COMPOSURE home">D<b>3</b>Composure</a>
@@ -1724,35 +1658,6 @@ document.getElementById("searchInput").addEventListener("input", e => {
 });
 document.getElementById("searchForm").addEventListener("submit", e => e.preventDefault());
 
-/* ---------- next drop: password + list ---------- */
-(function(){
-  const box = document.getElementById("nextDrop"); if(!box) return;
-  const post = body => fetch("/api/drop",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})
-    .then(r => r.json().then(j => ({ok:r.ok, j})));
-  try{ if(localStorage.getItem("d3DropOpen")==="1") box.classList.add("open"); }catch(e){}
-  if(!box.classList.contains("open")) document.body.classList.add("drop-locked");
-  document.getElementById("dropPassForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    const note = document.getElementById("dropPassNote"), inp = document.getElementById("dropPass");
-    note.textContent = "Checking…";
-    try{
-      const {ok, j} = await post({action:"unlock", password: inp.value});
-      if(ok){ box.classList.add("open"); document.body.classList.remove("drop-locked"); note.textContent = ""; try{ localStorage.setItem("d3DropOpen","1"); }catch(e){} }
-      else { note.textContent = j.error || "Wrong password."; inp.value = ""; }
-    }catch(err){ note.textContent = "Try again in a moment."; }
-  });
-  document.getElementById("dropJoinForm").addEventListener("submit", async e => {
-    e.preventDefault();
-    const note = document.getElementById("dropJoinNote"), inp = document.getElementById("dropEmail");
-    note.textContent = "Adding you…";
-    try{
-      const {ok, j} = await post({action:"join", email: inp.value, source:"drop"});
-      note.textContent = ok ? "You're on the list." : (j.error || "Try again in a moment.");
-      if(ok) inp.value = "";
-    }catch(err){ note.textContent = "Try again in a moment."; }
-  });
-})();
-
 /* ---------- newsletter ---------- */
 document.getElementById("newsForm").addEventListener("submit", e => {
   e.preventDefault();
@@ -2017,6 +1922,24 @@ function sizeButtons(p, color){
     return `<button class="${sz===pickSz?"on":""}${out?" out":""}" ${out?'aria-disabled="true" title="Sold out"':""}>${sz}</button>`;
   }).join("");
 }
+/* other pieces to show under a product: same tab first, then the rest */
+function alsoLike(p){
+  const others = PRODUCTS.filter(q => !q.custom && q.id !== p.id && q.imgs.length);
+  const same = others.filter(q => q.gender === p.gender || q.gender === "unisex");
+  const list = [...same, ...others.filter(q => !same.includes(q))].slice(0, 8);
+  if(!list.length) return "";
+  return `<section class="also" aria-label="You may also like">
+    <h3>You may also like</h3>
+    <div class="also-row">${list.map(q => {
+      const im = modelFirst(q.imgs)[0];
+      return `<a href="#product/${slugOf(q)}">
+        <span class="c-img"><img src="${im.src}" alt="${im.alt}" loading="lazy" draggable="false"></span>
+        <p class="c-brand">D3COMPOSURE</p>
+        <p class="c-name">${q.name}</p>
+        <p class="c-price" data-price="${q.usd}">${money(q.usd)}</p>
+      </a>`;}).join("")}</div>
+  </section>`;
+}
 function renderPDP(p, color){
   const body = document.getElementById("pdpBody");
   let curColor = color || p.color || "";
@@ -2054,7 +1977,8 @@ function renderPDP(p, color){
           <li>Questions? <a href="mailto:inquire@d3-composure.com">inquire@d3-composure.com</a></li>
         </ul>
       </div>
-    </div>`;
+    </div>
+    ${alsoLike(p)}`;
 
   const main = body.querySelector("#pdpMain");
   if(!main) return;
