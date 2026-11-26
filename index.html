@@ -733,6 +733,16 @@ a.r-cta{text-decoration:none}
 .subbtn small{display:block;font-size:9.5px;letter-spacing:.16em;opacity:.7;padding-top:4px}
 .c-sub{display:inline-block;margin-top:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6f6f6f;border-bottom:1px solid transparent}
 .c-sub:hover{color:#000;border-bottom-color:#000}
+.sub-hero.has-img{padding:0;border:0;display:block;background:#fff}
+.sub-hero.has-img img{width:100%;height:100%;object-fit:contain;display:block}
+.sub-gal-wrap{padding-top:56px}
+.sub-gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 18px;padding-top:22px}
+.sub-gal figure{margin:0}
+.sub-gal img{width:100%;aspect-ratio:3/4;object-fit:contain;background:#fff;display:block}
+.sub-gal figcaption{padding-top:10px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase}
+.sub-gal figcaption b{display:block;font-weight:500;letter-spacing:-.01em;font-size:13px;text-transform:none;padding-bottom:3px}
+.sub-gal figcaption span{color:#6f6f6f}
+@media (max-width:699px){.sub-gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0;padding:22px 0 6px}.sub-gal figure{flex:0 0 72%;scroll-snap-align:start}}
 </style>
 </head>
 <body>
@@ -992,7 +1002,7 @@ a.r-cta{text-decoration:none}
   <div class="pdp">
     <div class="sec-head"><span>Subscription</span><span class="r">12-month membership</span></div>
     <div class="pdp-grid" style="padding-top:28px">
-      <div class="sub-hero">
+      <div class="sub-hero" id="subHero">
         <div><h3>D3<br>Monthly</h3><p>One new shirt &middot; every month &middot; 12 months</p></div>
       </div>
       <div class="pdp-info">
@@ -1018,6 +1028,10 @@ a.r-cta{text-decoration:none}
           <ul><li>Made to order. Ships tracked each month</li><li>Secure checkout by Stripe</li></ul>
         </div>
       </div>
+    </div>
+    <div class="sub-gal-wrap" id="subGalWrap" hidden>
+      <div class="sec-head"><span>What you'll get</span><span class="r">12 shirts &middot; 12 months</span></div>
+      <div class="sub-gal" id="subGal"></div>
     </div>
   </div>
 </section>
@@ -1300,6 +1314,28 @@ function checkoutURL(){
 /* [SUBSCRIPTION] D3 Monthly: $80/month, 12-month commitment.
    Paste the Stripe subscription payment link here. */
 const SUB_LINK = "";
+/* D3 Monthly gallery: the 12 shirt photos live in monthly-shots.js,
+   loaded only when someone opens the D3 Monthly page. */
+let monthlyShotsLoading = false;
+function loadMonthlyShots(){
+  if (monthlyShotsLoading) return;
+  monthlyShotsLoading = true;
+  const s = document.createElement("script");
+  s.src = "monthly-shots.js";
+  s.onload = () => {
+    const shots = window.D3_MONTHLY_SHOTS || [];
+    document.getElementById("subGal").innerHTML = shots.map(x =>
+      `<figure><img src="${x.img}" alt="D3 Monthly ${x.name} shirt" loading="lazy"><figcaption><b>${x.name.charAt(0) + x.name.slice(1).toLowerCase()}</b><span>Month ${String(x.m).padStart(2,"0")} &middot; ${x.blank}</span></figcaption></figure>`).join("");
+    if (shots.length) document.getElementById("subGalWrap").hidden = false;
+    if (shots[0]) {
+      const hero = document.getElementById("subHero");
+      hero.classList.add("has-img");
+      hero.innerHTML = `<img src="${shots[0].img}" alt="D3 Monthly first shirt">`;
+    }
+  };
+  s.onerror = () => { monthlyShotsLoading = false; };
+  document.head.appendChild(s);
+}
 (function(){
   const row = document.querySelector("#subSizes .row");
   const buy = document.getElementById("subBuy");
@@ -2299,6 +2335,7 @@ function route(){
   document.querySelectorAll(".page").forEach(p =>
     p.classList.toggle("on", p.id === "page-" + target));
   syncHome(target === "home");
+  if (target === "monthly") loadMonthlyShots();
   lbHide();
   closeAll();
   document.querySelectorAll("[data-drop]").forEach(d => d.classList.remove("open"));
