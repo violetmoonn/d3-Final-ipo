@@ -728,6 +728,11 @@ a.r-cta{text-decoration:none}
 .sub-hero p{font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:#6f6f6f;padding-top:14px}
 .sub-terms{font-size:10.5px;letter-spacing:.14em;line-height:1.8;text-transform:uppercase;color:#6f6f6f;padding-top:14px}
 #subBuy[aria-disabled=true]{opacity:.35;pointer-events:none}
+.subbtn{display:block;width:100%;margin-top:12px;padding:14px 20px;border:1px solid #000;background:#000;color:#fff;text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;transition:background .2s,color .2s}
+.subbtn:hover{background:#fff;color:#000}
+.subbtn small{display:block;font-size:9.5px;letter-spacing:.16em;opacity:.7;padding-top:4px}
+.c-sub{display:inline-block;margin-top:10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6f6f6f;border-bottom:1px solid transparent}
+.c-sub:hover{color:#000;border-bottom-color:#000}
 </style>
 </head>
 <body>
@@ -1413,6 +1418,7 @@ PRODUCTS.forEach((p,i) => {
   const acts = !p.stock ? `<span class="c-muted">Sold out</span>`
     : !p.link ? ``
     : `<button data-qb="${i}">Quick buy +</button><button data-bag="${i}">Bag +</button>`;
+  const subLink = p.stock ? `<a class="c-sub" href="#monthly">Subscribe &middot; $80/mo</a>` : ``;
   card.innerHTML = `
     <a class="c-img" href="${url}">
       ${modelFirst(p.imgs).map((im,n)=>`<img src="${im.src}" alt="${im.alt}" class="${n===1?'alt':n>1?'alt more':''}" loading="${i<4&&n<2?'eager':'lazy'}" draggable="false">`).join("")}
@@ -1423,6 +1429,7 @@ PRODUCTS.forEach((p,i) => {
     <p class="c-price" data-price="${p.usd}">${money(p.usd)}</p>
     ${p.colors ? `<div class="swatches c-sw">${p.colors.map(k=>`<button class="sw${k===p.color?' on':''}" data-color="${k}" title="${colorName(k)}" aria-label="${colorName(k)}" style="--c:${COLORS.find(c=>c[0]===k)[2]}"></button>`).join("")}</div>` : ``}
     <div class="c-acts">${acts}</div>
+    ${subLink}
     <div class="c-sizes" hidden>
       <span class="c-label">Select size</span>
       <div class="c-row">${p.sizes.map(sz=>`<button data-size="${sz}">${sz}</button>`).join("")}</div>
@@ -2047,6 +2054,7 @@ function renderPDP(p, color){
         </div>
         ${p.link ? `<a class="buy" id="pdpBuy" href="${p.link}">Buy</a>
         <button class="bagbtn" id="pdpBag">Bag</button>` : ``}` : ``}
+        ${p.stock && p.gender !== "custom" ? `<a class="subbtn" href="#monthly">Subscribe &middot; <span data-price="80">${money(80)}</span>/mo<small>A new D3 piece every month &middot; 12 months</small></a>` : ``}
         <ul class="pdp-trust">
           <li>Secure checkout powered by Stripe</li>
           <li><a href="#shipping">Shipping policy</a> · <a href="#refund">Refund policy</a></li>
