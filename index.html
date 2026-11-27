@@ -1241,11 +1241,11 @@ const COLORS = [
 ];
 const colorName = k => (COLORS.find(c=>c[0]===k)||[k,k])[1];
 const blankImgs = (p, k) => ["front","back"].map(v => ({
-  src: "photos/basics/" + p.id.toLowerCase() + "-" + p.slugName + "-" + k + "-" + v + ".jpg",
+  src: "photos/basics/" + (p.imgBase || p.id.toLowerCase() + "-" + p.slugName) + "-" + k + "-" + v + ".jpg",
   alt: p.name.toLowerCase() + ", " + colorName(k).toLowerCase() + ", " + v }));
-const blank = (id, name, gender, color, slugName, sizes) => {
+const blank = (id, name, gender, color, slugName, sizes, imgBase) => {
   const p = {
-    id, name, gender, usd: 150, stock: true, link: BLANKS_LINK, slugName,
+    id, name, gender, usd: 150, stock: true, link: BLANKS_LINK, slugName, imgBase,
     colors: COLORS.map(c=>c[0]), color,
     note: name, sizes: sizes || ["XS","S","M","L","XL"],
     details: [
@@ -1265,6 +1265,14 @@ const BLANKS = [
   blank("M02", "Hoodie",             "men",   "black",        "hoodie",       ["S","M","L","XL","XXL"]),
   blank("M03", "Crewneck",           "men",   "heather-grey", "crewneck",     ["S","M","L","XL","XXL"]),
   blank("M04", "Sweatpant",          "men",   "black",        "sweatpant",    ["S","M","L","XL","XXL"]),
+  /* More basics. The last argument reuses an existing photo set. */
+  blank("W01", "Tee",                "women", "oat",          "tee",          null, "m01-tee"),
+  blank("W03", "Hoodie",             "women", "heather-grey", "hoodie",       null, "m02-hoodie"),
+  blank("W06", "Zip Hoodie",         "women", "black",        "zip-hoodie",   null, "zip-hoodie"),
+  blank("W07", "Crewneck",           "women", "oat",          "crewneck",     null, "m03-crewneck"),
+  blank("M06", "Long Sleeve Tee",    "men",   "charcoal",     "long-sleeve-tee", ["S","M","L","XL","XXL"], "w02-long-sleeve-top"),
+  blank("M07", "Zip Hoodie",         "men",   "heather-grey", "zip-hoodie",   ["S","M","L","XL","XXL"], "zip-hoodie"),
+  blank("M08", "Wide-Leg Sweatpant", "men",   "charcoal",     "wide-leg-sweatpant", ["S","M","L","XL","XXL"], "w04-wide-leg-sweatpant"),
 ];
 /* [CUSTOM] Experimental custom garments (#custom). The color slot of a bag
    line holds the spec: "<hex>-<form|loose>-<short|long>", e.g. 575a40-form-long.
