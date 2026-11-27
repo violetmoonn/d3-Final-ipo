@@ -138,6 +138,7 @@ body.gated{overflow:hidden}
 .swatches{display:flex;gap:8px;flex-wrap:wrap}
 .swatches .sw{width:18px;height:18px;border-radius:50%;background:var(--c);border:1px solid rgba(0,0,0,.18);box-shadow:inset 0 0 0 2px #fff;padding:0;cursor:pointer}
 .swatches .sw.on{outline:1px solid #000;outline-offset:2px}
+.c-sw{gap:5px}.c-sw .sw{width:12px;height:12px;box-shadow:inset 0 0 0 1.5px #fff}
 .c-sw{margin-top:12px}
 .c-sw .sw{width:13px;height:13px;box-shadow:none}
 .pdp-colors{padding-top:30px}
@@ -1237,7 +1238,14 @@ const BLANKS_LINK = "https://buy.stripe.com/28E9AV1wwe715D2ekefjG0e";
    <id>-<name>-<color>-front.jpg / -back.jpg */
 const COLORS = [
   ["black","Black","#1b1b1c"], ["charcoal","Charcoal","#404042"], ["heather-grey","Heather Grey","#9e9e9a"],
-  ["navy","Navy","#1d2440"], ["olive","Olive","#575a40"], ["oat","Oat","#cdbfa7"]
+  ["navy","Navy","#1d2440"], ["olive","Olive","#575a40"], ["oat","Oat","#cdbfa7"],
+  /* Los Angeles Apparel-inspired palette */
+  ["chocolate","Chocolate","#3a2a22"], ["dolphin-blue","Dolphin Blue","#4a5563"], ["red","Red","#c11f30"],
+  ["cement","Cement","#cfc8bd"], ["ash","Ash","#c3c8cb"], ["ivy","Ivy","#2b3f35"],
+  ["mauve","Mauve","#a7787e"], ["light-pink","Light Pink","#ecc6c8"], ["atlantic-green","Atlantic Green","#6f8a82"],
+  ["sage","Sage","#a3ad94"], ["light-blue","Light Blue","#b9cde0"], ["purple","Purple","#5e4b98"],
+  ["fuchsia","Fuchsia","#b4407f"], ["gold","Gold","#e3a33a"], ["cobalt-blue","Cobalt Blue","#1f3fa0"],
+  ["forest-green","Forest Green","#24443c"]
 ];
 const colorName = k => (COLORS.find(c=>c[0]===k)||[k,k])[1];
 const blankImgs = (p, k) => ["front","back"].map(v => ({
@@ -1266,12 +1274,12 @@ const BLANKS = [
   blank("M03", "Crewneck",           "men",   "heather-grey", "crewneck",     ["S","M","L","XL","XXL"]),
   blank("M04", "Sweatpant",          "men",   "black",        "sweatpant",    ["S","M","L","XL","XXL"]),
   /* More basics. The last argument reuses an existing photo set. */
-  blank("W01", "Tee",                "women", "oat",          "tee",          null, "m01-tee"),
+  blank("W01", "Tee",                "women", "light-pink",          "tee",          null, "m01-tee"),
   blank("W03", "Hoodie",             "women", "heather-grey", "hoodie",       null, "m02-hoodie"),
-  blank("W06", "Zip Hoodie",         "women", "black",        "zip-hoodie",   null, "zip-hoodie"),
-  blank("W07", "Crewneck",           "women", "oat",          "crewneck",     null, "m03-crewneck"),
-  blank("M06", "Long Sleeve Tee",    "men",   "charcoal",     "long-sleeve-tee", ["S","M","L","XL","XXL"], "w02-long-sleeve-top"),
-  blank("M07", "Zip Hoodie",         "men",   "heather-grey", "zip-hoodie",   ["S","M","L","XL","XXL"], "zip-hoodie"),
+  blank("W06", "Zip Hoodie",         "women", "chocolate",        "zip-hoodie",   null, "zip-hoodie"),
+  blank("W07", "Crewneck",           "women", "sage",          "crewneck",     null, "m03-crewneck"),
+  blank("M06", "Long Sleeve Tee",    "men",   "forest-green",     "long-sleeve-tee", ["S","M","L","XL","XXL"], "w02-long-sleeve-top"),
+  blank("M07", "Zip Hoodie",         "men",   "dolphin-blue", "zip-hoodie",   ["S","M","L","XL","XXL"], "zip-hoodie"),
   blank("M08", "Wide-Leg Sweatpant", "men",   "charcoal",     "wide-leg-sweatpant", ["S","M","L","XL","XXL"], "w04-wide-leg-sweatpant"),
 ];
 /* [CUSTOM] Experimental custom garments (#custom). The color slot of a bag
