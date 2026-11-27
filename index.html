@@ -946,13 +946,8 @@ a.r-cta{text-decoration:none}
       </div>
       <div class="pdp-info">
         <p class="pdp-brand">D3COMPOSURE</p>
-        <h2 id="czTitle">Custom Top</h2>
+        <h2 id="czTitle">Custom Pants</h2>
         <p class="pdp-price" data-price="150">$150.00 USD</p>
-
-        <div class="cz-group">
-          <span class="label">Garment</span>
-          <div class="cz-seg" data-cz="kind"><button class="on" data-v="top">Top</button><button data-v="pants">Pants</button></div>
-        </div>
 
         <div class="cz-group">
           <span class="label">Color: <b id="czHexName">#575A40</b></span>
@@ -969,7 +964,7 @@ a.r-cta{text-decoration:none}
           <div class="cz-seg" data-cz="fit"><button class="on" data-v="form">Form</button><button data-v="loose">Loose</button></div>
         </div>
 
-        <div class="cz-group" id="czSleeveGroup">
+        <div class="cz-group" id="czSleeveGroup" hidden>
           <span class="label">Sleeve</span>
           <div class="cz-seg" data-cz="sleeve"><button data-v="short">Short</button><button class="on" data-v="long">Long</button></div>
         </div>
@@ -1303,7 +1298,7 @@ const custom = (id, name, note) => ({
   id, name, note, gender: "custom", custom: true, usd: 150, stock: true, link: BLANKS_LINK,
   sizes: ["XS","S","M","L","XL","XXL"], imgs: []
 });
-const CUSTOM = [ custom("C01", "Custom Top", "Custom top"), custom("C02", "Custom Pants", "Custom pants") ];
+const CUSTOM = [ custom("C02", "Custom Pants", "Custom pants") ];
 const czLabel = spec => { const [h,f,s] = String(spec||"").split("-"); return "#" + (h||"").toUpperCase() + " / " + (f==="loose"?"Loose":"Form") + " fit" + (s ? " / " + (s==="short"?"Short":"Long") : ""); };
 /* cart keys are "id|size" or "id|size|color" */
 const lineNote = (p, color) => p.custom ? czLabel(color) : p.colors ? p.name + " / " + colorName(color || p.color) : p.note;
@@ -2208,7 +2203,7 @@ function renderPDP(p, color){
 (() => {
   const $ = id => document.getElementById(id);
   const svg = $("czSvg"), pick = $("czPick"), hexIn = $("czHex"), hexBox = $("czHexBox");
-  const st = { kind: "top", fit: "form", sleeve: "long", hex: "575a40", size: "" };
+  const st = { kind: "pants", fit: "form", sleeve: "long", hex: "575a40", size: "" };
 
   const norm = v => {
     v = String(v || "").trim().replace(/^#/, "").toLowerCase();
