@@ -1198,6 +1198,19 @@ const IMG_BACK  = "photos/d3-01-back-hd.jpg";
    To publish a new piece: put its photos in photos/ and list them in its
    slot below. A slot with no photos stays hidden from the shop.
    --------------------------------------------------------------------- */
+/* [COLORS] Blank colors (no white). Photos live in photos/basics/ as
+   <id>-<name>-<color>-front.jpg / -back.jpg */
+const COLORS = [
+  ["black","Black","#1b1b1c"], ["charcoal","Charcoal","#404042"], ["heather-grey","Heather Grey","#9e9e9a"],
+  ["navy","Navy","#1d2440"], ["olive","Olive","#575a40"], ["oat","Oat","#cdbfa7"],
+  /* Los Angeles Apparel-inspired palette */
+  ["chocolate","Chocolate","#3a2a22"], ["dolphin-blue","Dolphin Blue","#4a5563"], ["red","Red","#c11f30"],
+  ["cement","Cement","#cfc8bd"], ["ash","Ash","#c3c8cb"], ["ivy","Ivy","#2b3f35"],
+  ["mauve","Mauve","#a7787e"], ["light-pink","Light Pink","#ecc6c8"], ["atlantic-green","Atlantic Green","#6f8a82"],
+  ["sage","Sage","#a3ad94"], ["light-blue","Light Blue","#b9cde0"], ["purple","Purple","#5e4b98"],
+  ["fuchsia","Fuchsia","#b4407f"], ["gold","Gold","#e3a33a"], ["cobalt-blue","Cobalt Blue","#1f3fa0"],
+  ["forest-green","Forest Green","#24443c"]
+];
 const TEMPLATE = {
   usd: 350,
   note: "HEAVYWEIGHT HOODIE",
@@ -1217,10 +1230,15 @@ const artDetails = (color) => [
   ["Care",        ["Machine wash cold, inside out", "Hang dry. Do not iron the print"]],
   ["Shipping & returns", ["Made to order. Ships tracked in about 2 weeks", "Shipping and duties are calculated at checkout", "Returns within 14 days of delivery", "Secure checkout by Stripe"]]
 ];
-const piece = (id, type, color, photos) => ({
-  ...TEMPLATE, id, note: type, name: id + " " + type, details: artDetails(color),
-  imgs: photos.map((src, n) => ({ src, alt: id + " " + type.toLowerCase() + ", " + color.toLowerCase() + (n ? ", view " + (n + 1) : ", front") }))
-});
+const piece = (id, type, color, photos) => {
+  const key = color.toLowerCase(), base = id.toLowerCase().replace(" ", "-");
+  const imgs = photos.map((src, n) => ({ src, alt: id + " " + type.toLowerCase() + ", " + key + (n ? ", view " + (n + 1) : ", front") }));
+  /* [PIECE COLORS] the original color keeps its own photos (model shots too);
+     every other color uses photos/pieces/<id>-<color>-front.jpg / -back.jpg */
+  const colors = [key, ...COLORS.map(c => c[0]).filter(k => k !== key)];
+  return { ...TEMPLATE, id, note: type, name: id + " " + type, details: artDetails(color),
+    piece: true, pieceBase: base, color: key, colors, baseImgs: imgs, imgs };
+};
 const SLOTS = [
   piece("D3 01", "Hooded Sweatshirt", "Black", [IMG_FRONT, IMG_BACK]),
   piece("D3 02", "T-Shirt", "White", [IMG_D302_FRONT, IMG_D302_BACK, IMG_D302_MODEL, IMG_D302_MODEL2]),
@@ -1234,20 +1252,15 @@ const PIECES = SLOTS.filter(p => p.imgs.length).map(p => ({...p, gender:"unisex"
 /* [BLANKS] Everyday blanks at $150. Paste the Stripe payment link for the
    $150 price into BLANKS_LINK. */
 const BLANKS_LINK = "https://buy.stripe.com/28E9AV1wwe715D2ekefjG0e";
-/* [COLORS] Blank colors (no white). Photos live in photos/basics/ as
-   <id>-<name>-<color>-front.jpg / -back.jpg */
-const COLORS = [
-  ["black","Black","#1b1b1c"], ["charcoal","Charcoal","#404042"], ["heather-grey","Heather Grey","#9e9e9a"],
-  ["navy","Navy","#1d2440"], ["olive","Olive","#575a40"], ["oat","Oat","#cdbfa7"],
-  /* Los Angeles Apparel-inspired palette */
-  ["chocolate","Chocolate","#3a2a22"], ["dolphin-blue","Dolphin Blue","#4a5563"], ["red","Red","#c11f30"],
-  ["cement","Cement","#cfc8bd"], ["ash","Ash","#c3c8cb"], ["ivy","Ivy","#2b3f35"],
-  ["mauve","Mauve","#a7787e"], ["light-pink","Light Pink","#ecc6c8"], ["atlantic-green","Atlantic Green","#6f8a82"],
-  ["sage","Sage","#a3ad94"], ["light-blue","Light Blue","#b9cde0"], ["purple","Purple","#5e4b98"],
-  ["fuchsia","Fuchsia","#b4407f"], ["gold","Gold","#e3a33a"], ["cobalt-blue","Cobalt Blue","#1f3fa0"],
-  ["forest-green","Forest Green","#24443c"]
-];
-const colorName = k => (COLORS.find(c=>c[0]===k)||[k,k])[1];
+
+const ALL_COLORS = [...COLORS, ["white","White","#f4f4f2"]];   /* white: art pieces only */
+const colorName = k => (ALL_COLORS.find(c=>c[0]===k)||[k,k])[1];
+const colorHex = k => (ALL_COLORS.find(c=>c[0]===k)||[k,k,"#ccc"])[2];
+const imgsFor = (p, k) => !p.piece ? blankImgs(p, k)
+  : k === p.color ? p.baseImgs
+  : ["front","back"].map(v => ({ src: "photos/pieces/" + p.pieceBase + "-" + k + "-" + v + ".jpg",
+      alt: p.name.toLowerCase() + ", " + colorName(k).toLowerCase() + ", " + v }));
+const stockColor = (p, c) => p.colors && !p.piece ? c : null;   /* art pieces share stock across colors */
 const blankImgs = (p, k) => ["front","back"].map(v => ({
   src: "photos/basics/" + (p.imgBase || p.id.toLowerCase() + "-" + p.slugName) + "-" + k + "-" + v + ".jpg",
   alt: p.name.toLowerCase() + ", " + colorName(k).toLowerCase() + ", " + v }));
@@ -1303,7 +1316,7 @@ let STOCK = {};
 const stockKey = (id, size, color) => [id, size, color].filter(Boolean).join("|");
 const left = (id, size, color) => { const k = stockKey(id, size, color); return k in STOCK ? STOCK[k] : Infinity; };
 const inBag = (id, size, color) => cart.get(id + "|" + size + (color ? "|" + color : "")) || 0;
-const soldOut = (p, color) => p.sizes.every(sz => left(p.id, sz, p.colors ? (color || p.color) : null) <= 0);
+const soldOut = (p, color) => p.sizes.every(sz => left(p.id, sz, stockColor(p, color || p.color)) <= 0);
 function loadStock(){
   return fetch("/api/stock", {cache:"no-store"}).then(r => r.ok ? r.json() : {stock:{}})
     .then(j => { STOCK = j.stock || {}; if (location.hash.startsWith("#product/")) route(); })
@@ -1479,7 +1492,7 @@ PRODUCTS.forEach((p,i) => {
     <p class="c-brand">D3COMPOSURE</p>
     <p class="c-name"><a href="${url}">${p.name}</a></p>
     <p class="c-price" data-price="${p.usd}">${money(p.usd)}</p>
-    ${p.colors ? `<div class="swatches c-sw">${p.colors.map(k=>`<button class="sw${k===p.color?' on':''}" data-color="${k}" title="${colorName(k)}" aria-label="${colorName(k)}" style="--c:${COLORS.find(c=>c[0]===k)[2]}"></button>`).join("")}</div>` : ``}
+    ${p.colors ? `<div class="swatches c-sw">${p.colors.map(k=>`<button class="sw${k===p.color?' on':''}" data-color="${k}" title="${colorName(k)}" aria-label="${colorName(k)}" style="--c:${colorHex(k)}"></button>`).join("")}</div>` : ``}
     <div class="c-acts">${acts}</div>
     ${subLink}
     <div class="c-sizes" hidden>
@@ -1509,8 +1522,9 @@ grid.addEventListener("click", e => {
     const p = PRODUCTS.find(x => slugOf(x) === card.querySelector(".c-img").getAttribute("href").split("/")[1].split("?")[0]);
     card.dataset.color = sw.dataset.color;
     card.querySelectorAll(".c-sw .sw").forEach(x => x.classList.toggle("on", x===sw));
-    const ims = blankImgs(p, sw.dataset.color);
-    card.querySelectorAll(".c-img img").forEach((im,n) => { if(ims[n]){ im.src = ims[n].src; im.alt = ims[n].alt; } });
+    const ims = p.piece && sw.dataset.color === p.color ? modelFirst(p.baseImgs) : imgsFor(p, sw.dataset.color);
+    card.querySelectorAll(".c-img img").forEach((im,n) => { im.hidden = !ims[n]; if(ims[n]){ im.src = ims[n].src; im.alt = ims[n].alt; } });
+    card.querySelectorAll(".c-dots i").forEach((d,n) => d.hidden = !ims[n]);
     card.querySelector(".c-img").scrollLeft = 0;
     card.querySelector(".c-img").href = "#product/" + slugOf(p) + "?c=" + sw.dataset.color;
     return;
@@ -2049,7 +2063,7 @@ const PAGES = ["home","shop","about","sustainability","contact","gallery","setti
 const slug = id => id.replace(/\s+/g,"-").toLowerCase();
 
 function sizeButtons(p, color){
-  const c = p.colors ? color : null;
+  const c = stockColor(p, color);
   const open = p.sizes.filter(sz => left(p.id, sz, c) > 0);
   const pickSz = open.includes("L") ? "L" : open[0];
   return p.sizes.map(sz => {
@@ -2078,7 +2092,7 @@ function alsoLike(p){
 function renderPDP(p, color){
   const body = document.getElementById("pdpBody");
   let curColor = color || p.color || "";
-  if(p.colors) p = {...p, imgs: blankImgs(p, curColor)};
+  if(p.colors) p = {...p, imgs: imgsFor(p, curColor), ...(p.piece ? {details: artDetails(colorName(curColor))} : {})};
   body.innerHTML = `
     <div class="pdp-grid">
       <div>
@@ -2096,7 +2110,7 @@ function renderPDP(p, color){
         <p class="pdp-price">${money(p.usd)}</p>
         ${!p.stock || soldOut(p, curColor) ? `<p class="stock out"><i></i>Sold out</p>` : ``}
         ${p.colors ? `<div class="pdp-colors"><span class="label">Color: <b id="pdpColorName">${colorName(curColor)}</b></span>
-          <div class="swatches">${p.colors.map(k=>`<button class="sw${k===curColor?' on':''}" data-color="${k}" title="${colorName(k)}" aria-label="${colorName(k)}" style="--c:${COLORS.find(c=>c[0]===k)[2]}"></button>`).join("")}</div></div>` : ``}
+          <div class="swatches">${p.colors.map(k=>`<button class="sw${k===curColor?' on':''}" data-color="${k}" title="${colorName(k)}" aria-label="${colorName(k)}" style="--c:${colorHex(k)}"></button>`).join("")}</div></div>` : ``}
         <div class="pdp-desc">${(p.details||[]).map(([h,items])=>`<h4>${h}</h4><ul>${items.map(t=>`<li>${t}</li>`).join("")}</ul>`).join("")}</div>
         ${p.stock && p.link ? `
         <div class="pdp-sizes" id="pdpSizes">
@@ -2146,6 +2160,7 @@ function renderPDP(p, color){
     curColor = b.dataset.color;
     sw.querySelectorAll(".sw").forEach(x => x.classList.toggle("on", x===b));
     body.querySelector("#pdpColorName").textContent = colorName(curColor);
+    if(p.piece){ history.replaceState(null, "", "#product/" + slug(p.id) + "?c=" + curColor); renderPDP(PRODUCTS.find(x => x.id === p.id), curColor); return; }
     const ims = blankImgs(p, curColor);
     figs.forEach((f,n) => { f.src = ims[n].src; f.alt = ims[n].alt; });
     body.querySelectorAll(".thumb img").forEach((t,n) => t.src = ims[n].src);
@@ -2157,7 +2172,7 @@ function renderPDP(p, color){
   const chosen = () => body.querySelector(".pdp-sizes button.on")?.textContent || "";
   const note = () => {
     const el = body.querySelector("#leftNote"); if(!el) return;
-    const sz = chosen(), n = sz ? left(p.id, sz, p.colors ? curColor : null) : 0;
+    const sz = chosen(), n = sz ? left(p.id, sz, stockColor(p, curColor)) : 0;
     el.textContent = !sz ? "Sold out in every size" : (n <= 3 ? "Only " + n + " left" : "");
     const off = !sz;
     [body.querySelector("#pdpBuy"), body.querySelector("#pdpBag")].forEach(x => { if(x){ x.style.opacity = off ? .35 : ""; x.style.pointerEvents = off ? "none" : ""; } });
@@ -2179,7 +2194,7 @@ function renderPDP(p, color){
   if(bag) bag.addEventListener("click", () => {
     if(!chosen()) return;
     const key = p.id + "|" + chosen() + (curColor ? "|" + curColor : "");
-    if(inBag(p.id, chosen(), curColor) + 1 > left(p.id, chosen(), p.colors ? curColor : null)){
+    if(inBag(p.id, chosen(), curColor) + 1 > left(p.id, chosen(), stockColor(p, curColor))){
       bag.textContent = "No more in stock"; setTimeout(()=>bag.textContent = "Bag", 1400); return;
     }
     cart.set(key, (cart.get(key)||0)+1);
